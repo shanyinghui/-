@@ -1,5 +1,3 @@
 
-# type: com.alibaba.druid.pool.DruidDataSource
 
-# mybatis:   实体类别名
-#    type-aliases-package: com.buba.stuinfomanager.pojo
+
