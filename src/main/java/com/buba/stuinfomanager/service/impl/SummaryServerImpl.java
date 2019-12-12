@@ -1,7 +1,6 @@
 package com.buba.stuinfomanager.service.impl;
 
 import com.buba.stuinfomanager.pojo.Summary;
-import com.buba.stuinfomanager.service.SummaryServer;
 import org.springframework.stereotype.Service;
 
 /**
