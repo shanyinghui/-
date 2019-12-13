@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="x-admin-sm">
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
         <title>软件工程学院信息管理系统</title>
@@ -32,10 +32,10 @@
             </div>
             <ul class="layui-nav right" lay-filter="">
                 <li class="layui-nav-item">
-                    <a href="javascript:;">欢迎您:&nbsp;&nbsp;&nbsp;admin</a>
+                    <a href="javascript:;">欢迎您:&nbsp;&nbsp;&nbsp;<span th:text="${session.name}"></span></a>
                     <dl class="layui-nav-child">
                         <dd>
-                            <a href="./login.html">退出</a></dd>
+                            <a href="/logout">退出</a></dd>
                     </dl>
                 </li>
             </ul>
@@ -151,7 +151,7 @@
                             <i class="iconfont nav_right">&#xe697;</i></a>
                         <ul class="sub-menu">
                             <li>
-                                <a onclick="xadmin.add_tab('每日卫生检查管理','wsManager/wsManager.html')">
+                                <a onclick="xadmin.add_tab('每日卫生检查管理','/wsManager?nowPage=wsManager')">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>每日卫生检查管理</cite></a>
                             </li>
@@ -164,7 +164,7 @@
 					        <i class="iconfont nav_right">&#xe697;</i></a>
 					    <ul class="sub-menu">
 					        <li>
-					            <a onclick="xadmin.add_tab('修改密码','passwordManager/passwordManager.html')">
+					            <a onclick="xadmin.add_tab('修改密码','/toPwd')">
 					                <i class="iconfont">&#xe6a7;</i>
 					                <cite>修改密码</cite></a>
 					        </li>
