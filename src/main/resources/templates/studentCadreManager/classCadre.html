@@ -18,9 +18,10 @@
     <style>
         #demo {
 
-            overflow-x: hidden
-        ;
-        } /* 禁止刷新后出现横向滚动条 */
+            overflow-x: hidden;
+        }
+
+        /* 禁止刷新后出现横向滚动条 */
     </style>
 </head>
 <body>
@@ -36,27 +37,17 @@
             <div class="layui-card">
                 <div class="layui-card-body ">
                     <div class="layui-inline layui-show-xs-block">
-                        <input type="text" id="class_name" placeholder="请输入班级名"
+                        <input type="hidden" id="class_id"
+                               th:value="${class_id}"
                                class="layui-input">
-                    </div>
-                    <div class="layui-inline layui-show-xs-block">
-                        <input type="text" id="headmaster" placeholder="请输入班主任"
-                               class="layui-input">
-                    </div>
-                    <div class="layui-inline layui-show-xs-block">
-                        <input type="text" id="teacher" placeholder="请输入老师名"
-                               class="layui-input">
-                    </div>
-                    <div class="layui-inline layui-show-xs-block">
-                        <button class="layui-btn" id="search"><i class="layui-icon">&#xe615;</i>
-                        </button>
                     </div>
                 </div>
                 <div class="layui-card-header">
                     <button class="layui-btn layui-btn-danger" onclick="delAll()"><i
                             class="layui-icon"></i>批量删除
                     </button>
-                    <button class="layui-btn" onclick="xadmin.open('添加用户','./jrInsClasses',600,400)"><i
+                    <button class="layui-btn"
+                            onclick="xadmin.open('添加用户','./jrInsStuCard',600,400)"><i
                             class="layui-icon"></i>添加
                     </button>
                 </div>
@@ -80,36 +71,62 @@
         var $ = layui.jquery;
         //展示已知数据
         table.render({
-            url: '/selAllClasses',
-            title: '班级数据表',
+            url: '/selClassCadre?class_id=' + $('#class_id').val(),
+            title: '班干部数据表',
             toolbar: '#toolbarDemo',
-            id: "classesTable",
+            id: "classCadreTable",
             elem: '#demo',
             cols: [[ //标题栏
                 {type: 'checkbox'},
-                {field: 'class_id',  title: 'ID', hide: true},
-                {field: 'class_name', title: '班级名'},
-                {field: 'headmaster', title: '班主任'},
-                {field: 'teacher', title: '老师'},
-                {title:'操作',toolbar:'#barDemo'}
+                {field: 'stu_id', title: 'ID', hide: true},
+                {field: 'stu_num', title: '学生学号'},
+                {field: 'classid', title: '入学班级'},
+                {field: 'name', title: '名字'},
+                {
+                    field: 'sex', title: '性别', templet: function (d) {
+                        if (d.sex == 0) {
+                            return "男";
+                        } else {
+                            return "女";
+                        }
+                    }
+                },
+                {
+                    field: 'card_id', title: '职位', templet: function (d) {
+                        if (d.card_id == 1) {
+                            return "班长";
+                        } else if (d.card_id == 2) {
+                            return "纪律委员";
+                        } else if (d.card_id == 3) {
+                            return "生活委员";
+                        } else if (d.card_id == 4) {
+                            return "学习委员";
+                        } else if (d.card_id == 5) {
+                            return "体育委员";
+                        } else if (d.card_id == 6) {
+                            return "文艺委员";
+                        }
+                    }
+                },
+                {title: '操作', toolbar: '#barDemo'}
             ]],
 
             skin: 'line', //表格风格
             page: true,
             limits: [1, 7, 10],
-            limit: 1
+            limit: 10
         });
 
         //搜索
         $("#search").click(function () {
-            var class_name = $('#class_name').val();
-            var headmaster = $('#headmaster').val();
-            var teacher = $('#teacher').val();
-            table.reload('classesTable', {
+            var department_id = $('#department_id').val();
+            var name = $('#name').val();
+            var strsex = $('#strsex').val();
+            table.reload('classCadreTable', {
                 where: {
-                    class_name: class_name,
-                    headmaster: headmaster,
-                    teacher: teacher
+                    department_id: department_id,
+                    name: name,
+                    strsex: strsex
                 },
                 page: {
                     curr: 1
@@ -119,36 +136,9 @@
 
         //监听行工具事件
         table.on('tool(test)', function (obj) {
-            var id = obj.data.class_id;
-            var name = obj.data.class_name;
-            if (obj.event === 'del') {
-                layer.confirm('确定删除"' + name + '"吗？', function (index) {
-                    $.ajax({
-                        url: "delClasses",
-                        type: "post",
-                        dataType: "json",
-                        data: {
-                            class_id: id
-                        },
-                        success: function (result) {
-                            if (result.code == 200) {
-                                layer.msg('删除成功！');
-                                layer.close(index);
-                                table.reload('classesTable', {
-                                    url: '/selAllClasses',
-                                    page: {
-                                        curr: 1 //重新从第 1 页开始
-                                    }
-                                });
-                            } else {
-                                layer.msg(result.msg);
-                            }
-                        }
-                    })
-                });
-            }
+            var id = obj.data.stu_id;
             if (obj.event === "edit") {
-                xadmin.open('修改用户','/selOneClasses?class_id='+id,600,600);
+                xadmin.open('修改用户', '/selOneStu_UnionStu?stu_id=' + id, 600, 600);
             }
         })
     });

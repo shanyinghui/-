@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.buba.stuinfomanager.mapper.ClassesMapper">
+    <select id="selAllClasses" resultType="com.buba.stuinfomanager.pojo.Classes">
+        select * from tb_classes
+        <where>
+            <if test="class_name != null and class_name != ''">
+                and class_name like CONCAT('%',CONCAT(#{class_name},'%'))
+            </if>
+            <if test="headmaster != null and headmaster != ''">
+                and headmaster like CONCAT('%',CONCAT(#{headmaster},'%'))
+            </if>
+            <if test="teacher != null and teacher != ''">
+                and teacher like CONCAT('%',CONCAT(#{teacher},'%'))
+            </if>
+        </where>
+    </select>
+    <insert id="insClasses" parameterType="com.buba.stuinfomanager.pojo.Classes">
+        insert into tb_classes(class_name,headmaster,teacher,cycle_progress)
+        values(#{class_name},#{headmaster},#{teacher},#{cycle_progress})
+    </insert>
+    <delete id="delClasses" parameterType="java.lang.Integer">
+        delete from tb_classes where class_id = #{class_id}
+    </delete>
+    <select id="selOneClasses" parameterType="java.lang.Integer"
+            resultType="com.buba.stuinfomanager.pojo.Classes">
+        select * from tb_classes where class_id = #{class_id}
+    </select>
+    <update id="updClasses" parameterType="com.buba.stuinfomanager.pojo.Classes">
+        update tb_classes set
+        class_name=#{class_name},headmaster=#{headmaster},teacher=#{teacher},cycle_progress=#{cycle_progress} where class_id = #{class_id}
+    </update>
+    <select id="selClassCadre" parameterType="java.lang.Integer"
+            resultType="com.buba.stuinfomanager.pojo.CardStu">
+       select  c.card_id,c.card_name,s.stu_num,sc.class_id,s.name,s.sex,s.birthday from (stu_card
+       sc left join tb_class_card c on sc.card_id = c.card_id) left join tb_student s on
+       sc.stu_id = s.stu_id where sc.class_id = 1
+    </select>
+    <select id="selClassStudent" parameterType="java.lang.Integer"
+            resultType="com.buba.stuinfomanager.pojo.Student">
+        select * from tb_student where classid = #{class_id}
+    </select>
+    <update id="updStuCard" parameterType="com.buba.stuinfomanager.pojo.CardStu">
+        update stu_card set card_id = #{card_id} where stu_id
+         = #{stu_id}
+    </update>
+    <insert id="insStuCard" parameterType="com.buba.stuinfomanager.pojo.CardStu">
+        insert into stu_card(card_id,stu_id,class_id) values(#{card_id},#{stu_id},#{class_id})
+    </insert>
+    <delete id="delStuCard" parameterType="com.buba.stuinfomanager.pojo.CardStu">
+        delete from stu_card where stu_id = #{stu_id}
+    </delete>
+</mapper>
