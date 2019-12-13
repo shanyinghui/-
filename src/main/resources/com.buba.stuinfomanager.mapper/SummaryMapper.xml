@@ -1,6 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bgs.springboot_mybatis.mapper.UserMapper">
+<mapper namespace="com.buba.stuinfomanager.mapper.SummaryMapper">
+    <resultMap id="summaryResult" type="Summary">
+        <id column="sum_id" property="sum_id"></id>
+        <result column="sum_state" property="sum_state"></result>
+        <association property="stu_id" column="stu_id">
+            <result column="stu_num" property="stu_num"></result>
+            <result column="name" property="name"></result>
+        </association>
+    </resultMap>
+    <sql id="summary_line">
+        sum_time,sum_plan,sum_techGrasp,sum_techExpand,sum_growth,
+        sum_break,sum_shortcoming,sum_eduRec_army,sum_eduRec_tradition,
+        sum_eduRec_school,sum_eduRec_workplace,sum_eduRec_politics,sum_eduRec_thoughts,sum_state,stu_id
+    </sql>
 
+    <insert id="insertSummary" parameterType="Summary">
+        INSERT INTO tb_summary (<include refid="summary_line"></include>)
+        VALUES (
+            #{sum_time},#{sum_plan},#{sum_techGrasp},#{sum_techExpand},#{sum_growth},#{sum_break},#{sum_shortcoming},#{sum_eduRec_army},
+            #{sum_eduRec_tradition},#{sum_eduRec_school},#{sum_eduRec_workplace},#{sum_eduRec_politics},#{sum_eduRec_thoughts},#{sum_state},
+            #{student.stu_id}
+        )
+    </insert>
+
+    <select id="selectStudentBuId" parameterType="Student" resultType="Student">
+        select * from tb_student where stu_id = #{stu_id}
+    </select>
+
+    <select id="selectSummaryCount" parameterType="Summary" resultType="int">
+        select count(*)  from tb_summary where sum_state = #{sum_state}
+    </select>
+
+    <select id="selectSummaryAll" parameterType="Summary" resultType="Summary">
+        select *  from tb_summary where stu_id = #{student.stu_id} and sum_state = #{sum_state}
+    </select>
+
+    <update id="replenishSummary" parameterType="Summary">
+        update tb_summary set sum_plan = #{sum_plan},sum_techGrasp = #{sum_techGrasp},sum_techExpand = #{sum_techExpand},
+        sum_growth = #{sum_growth},sum_break = #{sum_break},sum_shortcoming = #{sum_shortcoming},sum_eduRec_army =#{sum_eduRec_army},
+        sum_eduRec_tradition = #{sum_eduRec_tradition},sum_eduRec_school = #{sum_eduRec_school},sum_eduRec_workplace = #{sum_eduRec_workplace},
+        sum_eduRec_politics = #{sum_eduRec_politics},sum_state = #{sum_state} where sum_id = #{sum_id}
+    </update>
+
+    <update id="teacherUpdateSummary" parameterType="Summary">
+        update tb_summary set sum_state = #{sum_state},tea_id = #{teacher.tea_id}
+    </update>
+
+    <select id="selectVerify" parameterType="Summary" resultType="Summary">
+        select * from tb_summary where sum_time = #{sum_time} and stu_id = #{student.stu_id}
+    </select>
+
+    <insert id="saveSummaryforVerify" parameterType="Summary">
+        INSERT INTO tb_su
+        mmary (sum_time,sum_state,stu_id) VALUES (#{sum_time},#{sum_state},#{student.stu_id})
+    </insert>
+
+    <!--<select id="selectSummaryTeacherAll" parameterType="Summary" resultMap="summaryResult">
+        select ,sum_id,stu_num,name,class_name from tb_summary,tb_classes,tb_student where
+        tb_summary.stu_id = tb_student and tb_student.classid = tb_classes.class_id and sum_id = #{sum_id}
+        and stu_id
+    </select>-->
 
 </mapper>

@@ -9,6 +9,8 @@ public class Wj implements Serializable {
     private String studentname;
     private int typeid;
     private String notes;
+    private String wjdate;
+    private WjType wjType;
 
     public int getId() {
         return id;
@@ -58,6 +60,22 @@ public class Wj implements Serializable {
         this.notes = notes;
     }
 
+    public String getWjdate() {
+        return wjdate;
+    }
+
+    public void setWjdate(String wjdate) {
+        this.wjdate = wjdate;
+    }
+
+    public WjType getWjType() {
+        return wjType;
+    }
+
+    public void setWjType(WjType wjType) {
+        this.wjType = wjType;
+    }
+
     @Override
     public String toString() {
         return "Wj{" +
@@ -67,6 +85,8 @@ public class Wj implements Serializable {
                 ", studentname='" + studentname + '\'' +
                 ", typeid=" + typeid +
                 ", notes='" + notes + '\'' +
+                ", wjdate='" + wjdate + '\'' +
+                ", wjType=" + wjType +
                 '}';
     }
 }
