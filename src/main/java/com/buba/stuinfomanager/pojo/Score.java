@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Score implements Serializable {
     private int id;
     private String studentid;
+    private String classes;
     private String studentname;
     private String period;//周期
     private String interviewresult;//面试成绩
@@ -58,11 +59,20 @@ public class Score implements Serializable {
         this.skillscores = skillscores;
     }
 
+    public String getClasses() {
+        return classes;
+    }
+
+    public void setClasses(String classes) {
+        this.classes = classes;
+    }
+
     @Override
     public String toString() {
         return "Score{" +
                 "id=" + id +
                 ", studentid='" + studentid + '\'' +
+                ", classes='" + classes + '\'' +
                 ", studentname='" + studentname + '\'' +
                 ", period='" + period + '\'' +
                 ", interviewresult='" + interviewresult + '\'' +
