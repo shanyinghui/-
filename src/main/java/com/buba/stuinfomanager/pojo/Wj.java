@@ -4,11 +4,28 @@ import java.io.Serializable;
 
 public class Wj implements Serializable {
     private int id;
-    private String date;
     private String classes;
     private String studentname;
     private int typeid;
     private String notes;
+    private String wjdate;
+    private WjType wjType;
+
+    public WjType getWjType() {
+        return wjType;
+    }
+
+    public void setWjType(WjType wjType) {
+        this.wjType = wjType;
+    }
+
+    public String getWjdate() {
+        return wjdate;
+    }
+
+    public void setWjdate(String wjdate) {
+        this.wjdate = wjdate;
+    }
 
     public int getId() {
         return id;
@@ -18,13 +35,6 @@ public class Wj implements Serializable {
         this.id = id;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
 
     public String getClasses() {
         return classes;
@@ -62,11 +72,12 @@ public class Wj implements Serializable {
     public String toString() {
         return "Wj{" +
                 "id=" + id +
-                ", date='" + date + '\'' +
                 ", classes='" + classes + '\'' +
                 ", studentname='" + studentname + '\'' +
                 ", typeid=" + typeid +
                 ", notes='" + notes + '\'' +
+                ", wjdate='" + wjdate + '\'' +
+                ", wjType=" + wjType +
                 '}';
     }
 }

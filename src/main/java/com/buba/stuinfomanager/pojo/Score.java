@@ -5,10 +5,19 @@ import java.io.Serializable;
 public class Score implements Serializable {
     private int id;
     private String studentid;
+    private String classes;
     private String studentname;
     private String period;//周期
     private String interviewresult;//面试成绩
     private String skillscores;//机试成绩
+
+    public String getClasses() {
+        return classes;
+    }
+
+    public void setClasses(String classes) {
+        this.classes = classes;
+    }
 
     public int getId() {
         return id;
@@ -63,6 +72,7 @@ public class Score implements Serializable {
         return "Score{" +
                 "id=" + id +
                 ", studentid='" + studentid + '\'' +
+                ", classes='" + classes + '\'' +
                 ", studentname='" + studentname + '\'' +
                 ", period='" + period + '\'' +
                 ", interviewresult='" + interviewresult + '\'' +

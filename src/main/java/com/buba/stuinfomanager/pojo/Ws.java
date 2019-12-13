@@ -5,6 +5,15 @@ public class Ws {
     private String wdate;
     private Integer wsroce;
     private Integer bjid;
+    private Classes classes;
+
+    public Classes getClasses() {
+        return classes;
+    }
+
+    public void setClasses(Classes classes) {
+        this.classes = classes;
+    }
 
     public Integer getWid() {
         return wid;
@@ -45,8 +54,6 @@ public class Ws {
         this.bjid = bjid;
     }
 
-    public Ws() {
-    }
 
     @Override
     public String toString() {
@@ -55,6 +62,7 @@ public class Ws {
                 ", wdate='" + wdate + '\'' +
                 ", wsroce=" + wsroce +
                 ", bjid=" + bjid +
+                ", classes=" + classes +
                 '}';
     }
 }
