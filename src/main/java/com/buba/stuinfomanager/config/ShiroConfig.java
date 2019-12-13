@@ -36,6 +36,7 @@ public class ShiroConfig {
         map.put("/images/**","anon");
         map.put("/js/**","anon");
         map.put("/lib/**","anon");
+        map.put("/city-picker/**","anon");
         map.put("/**","anon");
         /*map.put("/**", "authc");*/
         bean.setFilterChainDefinitionMap(map);
