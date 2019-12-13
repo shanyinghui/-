@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Student implements Serializable {
     private Integer stu_id;
-    private String stu_num;
+    private String stu_num; //学号
     private Integer classid; //入学班级
     private String nowClassId; //现在班级
     private String name;
@@ -18,6 +18,9 @@ public class Student implements Serializable {
     private String familyCommunication; //家长沟通情况
     private String cycle_progress; //学期进度
     private Integer dept_id; //部门
+    private Student_Union student_union;
+    private Classes classes;
+    private Classes nowClasses;
 
     public Integer getStu_id() {
         return stu_id;
@@ -139,6 +142,30 @@ public class Student implements Serializable {
         this.dept_id = dept_id;
     }
 
+    public Student_Union getStudent_union() {
+        return student_union;
+    }
+
+    public void setStudent_union(Student_Union student_union) {
+        this.student_union = student_union;
+    }
+
+    public Classes getClasses() {
+        return classes;
+    }
+
+    public void setClasses(Classes classes) {
+        this.classes = classes;
+    }
+
+    public Classes getNowClasses() {
+        return nowClasses;
+    }
+
+    public void setNowClasses(Classes nowClasses) {
+        this.nowClasses = nowClasses;
+    }
+
     @Override
     public String toString() {
         return "Student{" +
@@ -157,6 +184,9 @@ public class Student implements Serializable {
                 ", familyCommunication='" + familyCommunication + '\'' +
                 ", cycle_progress='" + cycle_progress + '\'' +
                 ", dept_id=" + dept_id +
+                ", student_union=" + student_union +
+                ", classes=" + classes +
+                ", nowClasses=" + nowClasses +
                 '}';
     }
 }

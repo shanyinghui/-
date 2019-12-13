@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>软件工程学院信息管理系统</title>
+</head>
+<style>
+	/*登录界面整体风格*/
+
+	html {
+		overflow-y: scroll;
+		vertical-align: baseline;
+	}
+
+	body {
+		font-family: Microsoft YaHei, Segoe UI, Tahoma, Arial, Verdana, sans-serif, "新宋体";
+		font-size: 12px;
+		color: black;
+		height: 100%;
+		line-height: 1;
+		background: #999;
+	}
+
+	* {
+		margin: 0 auto;
+		padding: 0px;
+	}
+
+	ul,
+	li {
+		list-style: none
+	}
+	/*tab登录选项卡*/
+
+	#tab {
+		width: 410px;
+		position: relative;
+		margin: 80px auto 0px auto;
+		text-align: center;
+		padding: 1px;
+	}
+
+	#tab .tab_menu {
+		width: 100%;
+		float: left;
+		position: absolute;
+		z-index: 1;
+	}
+
+	#tab .tab_menu li {
+		float: left;
+		width: 49.6%;
+		height: 50px;
+		line-height: 50px;
+		border-bottom: 0px;
+		cursor: pointer;
+		text-align: center;
+		margin: 0 1px 0 0;
+		background-color: #000000;
+		color: #FFFFFF;
+		font-size: 16px;
+		filter: alpha(opacity:80);
+		opacity: 0.8;
+	}
+
+	#tab .tab_box {
+		width: 410px;
+		clear: both;
+		top: 50px;
+		position: relative;
+		background-color: #FFFFFF;
+		color: #000000;
+		font-size: 16px;
+		filter: alpha(opacity:80);
+		opacity: 0.8;
+	}
+
+	#tab .tab_box input {
+		font-size: 12px;
+	}
+
+	#tab .tab_menu .selected {
+		cursor: pointer;
+		background-color: #FFFFFF;
+		color: #000000;
+		font-size: 16px;
+		filter: alpha(opacity:80);
+		opacity: 0.8;
+	}
+
+	.hide {
+		display: none;
+	}
+
+	.tab_box div {
+		padding: 10px;
+	}
+
+	input[type=text],
+	input[type=password] {
+		width: 200px;
+		height: 40px;
+		margin-top: 10px;
+		padding: 0px 15px;
+		border: 1px solid rgba(0, 0, 0, .15);
+		border-radius: 6px;
+		color: #000000;
+		letter-spacing: 2px;
+		font-size: 16px;
+		background: transparent;
+	}
+
+	#code input {
+		width: 95px;
+	}
+
+	#code img {
+		width: 100px;
+		height: 40px;
+		border: none;
+	}
+
+	button {
+		cursor: pointer;
+		width: 48%;
+		height: 45px;
+		padding: 0;
+		background: #ef4300;
+		border: 1px solid #ff730e;
+		border-radius: 6px;
+		font-weight: 700;
+		color: #fff;
+		font-size: 24px;
+		text-shadow: 0 1px 2px rgba(0, 0, 0, .1)
+	}
+
+	input:focus {
+		outline: none;
+		box-shadow: 0 2px 3px 0 rgba(0, 0, 0, .1) inset, 0 2px 7px 0 rgba(0, 0, 0, .2)
+	}
+
+	button:hover {
+		box-shadow: 0 15px 30px 0 rgba(240, 70, 0, .15) inset, 0 2px 7px 0 rgba(0, 0, 0, .2)
+	}
+</style>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		var $tab_li = $('#tab ul li');
+		$("#yc").val($tab_li.index())
+		$tab_li.hover(function() {
+			$(this).addClass('selected').siblings().removeClass('selected');
+			$("#yc").val($(this).index())
+		});
+	});
+</script>
+<!--学生登录验证-->
+<script type="text/javascript">
+	$(function(){
+		var m1 = false;
+		var m2 = false;
+		var m3 = false;
+		$("#username_hide").change(function(){
+			if($("#username_hide").val()!=null && $("#username_hide").val()!=""){
+				m1 = true
+				$(".error_box").eq(0).html("")
+			}else{
+				$(".error_box").eq(0).html("账号不能为空")
+			}
+		})
+		$("#password_hide").change(function(){
+			if($("#password_hide").val()!=null && $("#password_hide").val()!=""){
+				m2 = true
+			}else{
+				$(".error_box").html("密码不能为空")
+			}
+		})
+		$("#code_hide").change(function(){
+				$.post("/checkVerify",{"code":$("#code_hide").val()},function (data) {
+					if(data){
+						m3 = true;
+					}else{
+						m3 = false;
+						$(".error_box").html("验证码输入错误")
+					}
+				})
+		})
+		$("#dl").click(function(){
+			if(m1 && m2 &&m3){
+				$.post("/login",{
+						"usernum":$("#username_hide").val(),
+						"password":$("#password_hide").val(),
+						"pdtj":$("#yc").val()
+				},function(data){
+					if(data != null && data != ""){
+						window.location.replace("/index")
+					}else{
+						$(".error_box").html("用户名或密码错误请重新登录")
+						$("#username_hide").val("")
+						$("#password_hide").val("")
+						$("#code_hide").val("")
+						$('#imgVerify').click();
+					}
+				})
+			}else{
+				console.log(m1,m2,m3)
+				$(".error_box").html("请正确输入信息")
+			}
+		})
+
+	})
+	//获取验证码
+	function getVerify(obj){
+		obj.src = "/getVerify?"+Math.random();
+	}
+</script>
+<body>
+<div id="your-dom-id" class="nc-container"></div>
+<div id="tab">
+	<ul class="tab_menu">
+		<li class="selected">学生登录</li>
+		<li>教师登录</li>
+	</ul>
+	<input id="yc" type="hidden" />
+	<div class="tab_box">
+		<!-- 登录开始 -->
+		<div>
+			<div class="error_box"></div>
+			<form action="" method="post" class="login_error">
+				<div id="username">
+					<label>账&nbsp;&nbsp;&nbsp;号：</label>
+					<input type="text" id="username_hide" name="username" placeholder="请输入账号..." />
+					<!--ajaxurl="demo/valid.jsp"-->
+				</div>
+				<div id="password">
+					<label>密&nbsp;&nbsp;&nbsp;码：</label>
+					<input type="password" id="password_hide" name="password" placeholder="请输入密码..." />
+				</div>
+				<div id="code">
+					<label>验证码：</label>
+					<input type="text" id="code_hide" name="code"  placeholder="请输入验证码..."/>
+					<a id="yzm" href="javascript:void(0);" title="点击更换验证码">
+						<img id="imgVerify" src="/getVerify" alt="更换验证码" height="36" width="100%" onclick="getVerify(this);">
+					</a>
+				</div>
+				<div id="login">
+					<button type="button" id="dl">登录</button>
+				</div>
+			</form>
+		</div>
+
+		<!-- 登录结束-->
+	</div>
+</div>
+</body>
+
+</html>
