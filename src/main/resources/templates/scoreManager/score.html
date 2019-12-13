@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>违纪情况</title>
+    <title>成绩列表</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <!--<meta name="viewport"
@@ -27,7 +27,7 @@
 <div class="x-nav">
           <span class="layui-breadcrumb">
             <a href="#">首页</a>
-            <a href="#">违纪信息管理</a>
+            <a href="#">成绩管理</a>
           </span>
 </div>
 <div class="layui-fluid">
@@ -36,14 +36,13 @@
             <div class="layui-card">
                 <div class="layui-card-body ">
                     <div class="layui-inline layui-show-xs-block">
-                        <input class="layui-input" autocomplete="off" placeholder="开始日" name="starttime" id="start"></div>
-                    <div class="layui-inline layui-show-xs-block">
-                        <input class="layui-input" autocomplete="off" placeholder="截止日" name="endtime" id="end"></div>
-                    <div class="layui-inline layui-show-xs-block">
-                        <input type="text" id="classes" placeholder="请输入班级名称" class="layui-input">
+                        <input type="text" id="studentid" placeholder="请输入学号" class="layui-input">
                     </div>
                     <div class="layui-inline layui-show-xs-block">
                         <input type="text" id="studentname" placeholder="请输入学生姓名" class="layui-input">
+                    </div>
+                    <div class="layui-inline layui-show-xs-block">
+                        <input type="text" id="period" placeholder="请输入周期进度" class="layui-input">
                     </div>
                     <div class="layui-inline layui-show-xs-block">
                         <button class="layui-btn" id="search"><i class="layui-icon">&#xe615;</i></button>
@@ -52,7 +51,7 @@
                 <div class="layui-card-header">
                     <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除
                     </button>
-                    <button class="layui-btn" onclick="xadmin.open('添加用户','/addWj',600,600)"><i
+                    <button class="layui-btn" onclick="xadmin.open('添加用户','/addScore',600,600)"><i
                             class="layui-icon"></i>添加
                     </button>
                 </div>
@@ -64,43 +63,28 @@
 </body>
 <script id="barDemo" type="text/html">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script th:inline="none">
-    layui.use('laydate',
-        function () {
-            var laydate = layui.laydate;
-
-            //执行一个laydate实例
-            laydate.render({
-                elem: '#start' //指定元素
-            });
-
-            //执行一个laydate实例
-            laydate.render({
-                elem: '#end' //指定元素
-            });
-
-        });
     layui.use(['table', 'form'], function () {
         var table = layui.table;
         var form = layui.form;
         var $ = layui.jquery;
         //展示已知数据
         table.render({
-            url: '/wj/selAllWj',
-            title: '违纪详情',
+            url: '/score/selAllScore',
+            title: '成绩详情',
             toolbar: '#toolbarDemo',
-            id: "wjTable",
+            id: "scoreTable",
             elem: '#demo',
             cols: [[ //标题栏
                 {type: 'checkbox'},
                 {field: 'id', title: '编号', hide: true},
-                {field: 'studentname', title: '姓名'},
+                {field: 'studentid', title: '学号'},
+                {field: 'studentname', title: '学生姓名'},
                 {field: 'classes', title: '班级'},
-                {field: 'wjdate', title: '违纪日期'},
-                {field: 'typename', title: '违纪类型', templet: '<div>{{d.wjType.typename}}</div>'},
-                {field: 'notes', title: '备注'},
+                {field: 'period', title: '周期进度'},
+                {field: 'interviewresult', title: '面试成绩'},
+                {field: 'skillscores', title: '机试成绩'},
                 {title: '操作', toolbar: '#barDemo'}
             ]],
             skin: 'line', //表格风格
@@ -111,16 +95,14 @@
 
         //搜索
         $("#search").click(function () {
+            var studentid = $('#studentid').val();
             var studentname = $('#studentname').val();
-            var classes = $('#classes').val();
-            var endtime = $('#end').val();
-            var starttime =$('#start').val();
-            table.reload('wjTable', {
+            var period = $('#period').val();
+            table.reload('scoreTable', {
                 where: {
                     studentname : studentname,
-                    classes : classes,
-                    endtime : endtime,
-                    starttime : starttime
+                    studentid : studentid,
+                    period : period
                 },
                 page: {
                     curr: 1
@@ -131,30 +113,9 @@
         //监听行工具事件
         table.on('tool(test)', function (obj) {
             var id = obj.data.id;
-            if(obj.event === 'del'){
-                layer.confirm('确定删除吗？', function(index){
-                    $.ajax({
-                        url:"wj/delWj",
-                        type:"post",
-                        dataType:"json",
-                        data:{
-                            id:id
-                        },
-                        success:function(){
-                        }
-                    })
-                    layer.msg('删除成功！');
-                    layer.close(index);
-                    table.reload('wjTable', {
-                        url:'/wj/selAllWj',
-                        page: {
-                            curr: 1 //重新从第 1 页开始
-                        }
-                    });
-                });
-            }
+
             if (obj.event === "edit") {
-                xadmin.open('添加用户','/wj/selWjById?id='+id,600,600);
+                xadmin.open('编辑信息','/score/selScoreById?id='+id,600,600);
             }
         })
     });
