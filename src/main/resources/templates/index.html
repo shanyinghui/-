@@ -53,7 +53,7 @@
 					        <i class="iconfont nav_right">&#xe697;</i></a>
 					    <ul class="sub-menu">
 					        <li>
-					            <a onclick="xadmin.add_tab('教师队伍','teacherInfo/teacher')">
+					            <a onclick="xadmin.add_tab('教师队伍','/teacherInfo/teacher')">
 					                <i class="iconfont">&#xe6a7;</i>
 					                <cite>教师队伍</cite></a>
 					        </li>
@@ -66,7 +66,7 @@
 					        <i class="iconfont nav_right">&#xe697;</i></a>
 					    <ul class="sub-menu">
 					        <li>
-					            <a onclick="xadmin.add_tab('学生信息','studentInfo/student.html')">
+					            <a onclick="xadmin.add_tab('学生信息','/studentInfo/student')">
 					                <i class="iconfont">&#xe6a7;</i>
 					                <cite>学生信息</cite></a>
 					        </li>
@@ -79,45 +79,45 @@
 					        <i class="iconfont nav_right">&#xe697;</i></a>
 					    <ul class="sub-menu">
 					        <li>
-					            <a onclick="xadmin.add_tab('班级管理','/jinruclasses')">
+					            <a onclick="xadmin.add_tab('班级管理','/jrClasses')">
 					                <i class="iconfont">&#xe6a7;</i>
 					                <cite>班级管理</cite></a>
 					        </li>
 					    </ul>
 					</li>
-                    <li>
+                    <!--<li>
                         <a href="javascript:;" >
                             <i class="iconfont left-nav-li" lay-tips="学生会管理">&#xe6b8;</i>
                             <cite>学生会管理</cite>
                             <i class="iconfont nav_right">&#xe697;</i></a>
                         <ul class="sub-menu">
                             <li>
-                                <a onclick="xadmin.add_tab('生活部','studentUnionManager/studentUnionManager.html')">
+                                <a onclick="xadmin.add_tab('生活部','/selStu_UnionStu?department_id=1')">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>生活部</cite></a>
                             </li>
                             <li>
-                                <a onclick="xadmin.add_tab('纪检部','studentUnionManager/studentUnionManager.html')">
+                                <a onclick="xadmin.add_tab('纪检部','/selStu_UnionStu?department_id=2')">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>纪检部</cite></a>
                             </li>
                             <li>
-                                <a onclick="xadmin.add_tab('文体部','studentUnionManager/studentUnionManager.html',true)">
+                                <a onclick="xadmin.add_tab('文体部','/selStu_UnionStu?department_id=3',true)">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>文体部</cite></a>
                             </li>
                             <li>
-                                <a onclick="xadmin.add_tab('学习部','studentUnionManager/studentUnionManager.html')">
+                                <a onclick="xadmin.add_tab('学习部','/selStu_UnionStu?department_id=4')">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>学习部</cite></a>
                             </li>
                             <li>
-                                <a onclick="xadmin.add_tab('宣传部','studentUnionManager/studentUnionManager.html')">
+                                <a onclick="xadmin.add_tab('宣传部','/selStu_UnionStu?department_id=5')">
                                     <i class="iconfont">&#xe6a7;</i>
                                     <cite>宣传部</cite></a>
                             </li>
                         </ul>
-                    </li>
+                    </li>-->
 					<li>
 					    <a href="javascript:;">
 					        <i class="iconfont left-nav-li" lay-tips="成绩管理">&#xe723;</i>
@@ -125,7 +125,7 @@
 					        <i class="iconfont nav_right">&#xe697;</i></a>
 					    <ul class="sub-menu">
 					        <li>
-					            <a onclick="xadmin.add_tab('周期考试成绩','scoreManager/studentScore.html')">
+					            <a onclick="xadmin.add_tab('周期考试成绩','/scorelist')">
 					                <i class="iconfont">&#xe6a7;</i>
 					                <cite>周期考试成绩</cite></a>
 					        </li>
@@ -138,7 +138,7 @@
 					        <i class="iconfont nav_right">&#xe697;</i></a>
 					    <ul class="sub-menu">
 					        <li>
-					            <a onclick="xadmin.add_tab('违纪情况管理','wj/wj.html')">
+					            <a onclick="xadmin.add_tab('违纪情况管理','/wjlist')">
 					                <i class="iconfont">&#xe6a7;</i>
 					                <cite>违纪情况管理</cite></a>
 					        </li>
@@ -170,7 +170,7 @@
 					        </li>
 					    </ul>
 					</li>
-                    <li>
+                    <!--<li>
                         <a href="javascript:;">
                             <i class="iconfont left-nav-li" lay-tips="学生每日总结管理">&#xe723;</i>
                             <cite>学生每日总结管理</cite>
@@ -182,7 +182,7 @@
                                     <cite>学生每日总结管理</cite></a>
                             </li>
                         </ul>
-                    </li>
+                    </li>-->
                 </ul>
             </div>
         </div>
@@ -202,7 +202,7 @@
                 </div>
                 <div class="layui-tab-content">
                     <div class="layui-tab-item layui-show">
-                        <iframe src='./welcome.html' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
+                        <iframe src='/teacherInfo/teacher' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
                     </div>
                 </div>
                 <div id="tab_show"></div>

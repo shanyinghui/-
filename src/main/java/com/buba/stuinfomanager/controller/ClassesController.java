@@ -30,7 +30,7 @@ public class ClassesController {
 
     //查询所有班级
     @ResponseBody
-    @RequestMapping("/selAllClasses")
+    @RequestMapping("/selAllClassess")
     public ResultUtil selAllClasses(String class_name, String headmaster, String teacher,
                                     Integer page, Integer limit) {
         PageInfo<Classes> info = classesService.selAllClasses(class_name, headmaster, teacher,

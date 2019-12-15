@@ -46,6 +46,9 @@ public class Ws {
         this.bjid = bjid;
     }
 
+    public Ws() {
+    }
+
     public Classes getClasses() {
         return classes;
     }
