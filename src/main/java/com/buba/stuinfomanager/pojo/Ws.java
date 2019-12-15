@@ -46,7 +46,12 @@ public class Ws {
         this.bjid = bjid;
     }
 
-    public Ws() {
+    public Classes getClasses() {
+        return classes;
+    }
+
+    public void setClasses(Classes classes) {
+        this.classes = classes;
     }
 
     public Classes getClasses() {
