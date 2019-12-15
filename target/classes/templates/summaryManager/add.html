@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+</head>
+<body>
+    <br>
+    <div class="layui-progress" lay-showpercent="true">
+        <div class="layui-progress-bar" lay-percent="0/20"></div>
+    </div>
+    <br>
+    <blockquote class="layui-elem-quote layui-text" style="font-size: 20px; background-color: #F7FAFF">
+        虽然回不到过去，但是一定要憧憬未来！成功从现在  <div id="current_time" style="display: inline;color: #009688"></div> 开始！
+    </blockquote>
+
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>&nbsp;&nbsp;学生每日总结-补充 &nbsp;&nbsp;</legend>
+    </fieldset>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-body ">
+                        <form class="layui-form layui-form-pane">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">今日教育：</label>
+                                <div class="layui-input-block">
+                                    <input type="checkbox" name="educations[army]" title="军队文化教育">
+                                    <input type="checkbox" name="educations[tradition]" title="传统文化教育">
+                                    <input type="checkbox" name="educations[school]" title="学校文化教育">
+                                    <input type="checkbox" name="educations[workplace]" title="职场文化教育">
+                                    <input type="checkbox" name="educations[politics]" title="政治思想文化教育">
+                                </div>
+                            </div>
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">对于今日教育课感想</label>
+                            <div class="layui-input-block">
+                                <textarea placeholder="请输入内容" class="layui-textarea" name="sum_eduRec_thoughts"></textarea>
+                            </div>
+                        </div>
+
+                            <label class="layui-form-label">今日教学：</label>
+                            <br>
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">项目进度</label>
+                                <div class="layui-input-block">
+                                    <textarea placeholder="请输入内容" class="layui-textarea" name="sum_plan"></textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">技术掌握</label>
+                                <div class="layui-input-block">
+                                    <textarea placeholder="请输入内容" class="layui-textarea" name="sum_techGrasp"></textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">技术拓展</label>
+                                <div class="layui-input-block">
+                                    <textarea placeholder="请输入内容" class="layui-textarea" name="sum_techExpand"></textarea>
+                                </div>
+                            </div>
+
+                            <label class="layui-form-label">三省吾身：</label>
+                            <br>
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">今日成长</label>
+                                <div class="layui-input-block">
+                                    <textarea placeholder="请输入内容" class="layui-textarea" name="sum_growth"></textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">违纪情况</label>
+                                <div class="layui-input-block">
+                                    <textarea placeholder="请输入内容" class="layui-textarea" name="sum_break"></textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">我的不足</label>
+                                <div class="layui-input-block">
+                                    <textarea placeholder="请输入内容" class="layui-textarea" name="sum_shortcoming"></textarea>
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="sum_id" />
+
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
+                                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+
+
+    function child(d) {
+        var sum_id;
+        sum_id = d.sum_id;
+        console.log(d);
+        console.log(sum_id);
+
+
+    layui.use(['jquery','form', 'layer'], function() {
+        var admin = layui.admin,
+            $ = layui.jquery,
+            form = layui.form,
+            layer = layui.layer;
+        //显示当前时间
+        setInterval(function() {
+            var date = new Date();
+            var y = date.getFullYear();
+            var m = date.getMonth() + 1;
+            m = m < 10 ? ('0' + m) : m;
+            var d = date.getDate();
+            d = d < 10 ? ('0' + d) : d;
+            var h = date.getHours();
+            h=h < 10 ? ('0' + h) : h;
+            var minute = date.getMinutes();
+            minute = minute < 10 ? ('0' + minute) : minute;
+            var second=date.getSeconds();
+            second=second < 10 ? ('0' + second) : second;
+            var time= y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
+            $('#current_time').html(time);
+        }, 1000);
+
+        function pmgressba(){
+            //周期进度
+            $.ajax({
+                url: "/summary/pmgressbar",
+                type : "post",
+                dataType : "json",
+                async : false,
+                success : function(result){
+
+                    $(".layui-progress-bar").attr("lay-percent",result.pmgressbar);
+
+                }
+            });
+        }
+
+        pmgressba();
+
+        //监听提交
+        form.on('submit(add)', function(data) {
+            //获取checkbox[name='educations']的值，获取所有选中的复选框，并将其值放入数组中
+            var arr = new Array();
+            if ($("input:checkbox[name='educations']:checked").length == 0) {
+                arr[0] = "none";
+            }else{
+                $("input:checkbox[name='educations']:checked").each(function(i){
+                    arr[i] = $(this).val();
+                });
+            }
+            //  替换 data.field.foodId的数据为拼接后的字符串
+            data.field.educations = arr.join(",");//将数组合并成字符串
+            //发异步，把数据提交给php
+            data.field.sum_id = sum_id;
+            $.ajax({
+                url: "/summary/replenishSummary",
+                type : "post",
+                dataType : "json",
+                async : false,
+                data : data.field,
+                success : function(result){
+                    if(result.msg == "SUCCESS"){
+                        layer.alert("操作成功", {
+                            icon: 6
+                        }, function() {
+                           window.parent.location.reload();  //刷新父级页面
+                             // 获得frame索引
+                             var index = parent.layer.getFrameIndex(window.name);
+                             //关闭当前frame
+                             parent.layer.close(index);
+                        });
+                    }else {
+                        layer.alert('操作异常，请仔细核对操作数据！', {
+                            icon: 5,
+                            title: "错误提示"
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+
+    });
+    }
+</script>
+</html>
