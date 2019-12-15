@@ -80,7 +80,7 @@
         var $ = layui.jquery;
         //展示已知数据
         table.render({
-            url: '/selAllClasses',
+            url: '/selAllClassess',
             title: '班级数据表',
             toolbar: '#toolbarDemo',
             id: "classesTable",
@@ -135,7 +135,7 @@
                                 layer.msg('删除成功！');
                                 layer.close(index);
                                 table.reload('classesTable', {
-                                    url: '/selAllClasses',
+                                    url: '/selAllClassess',
                                     page: {
                                         curr: 1 //重新从第 1 页开始
                                     }
