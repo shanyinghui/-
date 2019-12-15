@@ -19,7 +19,7 @@ public interface SummaryServer {
 
     Summary selectSummaryBySum_time(Summary summary);
 
-    Integer selectSummaryCount(Integer state);
+    Integer selectSummaryCount(Summary summary);
 
     List<Summary> selectSummaryAll(Summary summary);
 
@@ -29,6 +29,12 @@ public interface SummaryServer {
 
     void selectVerify(Student student,String time);
 
+    void selectVerifystu(Student student,String time);
+
     List<Summary> selectSummaryTeacherAll(Summary summary);
+
+    void TeacherDeleteSummary(Summary summary);
+
+    String pmgressbar(Student student);
 
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -31,11 +32,52 @@ public class SummaryController {
     /**
      * 进入主页面
      */
-    @RequestMapping("/index")
-    public ModelAndView index(){
+    @RequestMapping("/summaryManager")
+    public ModelAndView summaryManager(){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("summaryManager/summaryManager.html");
         return modelAndView;
+    }
+
+    @RequestMapping("/termplana")
+    public ModelAndView termplana(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("summaryManager/termplana.html");
+        return modelAndView;
+    }
+
+    @RequestMapping("/add")
+    public ModelAndView add(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("summaryManager/add.html");
+        return modelAndView;
+    }
+
+    @RequestMapping("/teacheraudit")
+    public ModelAndView teacheraudit(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("summaryManager/teacheraudit.html");
+        return modelAndView;
+    }
+
+    /**
+     * 显示进度AJAX
+     */
+    @RequestMapping("/pmgressbar")
+    @ResponseBody
+    public Map<String,String> pmgressbar(HttpSession session){
+        //session 获取学生登录信息
+        Student student = new Student();
+        if(session.getAttribute("type").equals("0")){
+            int id = Integer.parseInt(session.getAttribute("id")+"");
+            student.setStu_id(id);
+        }
+
+        Map<String,String> map = new HashMap<>();
+        String pmgressbar = summaryServer.pmgressbar(student);
+        map.put("pmgressbar",pmgressbar);
+
+        return map;
     }
 
     /**
@@ -46,15 +88,17 @@ public class SummaryController {
      */
     @RequestMapping("/insertSummary")
     @ResponseBody
-    public Map<String,String> insertSummary(Summary summary, String educations){
+    public Map<String,String> insertSummary(Summary summary, String educations,HttpSession session){
 
         Map<String,String> map = new HashMap<>();
         String str = "";
-        //先获取session 然后复制
+        //先获取session 然后赋值
         Student student = new Student();
-        student.setStu_id(1);
+        if(session.getAttribute("type").equals("0")){
+            int id = Integer.parseInt(session.getAttribute("id")+"");
+            student.setStu_id(id);
+        }
         summary.setStudent(student);
-
         Summary summ = summaryServer.selectSummaryBySum_time(summary);
 
         if (null == summ){
@@ -77,21 +121,24 @@ public class SummaryController {
 
     @RequestMapping("/selectSummaryAll")
     @ResponseBody
-    public Map<String,Object> selectSummaryAll(){
+    public Map<String,Object> selectSummaryAll(HttpSession session){
 
         //先获取session 然后复制
-        Integer pageCount = summaryServer.selectSummaryCount(Summary.sum_state_undone);
+        Student student = new Student();
+        Summary summary = new Summary();
+        if(session.getAttribute("type").equals("0")){
+            int id = Integer.parseInt(session.getAttribute("id")+"");
+            student.setStu_id(id);
+        }
+        summary.setStudent(student);
+        summary.setSum_state(Summary.sum_state_undone);
+
+        Integer pageCount = summaryServer.selectSummaryCount(summary);
 
         Map<String, Object> map = new HashMap<String, Object>();
 
         if (pageCount > 0) {
 
-            //先获取session 然后复制
-            Student student = new Student();
-            student.setStu_id(1);
-            Summary summary = new Summary();
-            summary.setStudent(student);
-            summary.setSum_state(Summary.sum_state_undone);
             List<Summary> list = summaryServer.selectSummaryAll(summary);
 
             map.put("data", list);
@@ -128,13 +175,16 @@ public class SummaryController {
      */
     @RequestMapping("/replenishSummary")
     @ResponseBody
-    public String replenishSummary(Summary summary,String educations){
+    public Map<String,String> replenishSummary(Summary summary,String educations){
 
+        Map<String,String> map = new HashMap<>();
         try {
             summaryServer.replenishSummary(summary,educations);
-            return "SUCCESS";
+            map.put("msg","SUCCESS");
+            return map;
         }catch (Exception e){
-            return "Error";
+            map.put("msg","Error");
+            return map;
         }
     }
 
@@ -143,23 +193,26 @@ public class SummaryController {
      */
     @RequestMapping("/selectSummaryTeacherAll")
     @ResponseBody
-    public Map<String,Object> selectSummaryTeacherAll(){
+    public Map<String,Object> selectSummaryTeacherAll(HttpSession session){
 
-        //先获取session 然后复制
-        Integer pageCount = summaryServer.selectSummaryCount(Summary.sum_state_authstr);
+        //如果是登录的老师  则获取session 然后赋值
+        Teacher teacher = new Teacher();
+
+        Summary summary = new Summary();
+        if(session.getAttribute("type").equals("1")){
+            int id = Integer.parseInt(session.getAttribute("id")+"");
+            teacher.setT_id(id);
+        }
+        summary.setTeacher(teacher);
+        summary.setSum_state(Summary.sum_state_authstr);
+
+        Integer pageCount = summaryServer.selectSummaryCount(summary);
 
         Map<String, Object> map = new HashMap<String, Object>();
 
         if (pageCount > 0) {
 
-            //先获取session 然后复制
-            Teacher teacher = new Teacher();
-            teacher.setT_id(1);
-            Summary summary = new Summary();
-            summary.setTeacher(teacher);
-            summary.setSum_state(Summary.sum_state_authstr);
             List<Summary> list = summaryServer.selectSummaryTeacherAll(summary);
-
             map.put("data", list);
             map.put("code", 0);
 
@@ -182,13 +235,53 @@ public class SummaryController {
      */
     @RequestMapping("/TeacherUpdateSummary")
     @ResponseBody
-    public String TeacherUpdateSummary(@RequestBody Summary summary){
-        System.out.println(summary);
+    public Map<String,String> TeacherUpdateSummary(@RequestBody Summary summary,HttpSession session){
+        //获取登录老师的id
+        Teacher teacher = new Teacher();
+        if(session.getAttribute("type").equals("1")){
+            int id = Integer.parseInt(session.getAttribute("id")+"");
+            teacher.setT_id(id);
+        }
+        summary.setTeacher(teacher);
+        summary.setSum_state(Summary.sum_state_done);
+
+        Map<String,String> map = new HashMap<>();
+
         try {
             summaryServer.teacherUpdateSummary(summary);
-            return "SUCCESS";
+            map.put("msg","SUCCESS");
+            return map;
         }catch (Exception e){
-            return "Error";
+            map.put("msg","Error");
+            return map;
+        }
+
+    }
+
+    /**
+     * 如果老师审核不予以通过
+     */
+    @RequestMapping("/TeacherDeleteSummary")
+    @ResponseBody
+    public Map<String,String> TeacherDeleteSummary(@RequestBody Summary summary,HttpSession session){
+        //获取登录老师的id
+        Teacher teacher = new Teacher();
+        if(session.getAttribute("type").equals("1")){
+            int id = Integer.parseInt(session.getAttribute("id")+"");
+            teacher.setT_id(id);
+        }
+        summary.setTeacher(teacher);
+        summary.setSum_state(Summary.sum_state_done);
+
+        Map<String,String> map = new HashMap<>();
+
+        try {
+            summaryServer.TeacherDeleteSummary(summary);
+            map.put("msg","SUCCESS");
+            return map;
+        }catch (Exception e){
+            map.put("msg","Error");
+            return map;
         }
 
     }

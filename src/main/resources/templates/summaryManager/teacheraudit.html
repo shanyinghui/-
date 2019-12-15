@@ -33,6 +33,7 @@
                     <script id="toolbarDemo" type="text/html">
                         <div class="layui-btn-container">
                             <button class="layui-btn layui-btn-sm" lay-event="add">通过</button>
+                            <button class="layui-btn layui-btn-sm" lay-event="delete">不予通过</button>
                         </div>
                     </script>
                 </div>
@@ -56,9 +57,13 @@
             ,event:true
             ,cols: [
                 [ //表头
-                    {field:'sum_id', title: '学生姓名'}
-                    ,{field:'sum_time',  title: '所在班级'}
-                    ,{field:'sum_state', title: '总结状态',templet:'<div><span >未总结</span></div>'}
+                    {field:'sum_id', title: 'ID'}
+                    ,{field:'sum_time',  title: '补充时间'}
+                    ,{field:'stu_name', title: '学生姓名'}
+                    ,{field:'stu_num', title: '学生学号'}
+                    ,{field:'class_name', title: '所在班级'}
+                    ,{field:'tea_name', title: '任课老师'}
+                    ,{field:'sum_state', title: '总结状态',templet:'<div><span >待审核</span></div>'}
                     ,{fixed:'right', title:'操作', toolbar: '#toolbarDemo',width:150}
                 ]
             ]
@@ -66,33 +71,53 @@
 
         /* 点击添加按钮 */
         table.on('tool(test)', function(obj){
-            console.log(123);
             var data = obj.data;
             if(obj.event=="add"){
-                console.log(data)
-                method = "add";
-                /*$.post("/summary/TeacherUpdateSummary",{data:data},function(result){
-                    console.log(result)
-                },"json")*/
                 $.ajax({
                     url:"/summary/TeacherUpdateSummary",
                     type:"post",
                     contentType: "application/json;charset=UTF-8",
-                    datatype:"json",
+                    datatype:"  json",
                     data:JSON.stringify(data),
                     success:function(result){
-                        console.log(result)
+                        console.log(result.msg);
+                        if (result.msg == "SUCCESS"){
+                            layer.alert("审核成功", {
+                                icon: 6
+                            }, function() {
+                                window.location.reload();  //刷新页面
+                            });
+                        }else{
+                            layer.alert('操作异常！', {
+                                icon: 5,
+                                title: "错误提示"
+                            });
+                        }
                     }
-                })
-                /*layer.open({
-                    type: 2,
-                    title: ['<strong>学生每日总结添加信息</strong>', 'font-size: 18px;'],
-                    shadeClose: false,
-                    shade: [0.3, '#000000'],
-                    maxmin: true,
-                    area: ['900px', '500px'],
-                    content: '/summary/layeropen',
-                });*/
+                });
+            }else{ //如果不予以通过
+                $.ajax({
+                    url:"/summary/TeacherDeleteSummary",
+                    type:"post",
+                    contentType: "application/json;charset=UTF-8",
+                    datatype:"  json",
+                    data:JSON.stringify(data),
+                    success:function(result){
+                        console.log(result.msg);
+                        if (result.msg == "SUCCESS"){
+                            layer.alert("操作成功", {
+                                icon: 6
+                            }, function() {
+                                window.location.reload();  //刷新页面
+                            });
+                        }else{
+                            layer.alert('操作异常！', {
+                                icon: 5,
+                                title: "错误提示"
+                            });
+                        }
+                    }
+                });
             }
         });
 

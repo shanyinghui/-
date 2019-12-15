@@ -17,10 +17,8 @@ public class Student implements Serializable {
     private String market; //市场部
     private String password; //登录密码
     private String familyCommunication; //家长沟通情况
-    private String cycle_progress; //学期进度
+    private Integer cycle_progress; //学期总进度
     private Integer dept_id; //部门
-
-
     private Student_Union student_union;
     private Classes classes; //入学班级
     private Classes nowClasses; //现在班级
@@ -147,11 +145,11 @@ public class Student implements Serializable {
         this.familyCommunication = familyCommunication;
     }
 
-    public String getCycle_progress() {
+    public Integer getCycle_progress() {
         return cycle_progress;
     }
 
-    public void setCycle_progress(String cycle_progress) {
+    public void setCycle_progress(Integer cycle_progress) {
         this.cycle_progress = cycle_progress;
     }
 

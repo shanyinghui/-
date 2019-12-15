@@ -7,13 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="stylesheet" href="../css/font.css">
     <link rel="stylesheet" href="../css/xadmin.css">
-    <script src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="../js/xadmin.js"></script>
 </head>
 <body>
     <br>
     <div class="layui-progress" lay-showpercent="true">
-        <div class="layui-progress-bar" lay-percent="1 / 20"></div>
+        <div class="layui-progress-bar" lay-percent="0/20"></div>
     </div>
     <br>
     <blockquote class="layui-elem-quote layui-text" style="font-size: 20px; background-color: #F7FAFF">
@@ -42,7 +42,7 @@
                         <div class="layui-form-item layui-form-text">
                             <label class="layui-form-label">对于今日教育课感想</label>
                             <div class="layui-input-block">
-                                <textarea placeholder="请输入内容" class="layui-textarea"></textarea>
+                                <textarea placeholder="请输入内容" class="layui-textarea" name="sum_eduRec_thoughts"></textarea>
                             </div>
                         </div>
 
@@ -88,9 +88,11 @@
                                 </div>
                             </div>
 
+                            <input type="hidden" name="sum_id" />
+
                             <div class="layui-form-item">
                                 <div class="layui-input-block">
-                                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
                                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                                 </div>
                             </div>
@@ -103,6 +105,14 @@
     </div>
 </body>
 <script>
+
+
+    function child(d) {
+        var sum_id;
+        sum_id = d.sum_id;
+        console.log(d);
+        console.log(sum_id);
+
 
     layui.use(['jquery','form', 'layer'], function() {
         var admin = layui.admin,
@@ -127,9 +137,25 @@
             $('#current_time').html(time);
         }, 1000);
 
+        function pmgressba(){
+            //周期进度
+            $.ajax({
+                url: "/summary/pmgressbar",
+                type : "post",
+                dataType : "json",
+                async : false,
+                success : function(result){
+
+                    $(".layui-progress-bar").attr("lay-percent",result.pmgressbar);
+
+                }
+            });
+        }
+
+        pmgressba();
+
         //监听提交
         form.on('submit(add)', function(data) {
-
             //获取checkbox[name='educations']的值，获取所有选中的复选框，并将其值放入数组中
             var arr = new Array();
             if ($("input:checkbox[name='educations']:checked").length == 0) {
@@ -142,6 +168,7 @@
             //  替换 data.field.foodId的数据为拼接后的字符串
             data.field.educations = arr.join(",");//将数组合并成字符串
             //发异步，把数据提交给php
+            data.field.sum_id = sum_id;
             $.ajax({
                 url: "/summary/replenishSummary",
                 type : "post",
@@ -149,7 +176,7 @@
                 async : false,
                 data : data.field,
                 success : function(result){
-                    if(result == "SUCCESS"){
+                    if(result.msg == "SUCCESS"){
                         layer.alert("操作成功", {
                             icon: 6
                         }, function() {
@@ -171,5 +198,6 @@
         });
 
     });
-
+    }
+</script>
 </html>

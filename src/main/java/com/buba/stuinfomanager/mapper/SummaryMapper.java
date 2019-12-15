@@ -18,6 +18,8 @@ public interface SummaryMapper {
 
     Integer selectSummaryCount(Summary summary);
 
+    Integer selectSummaryCountTeacher(Summary summary);
+
     List<Summary> selectSummaryAll(Summary summary);
 
     void replenishSummary(Summary summary);
@@ -26,8 +28,18 @@ public interface SummaryMapper {
 
     Summary selectVerify(Summary summary);
 
+    Summary selectVerifystu(Summary summary);
+
     void saveSummaryforVerify(Summary summary);
 
     List<Summary> selectSummaryTeacherAll(Summary summary);
+
+    void TeacherDeleteSummary(Summary summary);
+
+    Student pmgressbar(Student student);
+
+    void updateStudentcycle_progress(Summary summary);
+
+    Student selectStudentByStu_num(Summary summary);
 
 }

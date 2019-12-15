@@ -41,6 +41,10 @@ public class Summary implements Serializable {
     private String sum_eduRec_thoughts;  //教育课感悟
     private Integer sum_state;  //总结状态  0未总结  1已总结  2待审核
     private String class_name;  //用来映射的
+    private Integer stu_id;
+    private String stu_name;
+    private String stu_num;
+    private String tea_name;
     private Student student;  //外键学生表
     private Teacher teacher;
 
@@ -204,6 +208,46 @@ public class Summary implements Serializable {
         this.teacher = teacher;
     }
 
+    public String getClass_name() {
+        return class_name;
+    }
+
+    public void setClass_name(String class_name) {
+        this.class_name = class_name;
+    }
+
+    public String getTea_name() {
+        return tea_name;
+    }
+
+    public void setTea_name(String tea_name) {
+        this.tea_name = tea_name;
+    }
+
+    public Integer getStu_id() {
+        return stu_id;
+    }
+
+    public void setStu_id(Integer stu_id) {
+        this.stu_id = stu_id;
+    }
+
+    public String getStu_name() {
+        return stu_name;
+    }
+
+    public void setStu_name(String stu_name) {
+        this.stu_name = stu_name;
+    }
+
+    public String getStu_num() {
+        return stu_num;
+    }
+
+    public void setStu_num(String stu_num) {
+        this.stu_num = stu_num;
+    }
+
     @Override
     public String toString() {
         return "Summary{" +
@@ -220,6 +264,13 @@ public class Summary implements Serializable {
                 ", sum_eduRec_school=" + sum_eduRec_school +
                 ", sum_eduRec_workplace=" + sum_eduRec_workplace +
                 ", sum_eduRec_politics=" + sum_eduRec_politics +
+                ", sum_eduRec_thoughts='" + sum_eduRec_thoughts + '\'' +
+                ", sum_state=" + sum_state +
+                ", class_name='" + class_name + '\'' +
+                ", stu_id=" + stu_id +
+                ", stu_name='" + stu_name + '\'' +
+                ", stu_num='" + stu_num + '\'' +
+                ", tea_name='" + tea_name + '\'' +
                 '}';
     }
 }

@@ -25,7 +25,7 @@
 <br>
 <br>
 <div class="layui-progress" lay-showpercent="true">
-    <div class="layui-progress-bar" lay-percent="1 / 20"></div>
+    <div class="layui-progress-bar" lay-percent="0/20"></div>
 </div>
 <br>
 <blockquote class="layui-elem-quote layui-text" style="font-size: 20px; background-color: #F7FAFF">
@@ -139,6 +139,24 @@
             $('#current_time').html(time);
         }, 1000);
 
+
+        function pmgressba(){
+            //周期进度
+            $.ajax({
+                url: "/summary/pmgressbar",
+                type : "post",
+                dataType : "json",
+                async : false,
+                success : function(result){
+
+                    $(".layui-progress-bar").attr("lay-percent",result.pmgressbar);
+
+                }
+            });
+        }
+
+        pmgressba();
+
         //监听提交
         form.on('submit(add)', function(data) {
 
@@ -167,7 +185,7 @@
                       layer.alert("操作成功", {
                             icon: 6
                         }, function() {
-                           console.log(result);
+                           parent.location.reload();
                         });
                     }else if (result.msg == "Error"){
                         layer.alert('操作异常，请仔细核对操作数据！', {
@@ -184,6 +202,8 @@
             });
             return false;
         });
+
+
 
     });
 

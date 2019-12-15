@@ -100,6 +100,7 @@ public class SummaryServerImpl implements SummaryServer {
         summary.setSum_time(dateString);
         summary.setSum_state(Summary.sum_state_done);
         summaryMapper.insertSummary(summary);
+        summaryMapper.updateStudentcycle_progress(summary);
 
     }
 
@@ -124,14 +125,12 @@ public class SummaryServerImpl implements SummaryServer {
      * @return
      */
     @Override
-    public Integer selectSummaryCount(Integer state) {
-        Summary summary = new Summary();
-        summary.setSum_state(state);
-        //先获取session 然后复制
-        Student student = new Student();
-        student.setStu_id(1);
-        summary.setStudent(student);
-        return summaryMapper.selectSummaryCount(summary);
+    public Integer selectSummaryCount(Summary summary) {
+        if (Summary.sum_state_undone.equals(summary.getSum_state())){
+            return summaryMapper.selectSummaryCount(summary);
+        }else {
+            return summaryMapper.selectSummaryCountTeacher(summary);
+        }
     }
 
     @Override
@@ -220,8 +219,10 @@ public class SummaryServerImpl implements SummaryServer {
     @Override
     public void teacherUpdateSummary(Summary summary) {
 
-        summary.setSum_state(Summary.sum_state_done);
         summaryMapper.teacherUpdateSummary(summary);
+        summary.setStudent(summaryMapper.selectStudentByStu_num(summary));
+        summaryMapper.updateStudentcycle_progress(summary);
+
     }
 
     /**
@@ -246,7 +247,46 @@ public class SummaryServerImpl implements SummaryServer {
     }
 
     @Override
+    public void selectVerifystu(Student student, String time) {
+        Summary sum = new Summary();
+        sum.setSum_time(time);
+        sum.getStudent().setStu_id(student.getStu_id());
+        Summary summary = summaryMapper.selectVerifystu(sum);
+        if (null != summary){ //总结了
+
+        }else {
+            sum.setSum_state(Summary.sum_state_undone);
+            summaryMapper.saveSummaryforVerify(sum);
+        }
+
+    }
+
+    @Override
     public List<Summary> selectSummaryTeacherAll(Summary summary) {
         return summaryMapper.selectSummaryTeacherAll(summary);
+    }
+
+    @Override
+    public void TeacherDeleteSummary(Summary summary) {
+        summaryMapper.TeacherDeleteSummary(summary);
+    }
+
+    @Override
+    public String pmgressbar(Student student) {
+
+        student = summaryMapper.pmgressbar(student);
+        Integer cycle_progress = student.getCycle_progress();
+        if (cycle_progress <= 20 ){
+
+            return "0/20";
+        }else {
+            Integer num = cycle_progress%20;
+            if (num == 0){
+               return cycle_progress/20 + "/20";
+            }else {
+                return (cycle_progress-num)/20 + "/20";
+            }
+        }
+
     }
 }
