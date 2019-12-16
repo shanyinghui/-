@@ -24,15 +24,9 @@
     <div class="layui-row">
         <form class="layui-form">
             <div class="layui-form-item">
-                <label for="class_id" class="layui-form-label">
-                    <span class="x-red">*</span>ID
-                </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="class_id" name="class_id" readonly
+                    <input type="hidden" id="class_id" name="class_id"
                            autocomplete="off" class="layui-input" th:value="${class1.class_id}">
-                </div>
-                <div class="layui-form-mid layui-word-aux">
-                    <span class="x-red">*</span>将会成为班级的唯一ID
                 </div>
             </div>
             <div class="layui-form-item">
@@ -51,7 +45,7 @@
                 </label>
                 <div class="layui-input-inline">
                     <input type="text" id="headmaster" name="headmaster" required=""
-                           lay-verify="required"  th:value="${class1.headmaster}"
+                           lay-verify="required" th:value="${class1.headmaster}"
                            autocomplete="off" class="layui-input">
                 </div>
             </div>
@@ -61,7 +55,7 @@
                 </label>
                 <div class="layui-input-inline">
                     <input type="text" id="teacher" name="teacher" required=""
-                           lay-verify="required"  th:value="${class1.teacher}"
+                           lay-verify="required" th:value="${class1.teacher}"
                            autocomplete="off" class="layui-input">
                 </div>
             </div>
@@ -71,7 +65,7 @@
                 </label>
                 <div class="layui-input-inline">
                     <input type="text" id="cycle_progress" name="cycle_progress" required=""
-                           lay-verify="required"  th:value="${class1.cycle_progress}"
+                           lay-verify="required" th:value="${class1.cycle_progress}"
                            autocomplete="off" class="layui-input">
                 </div>
             </div>
@@ -94,11 +88,11 @@
                 console.log(data);
                 //发异步，把数据提交
                 $.ajax({
-                    url:"/updClasses",
-                    type:"post",
+                    url: "/updClasses",
+                    type: "post",
                     contentType: "application/JSON",
-                    data:JSON.stringify(data.field),
-                    success:function(){
+                    data: JSON.stringify(data.field),
+                    success: function () {
                         layer.alert("修改成功", {
                                 icon: 6
                             },
@@ -114,7 +108,7 @@
             });
 
     });
-    </script>
+</script>
 
 </body>
 

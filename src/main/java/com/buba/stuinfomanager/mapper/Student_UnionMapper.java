@@ -13,8 +13,11 @@ public interface Student_UnionMapper {
     void updStu_Union(Student student);
 
     //查询某个部有哪些学生
-    List<Student> selStu_UnionStu(Integer department_id,String name,Integer sex);
+    List<Student> selStu_UnionStu(Integer department_id, String name, Integer sex);
 
     //查询某个学生
     Student selOneStu_UnionStu(Integer stu_id);
+
+    //查询所有没有在学生部门的学生
+    List<Student> selAllNoStu_UnionStu();
 }
