@@ -43,6 +43,8 @@
                 <div class="layui-card-header">
                     <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
                     <button class="layui-btn" onclick="xadmin.open('添加学生','/studentInfo/toAdd',1000,650)"><i class="layui-icon"></i>添加</button>
+                    <button class="layui-btn" id="import"><i class="layui-icon"></i>批量导入</button>
+                    <button class="layui-btn" onclick="exportData()"><i class="layui-icon"></i>导出</button>
                 </div>
                 <div class="layui-card-body ">
                     <table class="layui-hide" id="demo" lay-filter="test"></table>
@@ -60,10 +62,11 @@
 </script>
 <script th:inline="none">
     var table;
-    layui.use(['table','form'], function(){
+    layui.use(['table','form',"upload"], function(){
         table = layui.table;
         var form = layui.form;
         var $=layui.jquery;
+        var upload = layui.upload;
         //展示已知数据
         table.render({
             url:'/studentInfo/list',
@@ -112,8 +115,24 @@
                     curr:1
                 }
             })
-        })
+        });
 
+        upload.render({ //允许上传的文件后缀
+            elem: '#import'
+            ,url: '/studentInfo/importExcel'
+            ,accept: 'file' //普通文件
+            ,exts: 'xlsx|xls'//上传文件格式
+            ,done: function(res){
+                layer.msg(res.msg,{
+                    btn:['确定'],
+                    btnAlign: 'c',
+                    time:20000,
+                    btn1:function (index,layero) {
+                        location.reload();
+                    }
+                });
+            }
+        });
         //监听行工具事件
         table.on('tool(test)', function(obj){
             var id = obj.data.stu_id;
@@ -186,6 +205,35 @@
                         }
                     }
                 })
+            });
+        }
+    }
+
+    function exportData() {
+        var checkStatus = table.checkStatus('studentTable');
+        var ids =new Array();
+        $(checkStatus.data).each(function (i, o) {//o即为表格中一行的数据
+            ids.push(o);
+        });
+        if(ids.length==0){
+            layer.msg('请至少选择一个！');
+        }else{
+                $.ajax({
+                    url:"/studentInfo/exportData",
+                    type:"post",
+                    dataType:"json",
+                    contentType:"application/json",
+                    data:JSON.stringify(ids),
+                    traditional: true,
+                    success:function(result){
+                        if(result.code==0){
+                            layer.msg("已导出到桌面，请点击查看！");
+                        }else{
+                            layer.msg("对不起，系统出现故障！");
+                        }
+
+
+                    }
             });
         }
     }

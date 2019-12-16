@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="x-admin-sm">
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -23,33 +23,30 @@
     <div class="layui-row">
         <form class="layui-form">
             <div class="layui-form-item">
-                <label for="stu_id" class="layui-form-label">
-                    <span class="x-red">*</span>学生ID
-                </label>
+                <div class="layui-form-mid layui-word-aux">
+                    <span class="x-red">*</span>学生
+                </div>
                 <div class="layui-input-inline">
-                    <input type="text" id="stu_id" name="stu_id" required=""
-                           lay-verify="required"
-                           autocomplete="off" class="layui-input">
+                    <select name="stu_id" id="stu_id">
+                    </select>
+                </div>
+                <div class="layui-input-inline">
+                    <input id="class_id" th:value="${class_id}" type="hidden">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="class_id" class="layui-form-label">
-                    <span class="x-red">*</span>班级ID
-                </label>
-                <div class="layui-input-inline">
-                    <input type="text" id="class_id" name="class_id" required=""
-                           lay-verify="required"
-                           autocomplete="off" class="layui-input">
+                <div class="layui-form-mid layui-word-aux">
+                    <span class="x-red">*</span>职位
                 </div>
-            </div>
-            <div class="layui-form-item">
-                <label for="card_id" class="layui-form-label">
-                    <span class="x-red">*</span>职位ID
-                </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="card_id" name="card_id" required=""
-                           lay-verify="required"
-                           autocomplete="off" class="layui-input">
+                    <select name="card_id" id="card_id">
+                        <option value="1">班长</option>
+                        <option value="2">学习委员</option>
+                        <option value="3">生活委员</option>
+                        <option value="4">体育委员</option>
+                        <option value="5">文艺委员</option>
+                        <option value="6">纪律委员</option>
+                    </select>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -65,33 +62,40 @@
         $ = layui.jquery;
         var form = layui.form,
             layer = layui.layer;
-        var stu_id = $("#stu_id").val();
         var class_id = $("#class_id").val();
         var card_id = $("#card_id").val();
+        $.post("selClassStudent?class_id=" + class_id, function (data) {
+            for (var i = 0; i < data.length; i++) {
+                $("#stu_id").append("<option value=" + data[i].stu_id + ">" + data[i].name + "</option>")
+            }
+            layui.form.render("select");
+        });
         //监听提交
         form.on('submit(add)',
             function (data) {
                 //发异步，把数据提交
                 $.ajax({
-                    url: "insStuCard",
+                    url: "/insStuCard",
                     type: "post",
+                    dataType: 'json',
                     data: {
-                        stu_id : stu_id,
-                        class_id : class_id,
-                        card_id : card_id
+                        stu_id: $("#stu_id").val(),
+                        class_id: $("#class_id").val(),
+                        card_id: $("#card_id").val()
                     },
-                    success: function () {
+                    success: function (result) {
+                        console.log(result);
                         layer.alert("增加成功", {
                                 icon: 6
                             },
                             function () {
-                                //关闭当前frame
-                                xadmin.close();
                                 // 可以对父窗口进行刷新
                                 xadmin.father_reload();
+                                //关闭当前frame
+                                xadmin.close();
                             });
                     }
-                })
+                });
 
                 return false;
             });

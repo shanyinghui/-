@@ -2,8 +2,11 @@ package com.buba.stuinfomanager.service.impl;
 
 import com.buba.stuinfomanager.mapper.MrwsMapper;
 import com.buba.stuinfomanager.pojo.Classes;
+import com.buba.stuinfomanager.pojo.Student;
 import com.buba.stuinfomanager.pojo.Ws;
 import com.buba.stuinfomanager.service.MrwsService;
+import com.buba.stuinfomanager.util.ExcelUtil;
+import com.buba.stuinfomanager.util.ResultUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +44,32 @@ public class MrwsServiceImpl implements MrwsService {
     @Override
     public Integer delWs(String wid) {
         return mrwsMapper.delWs(wid);
+    }
+
+    @Override
+    public ResultUtil exportData(List<Ws> list) {
+        String[] title = {
+                "日期",
+                "班级",
+                "分数",
+        };
+        String[][] content = new String[list.size()][];
+        for(int i = 0; i < list.size(); i ++){
+            content[i] = new String[title.length];
+            Ws ws = list.get(i);
+            content[i][0] = ws.getWdate();
+            content[i][1] = ws.getClasses().getClass_name();
+            content[i][2] = ws.getWsroce()+"";
+        }
+        String sheetName = "卫生信息表";
+
+        try {
+            ExcelUtil.exportExcel(title, sheetName, content);
+            return ResultUtil.ok("导出成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultUtil.error("导出失败！");
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.buba.stuinfomanager.controller;
 
 import com.buba.stuinfomanager.pojo.Classes;
+import com.buba.stuinfomanager.pojo.Student;
 import com.buba.stuinfomanager.pojo.Ws;
 import com.buba.stuinfomanager.service.MrwsService;
 import com.buba.stuinfomanager.util.ResultUtil;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -64,6 +64,12 @@ public class MrwsController {
             return true;
         }
         return false;
+    }
+    //导出
+    @RequestMapping(value = "/wsManager/exportData")
+    @ResponseBody
+    public ResultUtil exportData(@RequestBody List<Ws> ws){
+        return mrwsService.exportData(ws);
     }
     //进入到修改页面
     @RequestMapping(value = "/wsManager/toEdit")

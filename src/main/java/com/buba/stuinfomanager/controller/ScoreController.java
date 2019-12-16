@@ -1,5 +1,6 @@
 package com.buba.stuinfomanager.controller;
 
+import com.buba.stuinfomanager.annotation.Log;
 import com.buba.stuinfomanager.pojo.Score;
 import com.buba.stuinfomanager.pojo.Student;
 import com.buba.stuinfomanager.service.ScoreService;
@@ -8,12 +9,10 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @Controller
 @RequestMapping("/score")
@@ -44,9 +43,14 @@ public class ScoreController {
     }
 
     @ResponseBody
-    @RequestMapping("/addScore")
-    public void addScore(@RequestBody Score score){
+    @RequestMapping("/addScore/{studentid}")
+    public void addScore(@RequestBody Score score,@PathVariable("studentid")String studentid){
          scoreService.addScore(score);
+        int length = score.getClasses().length();
+         if((score.getInterviewresult()+score.getSkillscores())/2 < 60 && !(score.getClasses().substring(length-1,length).equals('b'))){
+             int downClassesId = scoreService.selDownClassesId(score.getClasses());
+             scoreService.updClasses(downClassesId,studentid);
+         }
     }
 
     @ResponseBody
@@ -61,5 +65,12 @@ public class ScoreController {
     public Boolean selScoreByStuidPeriod(String studentid,String period){
         Boolean bool = scoreService.selScoreByStuidPeriod(studentid, period);
         return bool;
+    }
+
+    @RequestMapping("/exportData")
+    @ResponseBody
+    @Log
+    public ResultUtil exportData(@RequestBody List<Score> list){
+        return scoreService.exportData(list);
     }
 }

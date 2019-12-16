@@ -5,8 +5,6 @@
     <title>班级详情</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport"
-          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
     <link rel="stylesheet" href="../css/font.css">
     <link rel="stylesheet" href="../css/xadmin.css">
     <script src="../lib/layui/layui.js" charset="utf-8"></script>
@@ -18,9 +16,10 @@
     <style>
         #demo {
 
-            overflow-x: hidden
-        ;
-        } /* 禁止刷新后出现横向滚动条 */
+            overflow-x: hidden;
+        }
+
+        /* 禁止刷新后出现横向滚动条 */
     </style>
 </head>
 <body>
@@ -56,8 +55,12 @@
                     <button class="layui-btn layui-btn-danger" onclick="delAll()"><i
                             class="layui-icon"></i>批量删除
                     </button>
-                    <button class="layui-btn" onclick="xadmin.open('添加用户','./jrInsClasses',600,400)"><i
+                    <button class="layui-btn"
+                            onclick="xadmin.open('添加用户','./jrInsClasses',600,400)"><i
                             class="layui-icon"></i>添加
+                    </button>
+                    <button class="layui-btn" id="import"><i class="layui-icon"></i>批量导入</button>
+                    <button class="layui-btn" onclick="exportData()"><i class="layui-icon"></i>导出
                     </button>
                 </div>
                 <div class="layui-card-body ">
@@ -74,10 +77,12 @@
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script th:inline="none">
-    layui.use(['table', 'form'], function () {
-        var table = layui.table;
+    var table;
+    layui.use(['table', 'form',"upload"], function () {
+        table = layui.table;
         var form = layui.form;
         var $ = layui.jquery;
+        var upload = layui.upload;
         //展示已知数据
         table.render({
             url: '/selAllClassess',
@@ -87,17 +92,24 @@
             elem: '#demo',
             cols: [[ //标题栏
                 {type: 'checkbox'},
-                {field: 'class_id',  title: 'ID', hide: true},
+                {field: 'class_id', title: 'ID', hide: true},
                 {field: 'class_name', title: '班级名'},
                 {field: 'headmaster', title: '班主任'},
                 {field: 'teacher', title: '老师'},
-                {title:'操作',toolbar:'#barDemo'}
+                {field: 'headmaster', title: '班主任'},
+                {field: 'cycle_progress', title: '教学周期'},
+                {
+                    title: '查看班干部',
+                    templet:
+                        '<div><a href="/jrClassCadre?class_id={{d.class_id}}" class="layui-table-link">班干部</a></div>'
+                },
+                {title: '操作', toolbar: '#barDemo'}
             ]],
 
             skin: 'line', //表格风格
             page: true,
             limits: [1, 7, 10],
-            limit: 1
+            limit: 10
         });
 
         //搜索
@@ -115,6 +127,22 @@
                     curr: 1
                 }
             })
+        });
+        upload.render({ //允许上传的文件后缀
+            elem: '#import'
+            , url: '/importClassExcel'
+            , accept: 'file' //普通文件
+            , exts: 'xlsx|xls'//上传文件格式
+            , done: function (res) {
+                layer.msg(res.msg, {
+                    btn: ['确定'],
+                    btnAlign: 'c',
+                    time: 20000,
+                    btn1: function (index, layero) {
+                        location.reload();
+                    }
+                });
+            }
         });
 
         //监听行工具事件
@@ -148,10 +176,77 @@
                 });
             }
             if (obj.event === "edit") {
-                xadmin.open('修改用户','/selOneClasses?class_id='+id,600,600);
+                xadmin.open('修改用户', '/selOneClasses?class_id=' + id, 600, 600);
             }
         })
     });
+
+    //批量删除
+    function delAll() {
+        var checkStatus = table.checkStatus('classesTable');
+        var ids = new Array();
+        $(checkStatus.data).each(function (i, o) {//o即为表格中一行的数据
+            ids.push(o.class_id);
+        });
+        if (ids.length == 0) {
+            layer.msg('请至少选择一个！');
+        } else {
+            layer.confirm('确定删除吗？', function (index) {
+                $.ajax({
+                    url: "/delMoreClasses",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        class_id: ids
+                    },
+                    traditional: true,
+                    success: function (result) {
+                        if (result.code == 0) {
+                            layer.msg('删除成功！');
+                            layer.close(index);
+                            table.reload('classesTable', {
+                                url: '/selAllClassess',
+                                page: {
+                                    curr: 1 //重新从第 1 页开始
+                                }
+                            });
+                        } else {
+                            layer.msg("对不起，系统出现故障！");
+                        }
+                    }
+                })
+            });
+        }
+    }
+
+    function exportData() {
+        var checkStatus = table.checkStatus('classesTable');
+        var ids = new Array();
+        $(checkStatus.data).each(function (i, o) {//o即为表格中一行的数据
+            ids.push(o);
+        });
+        if (ids.length == 0) {
+            layer.msg('请至少选择一个！');
+        } else {
+            $.ajax({
+                url: "/exportClassData",
+                type: "post",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify(ids),
+                traditional: true,
+                success: function (result) {
+                    if (result.code == 0) {
+                        layer.msg("已导出到桌面，请点击查看！");
+                    } else {
+                        layer.msg("对不起，系统出现故障！");
+                    }
+
+
+                }
+            });
+        }
+    }
 </script>
 
 

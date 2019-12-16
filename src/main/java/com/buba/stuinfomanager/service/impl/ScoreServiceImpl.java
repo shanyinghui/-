@@ -3,8 +3,9 @@ package com.buba.stuinfomanager.service.impl;
 import com.buba.stuinfomanager.mapper.ScoreMapper;
 import com.buba.stuinfomanager.pojo.Score;
 import com.buba.stuinfomanager.pojo.Student;
-import com.buba.stuinfomanager.pojo.Wj;
 import com.buba.stuinfomanager.service.ScoreService;
+import com.buba.stuinfomanager.util.ExcelUtil;
+import com.buba.stuinfomanager.util.ResultUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,5 +56,49 @@ public class ScoreServiceImpl implements ScoreService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void updClasses(Integer classid, String studentid) {
+        scoreMapper.updClasses(classid,studentid);
+    }
+
+    @Override
+    public int selDownClassesId(String class_name) {
+        return scoreMapper.selDownClassesId(class_name);
+    }
+
+
+
+    @Override
+    public ResultUtil exportData(List<Score> list) {
+        String[] title = {
+                "学号",
+                "学生姓名姓名",
+                "班级",
+                "周期进度",
+                "面试成绩 ",
+                "机试成绩"
+        };
+        String[][] content = new String[list.size()][];
+        for(int i = 0; i < list.size(); i ++){
+            content[i] = new String[title.length];
+            Score score = list.get(i);
+            content[i][0] = score.getStudentid();
+            content[i][1] = score.getStudentname();
+            content[i][2] = score.getClasses();
+            content[i][3] = score.getPeriod();
+            content[i][4] = String.valueOf(score.getInterviewresult());
+            content[i][5] = String.valueOf(score.getSkillscores());
+        }
+        String sheetName = "成绩信息表";
+
+        try {
+            ExcelUtil.exportExcel(title, sheetName, content);
+            return ResultUtil.ok();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultUtil.error("导出失败！");
+        }
     }
 }

@@ -51,7 +51,7 @@
             values (#{studentid},#{studentname},#{classes},#{period},#{interviewresult},#{skillscores})
     </insert>
     <select id="selStudent" resultMap="studentResultMap">
-        select s.name,s.cycle_progress,c.class_name
+        select s.name,s.cycle_progress,c.class_name,c.class_id
         from tb_student s
         left join tb_classes c
         on s.nowClassId = c.class_id
@@ -59,5 +59,11 @@
     </select>
     <select id="selScoreByStuidPeriod" resultType="com.buba.stuinfomanager.pojo.Score">
         select * from tb_score where studentid = #{studentid} and period = #{period}
+    </select>
+    <update id="updClasses" >
+        update tb_student set nowClassId = #{classid} where stu_num = #{studentid}
+    </update>
+    <select id="selDownClassesId" resultType="java.lang.Integer">
+        select min(class_id) from tb_classes where left(class_name,4)>left(#{class_name},4) and right(class_name,1) != 'b'
     </select>
 </mapper>

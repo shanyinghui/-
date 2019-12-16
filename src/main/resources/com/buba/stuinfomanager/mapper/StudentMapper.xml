@@ -25,16 +25,16 @@
             <result property="cycle_progress" column="cycle_progress"/>
         </association>
         <association property="nowClasses" javaType="com.buba.stuinfomanager.pojo.Classes">
-            <id property="class_id" column="class_id"/>
-            <result property="class_name" column="class_name"/>
-            <result property="headmaster" column="headmaster"/>
-            <result property="teacher" column="teacher"/>
-            <result property="cycle_progress" column="cycle_progress"/>
+            <id property="class_id" column="class_id1"/>
+            <result property="class_name" column="class_name1"/>
+            <result property="headmaster" column="n_headmaster1"/>
+            <result property="teacher" column="teacher1"/>
+            <result property="cycle_progress" column="n_cycle_progress1"/>
         </association>
     </resultMap>
     <select id="findAllStudent" resultMap="studentResultMap">
-        select * from tb_student stu inner join tb_classes cls on stu.classid = cls.class_id
-        inner join tb_classes cls1 on stu.nowClassId = cls1.class_id
+        select stu.*,classes.*,nowClasses.class_name class_name1, nowClasses.class_id class_id1 from tb_student as stu left join tb_classes as classes on stu.classid = classes.class_id
+        inner  join tb_classes as nowClasses on stu.nowClassId = nowClasses.class_id
         <where>
             <if test="stu_num!=null and stu_num!=''">
                 and stu_num = #{stu_num}
@@ -50,9 +50,7 @@
     </delete>
 
     <select id="selectOneById" resultMap="studentResultMap">
-        select * from tb_student stu inner join tb_classes cls on stu.classid = cls.class_id
-        inner join tb_classes cls1 on stu.nowClassId = cls1.class_id
-          where stu_id = #{stu_id}
+        select * from tb_student where stu_id = #{stu_id}
     </select>
     <select id="selectClass" resultType="com.buba.stuinfomanager.pojo.Classes">
         select * from tb_classes
@@ -77,10 +75,15 @@
         select class_name from tb_classes where class_id = #{class_id}
     </select>
 
+    <select id="selectClassId" resultType="Integer">
+        select class_id from tb_classes where class_name = #{class_name}
+    </select>
+
     <delete id="deleteMore">
         delete from tb_student where stu_id in
         <foreach collection="stuid"  item="stu_id" open="(" separator="," close=")"  >
             #{stu_id}
         </foreach>
     </delete>
+
 </mapper>

@@ -38,8 +38,12 @@
                         <input type="date" id="endtime"  placeholder="请选择结束时间" class="layui-input">
                     </div>
                     <div class="layui-inline layui-show-xs-block">
-                        <select name="class_id" id="class_id">
-                        </select>
+                        <form class="layui-form layui-col-space5">
+                            <div class="layui-inline layui-show-xs-block">
+                                <select name="class_id" id="class_id">
+                                </select>
+                            </div>
+                        </form>
                     </div>
                     <div class="layui-inline layui-show-xs-block">
                         <button class="layui-btn" id="search"><i class="layui-icon">&#xe615;</i></button>
@@ -47,6 +51,7 @@
                 </div>
                 <div class="layui-card-header">
                     <button class="layui-btn" onclick="xadmin.open('添加用户','/wsManager?nowPage=add',600,400)"><i class="layui-icon"></i>添加</button>
+                    <button class="layui-btn" onclick="exportData()"><i class="layui-icon"></i>导出</button>
                 </div>
                 <div class="layui-card-body ">
                     <table class="layui-hide" id="demo" lay-filter="test"></table>
@@ -63,8 +68,9 @@
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script th:inline="none">
+    var table;
     layui.use(['table','form'], function(){
-        var table = layui.table;
+        table = layui.table;
         var form = layui.form;
         var $=layui.jquery;
         $.post("selAllClasses",function(data){
@@ -79,10 +85,10 @@
             url:'/wsManager/list',
             title: '每日卫生检查管理数据表',
             toolbar: '#toolbarDemo',
-            id:"teacherTable",
+            id:"WsTable",
             elem: '#demo',
             cols: [[ //标题栏
-
+                {type:'checkbox'},
                 {field: 'wid', title: '编号',hide:true},
                 {field: 'wdate', title: '日期'},
                 {field: 'wsroce', title: '分数'},
@@ -104,7 +110,7 @@
             var endtime = $('#endtime').val();
             var class_id = $('#class_id').val();
             console.log(begintime+endtime+class_id)
-            table.reload('teacherTable', {
+            table.reload('WsTable', {
                 where: {
                     begintime : begintime,
                     endtime : endtime,
@@ -151,6 +157,34 @@
             }
         })
     });
+    function exportData() {
+        var checkStatus = table.checkStatus('WsTable');
+        var ids =new Array();
+        $(checkStatus.data).each(function (i, o) {//o即为表格中一行的数据
+            ids.push(o);
+        });
+        if(ids.length==0){
+            layer.msg('请至少选择一个！');
+        }else{
+            $.ajax({
+                url:"/wsManager/exportData",
+                type:"post",
+                dataType:"json",
+                contentType:"application/json",
+                data:JSON.stringify(ids),
+                traditional: true,
+                success:function(result){
+                    if(result.code==0){
+                        layer.msg("已导出到桌面，请点击查看！");
+                    }else{
+                        layer.msg("对不起，系统出现故障！");
+                    }
+
+
+                }
+            });
+        }
+    }
 </script>
 
 

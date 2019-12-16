@@ -27,4 +27,6 @@ public interface StudentMapper {
 
     //删除多个
     void deleteMore(@Param("stuid")String[] ids);
+
+    Integer selectClassId(String class_name);
 }

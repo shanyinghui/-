@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
 
-
 <head>
     <meta charset="UTF-8">
     <title>欢迎页面-X-admin2.2</title>
@@ -24,40 +23,31 @@
     <div class="layui-row">
         <form class="layui-form">
             <div class="layui-form-item">
+                <div class="layui-form-mid layui-word-aux">
+                    <span class="x-red">*</span>学生
+                </div>
                 <div class="layui-input-inline">
-                    <input type="hidden" id="stu_id" name="stu_id" readonly
-                           autocomplete="off" class="layui-input" th:value="${stu.stu_id}">
+                    <select name="stu_id" id="stu_id">
+                    </select>
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="name" class="layui-form-label">
-                    <span class="x-red">*</span>名字
-                </label>
+                <div class="layui-form-mid layui-word-aux">
+                    <span class="x-red">*</span>部门
+                </div>
                 <div class="layui-input-inline">
-                    <input type="text" id="name" name="name" readonly
-                           autocomplete="off" class="layui-input" th:value="${stu.name}">
+                    <select name="dept_id" id="dept_id">
+                        <option value="1">生活部</option>
+                        <option value="2">纪检部</option>
+                        <option value="3">文体部</option>
+                        <option value="4">学习部</option>
+                        <option value="5">宣传部</option>
+                    </select>
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">
-                    <span class="x-red">*</span>学生会部门
-                </label>
-                <div class="layui-input-inline">
-                    <div class="layui-form">
-                        <input id="type" type="hidden" th:value="${stu.dept_id}"/>
-                        <select name="typeid" id="typeid" lay-filter="myselect">
-                            <option value="1">生活部</option>
-                            <option value="2">纪检部</option>
-                            <option value="3">文体部</option>
-                            <option value="4">学习部</option>
-                            <option value="5">宣传部</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <button class="layui-btn" lay-filter="upd" lay-submit="">
-                    修改
+                <button class="layui-btn" lay-filter="add" lay-submit="">
+                    增加
                 </button>
             </div>
         </form>
@@ -68,42 +58,49 @@
         $ = layui.jquery;
         var form = layui.form,
             layer = layui.layer;
-        var id = $("#stu_id").val();
-        var type = $("#type").val();
-        var typeid =  $("#typeid").val();
-        $("#typeid option[value='" + type + "']").attr("selected", true);
-        form.render();
+        $.post("selAllNoStu_UnionStu", function (data) {
+            for (var i = 0; i < data.length; i++) {
+                $("#stu_id").append("<option value=" + data[i].stu_id + ">" + data[i].name + "</option>")
+            }
+            layui.form.render("select");
+        });
         //监听提交
-        form.on('submit(upd)',
+        form.on('submit(add)',
             function (data) {
-                console.log(data);
                 //发异步，把数据提交
                 $.ajax({
                     url: "/updStu_Union",
                     type: "post",
+                    dataType: 'json',
                     data: {
-                        dept_id: data.field.typeid,
-                        stu_id: data.field.stu_id
-                    }
-                    ,
-                    success: function () {
-                        layer.alert("修改成功", {
+                        stu_id: data.field.stu_id,
+                        dept_id: data.field.dept_id
+                    },
+                    success: function (result) {
+                        layer.alert("增加成功", {
                                 icon: 6
                             },
                             function () {
-                                //关闭当前frame
-                                xadmin.close();
                                 // 可以对父窗口进行刷新
                                 xadmin.father_reload();
+                                //关闭当前frame
+                                xadmin.close();
                             });
                     }
                 });
+
                 return false;
             });
 
     });
 </script>
-
+<script>var _hmt = _hmt || [];
+(function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();</script>
 </body>
 
 </html>

@@ -1,5 +1,7 @@
 package com.buba.stuinfomanager.controller;
 
+import com.buba.stuinfomanager.annotation.Log;
+import com.buba.stuinfomanager.pojo.Classes;
 import com.buba.stuinfomanager.pojo.Student;
 import com.buba.stuinfomanager.pojo.Student_Union;
 import com.buba.stuinfomanager.service.Student_UnionService;
@@ -10,10 +12,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class Studen_UnionController {
@@ -52,7 +59,6 @@ public class Studen_UnionController {
     @RequestMapping("/selOneStu_UnionStu")
     @ResponseBody
     public ModelAndView selOneStu_UnionStu(Integer stu_id) {
-        System.out.println(stu_id);
         Student student = student_unionService.selOneStu_UnionStu(stu_id);
         ModelAndView mav = new ModelAndView();
         mav.getModel().put("stu", student);
@@ -60,8 +66,36 @@ public class Studen_UnionController {
         return mav;
     }
 
+    //进入添加学生会学生页面
+    @RequestMapping("/jrInsStu_Union")
+    public String jrInsStu_Union() {
+        return "studentUnionManager/add";
+    }
+
     @RequestMapping("/updStu_Union")
-    public void updStu_Union(Student student) {
-        student_unionService.updStu_Union(student);
+    @ResponseBody
+    public Map<String, String> updStu_Union(Student student) {
+        Map<String, String> map = new HashMap<>();
+        try {
+            student_unionService.updStu_Union(student);
+            map.put("code", "200");
+            return map;
+        } catch (Exception e) {
+            map.put("code", "500");
+            return map;
+        }
+    }
+
+    @RequestMapping("/selAllNoStu_UnionStu")
+    @ResponseBody
+    public List<Student> selAllNoStu_UnionStu() {
+        return student_unionService.selAllNoStu_UnionStu();
+    }
+
+    @RequestMapping("/exportStu_UnionData")
+    @ResponseBody
+    @Log
+    public ResultUtil exportData(@RequestBody List<Student> students){
+        return student_unionService.exportData(students);
     }
 }

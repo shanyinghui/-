@@ -29,4 +29,10 @@ public interface ScoreMapper {
 
     //根据学号与周期查询成绩是否已经添加
     public Score selScoreByStuidPeriod(String studentid,String period);
+
+    //根据学号修改学生所在班级
+    public void updClasses(Integer classid,String studentid);
+
+    //查询降班id
+    public int selDownClassesId(String class_name);
 }

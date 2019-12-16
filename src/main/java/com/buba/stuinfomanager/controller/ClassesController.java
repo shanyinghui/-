@@ -1,5 +1,6 @@
 package com.buba.stuinfomanager.controller;
 
+import com.buba.stuinfomanager.annotation.Log;
 import com.buba.stuinfomanager.pojo.CardStu;
 import com.buba.stuinfomanager.pojo.Classes;
 import com.buba.stuinfomanager.pojo.Student;
@@ -8,12 +9,19 @@ import com.buba.stuinfomanager.util.ResultUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.jws.WebParam;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -39,6 +47,19 @@ public class ClassesController {
         return resultUtil;
     }
 
+    //删除多个班级
+    @RequestMapping("delMoreClasses")
+    @ResponseBody
+    public ResultUtil delMoreClasses(@RequestParam(value = "class_id") String[] ids) {
+        try {
+            classesService.delMoreClasses(ids);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultUtil.error();
+        }
+        return ResultUtil.ok();
+    }
+
     //进入添加班级的页面
     @RequestMapping("/jrInsClasses")
     public String jrInsClasses() {
@@ -52,9 +73,17 @@ public class ClassesController {
     }
 
     @RequestMapping("/delClasses")
-    public String delClasses(Integer class_id) {
-        classesService.delClasses(class_id);
-        return "redirect:selAllClasses?page=1&limit=10";
+    @ResponseBody
+    public Map<String, String> delClasses(Integer class_id) {
+        Map<String, String> map = new HashMap<>();
+        try {
+            classesService.delClasses(class_id);
+            map.put("code", "200");
+            return map;
+        } catch (Exception e) {
+            map.put("code", "500");
+            return map;
+        }
     }
 
     @RequestMapping("/selOneClasses")
@@ -74,7 +103,8 @@ public class ClassesController {
 
     //进入班干部页面
     @RequestMapping("/jrClassCadre")
-    public String jrClassCadre(){
+    public String jrClassCadre(Integer class_id, Model model) {
+        model.addAttribute("class_id", class_id);
         return "studentCadreManager/classCadre";
     }
 
@@ -87,6 +117,17 @@ public class ClassesController {
         return resultUtil;
     }
 
+    //查询当前学生
+    @RequestMapping("/selOneCardStudent")
+    public ModelAndView selOneCardStudent(Integer stu_id) {
+        CardStu student = classesService.selOneCardStudent(stu_id);
+        ModelAndView mav = new ModelAndView();
+        mav.getModel().put("student1", student);
+        mav.setViewName("studentCadreManager/edit");
+        return mav;
+    }
+
+    //查询当前班级学生
     @RequestMapping("/selClassStudent")
     @ResponseBody
     public List<Student> selClassStudent(Integer class_id) {
@@ -95,28 +136,64 @@ public class ClassesController {
 
     @RequestMapping("/updStuCard")
     @ResponseBody
-    public String updStuCard(CardStu cardStu) {
-        classesService.updStuCard(cardStu);
-        return "haode";
+    public Map<String, String> updStuCard(CardStu cardStu) {
+        Map<String, String> map = new HashMap<>();
+        try {
+            classesService.updStuCard(cardStu);
+            map.put("code", "200");
+            return map;
+        } catch (Exception e) {
+            map.put("code", "500");
+            return map;
+        }
     }
 
-    //进入添加部门
+
+    //进入添加学生职位
     @RequestMapping("jrInsStuCard")
-    public String jrInsStuCard(){
+    public String jrInsStuCard(Integer class_id, Model model) {
+        model.addAttribute("class_id", class_id);
         return "studentCadreManager/add";
     }
+
     @RequestMapping("/insStuCard")
-    public void insStuCard(Integer stu_id,Integer class_id,Integer card_id) {
-        System.out.println(stu_id);
-        System.out.println(class_id);
-        System.out.println(card_id);
-        classesService.insStuCard(stu_id,class_id,card_id);
+    @ResponseBody
+    public Map<String, String> insStuCard(CardStu cardStu) {
+        Map<String, String> map = new HashMap<>();
+        try {
+            classesService.insStuCard(cardStu.getStu_id(), cardStu.getClass_id(),
+                    cardStu.getCard_id());
+            map.put("code", "200");
+            return map;
+        } catch (Exception e) {
+            map.put("code", "500");
+            return map;
+        }
     }
 
     @RequestMapping("/delStuCard")
     @ResponseBody
-    public String delStuCard(CardStu cardStu) {
-        classesService.delStuCard(cardStu);
-        return "haode";
+    public Map<String, String> delStuCard(CardStu cardStu) {
+        Map<String, String> map = new HashMap<>();
+        try {
+            classesService.delStuCard(cardStu);
+            map.put("code", "200");
+            return map;
+        } catch (Exception e) {
+            map.put("code", "500");
+            return map;
+        }
+    }
+    @RequestMapping("/importClassExcel")
+    @ResponseBody
+    public ResultUtil importExcel(@RequestParam("file") MultipartFile file) throws IOException {
+        return classesService.importExcel(file);
+    }
+
+    @RequestMapping("/exportClassData")
+    @ResponseBody
+    @Log
+    public ResultUtil exportData(@RequestBody List<Classes> classes){
+        return classesService.exportData(classes);
     }
 }

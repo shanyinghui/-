@@ -43,11 +43,8 @@
                     </div>
                 </div>
                 <div class="layui-card-header">
-                    <button class="layui-btn layui-btn-danger" onclick="delAll()"><i
-                            class="layui-icon"></i>批量删除
-                    </button>
                     <button class="layui-btn"
-                            onclick="xadmin.open('添加用户','./jrInsStuCard',600,400)"><i
+                            onclick="xadmin.open('添加用户','./jrInsStuCard?class_id='+$('#class_id').val(),600,400)"><i
                             class="layui-icon"></i>添加
                     </button>
                 </div>
@@ -65,8 +62,9 @@
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script th:inline="none">
+    var table;
     layui.use(['table', 'form'], function () {
-        var table = layui.table;
+        table = layui.table;
         var form = layui.form;
         var $ = layui.jquery;
         //展示已知数据
@@ -80,7 +78,6 @@
                 {type: 'checkbox'},
                 {field: 'stu_id', title: 'ID', hide: true},
                 {field: 'stu_num', title: '学生学号'},
-                {field: 'classid', title: '入学班级'},
                 {field: 'name', title: '名字'},
                 {
                     field: 'sex', title: '性别', templet: function (d) {
@@ -96,15 +93,15 @@
                         if (d.card_id == 1) {
                             return "班长";
                         } else if (d.card_id == 2) {
-                            return "纪律委员";
+                            return "学习委员";
                         } else if (d.card_id == 3) {
                             return "生活委员";
                         } else if (d.card_id == 4) {
-                            return "学习委员";
-                        } else if (d.card_id == 5) {
                             return "体育委员";
-                        } else if (d.card_id == 6) {
+                        } else if (d.card_id == 5) {
                             return "文艺委员";
+                        } else if (d.card_id == 6) {
+                            return "纪律委员";
                         }
                     }
                 },
@@ -119,12 +116,10 @@
 
         //搜索
         $("#search").click(function () {
-            var department_id = $('#department_id').val();
             var name = $('#name').val();
             var strsex = $('#strsex').val();
             table.reload('classCadreTable', {
                 where: {
-                    department_id: department_id,
                     name: name,
                     strsex: strsex
                 },
@@ -137,8 +132,36 @@
         //监听行工具事件
         table.on('tool(test)', function (obj) {
             var id = obj.data.stu_id;
+            var name = obj.data.name;
+            if (obj.event === 'del') {
+                layer.confirm('确定删除"' + name + '"的权限吗？', function (index) {
+                    $.ajax({
+                        url: "/delStuCard",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            stu_id: id
+                        },
+                        success: function (result) {
+                            console.log(result);
+                            if (result.code == "200") {
+                                layer.msg('删除成功！');
+                                layer.close(index);
+                                table.reload('classCadreTable', {
+                                    url: '/selClassCadre?class_id=' + $('#class_id').val(),
+                                    page: {
+                                        curr: 1 //重新从第 1 页开始
+                                    }
+                                });
+                            } else {
+                                layer.msg('删除失败！');
+                            }
+                        }
+                    })
+                });
+            }
             if (obj.event === "edit") {
-                xadmin.open('修改用户', '/selOneStu_UnionStu?stu_id=' + id, 600, 600);
+                xadmin.open('修改班干部', '/selOneCardStudent?stu_id=' + id, 600, 600);
             }
         })
     });
