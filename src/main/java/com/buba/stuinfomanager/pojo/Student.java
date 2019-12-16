@@ -23,15 +23,6 @@ public class Student implements Serializable {
     private Classes classes; //入学班级
     private Classes nowClasses; //现在班级
 
-
-
-
-    private Student_Union student_union;
-    private Classes classes; //入学班级
-    private Classes nowClasses; //现在班级
-
-
-
     public Integer getStu_id() {
         return stu_id;
     }

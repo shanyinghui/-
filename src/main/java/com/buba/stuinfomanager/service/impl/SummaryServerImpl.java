@@ -276,11 +276,12 @@ public class SummaryServerImpl implements SummaryServer {
 
         student = summaryMapper.pmgressbar(student);
         Integer cycle_progress = student.getCycle_progress();
-        if (cycle_progress <= 20 ){
+        if (cycle_progress < 20 ){
 
             return "0/20";
         }else {
             Integer num = cycle_progress%20;
+            System.out.println(num);
             if (num == 0){
                return cycle_progress/20 + "/20";
             }else {

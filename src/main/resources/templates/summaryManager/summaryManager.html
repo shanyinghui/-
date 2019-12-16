@@ -24,8 +24,8 @@
 </div>
 <br>
 <br>
-<div class="layui-progress" lay-showpercent="true">
-    <div class="layui-progress-bar" lay-percent="0/20"></div>
+<div class="layui-progress" lay-showpercent="true" id="demo">
+    <div class="layui-progress-bar"  lay-percent="0/20"></div>
 </div>
 <br>
 <blockquote class="layui-elem-quote layui-text" style="font-size: 20px; background-color: #F7FAFF">
@@ -116,7 +116,8 @@
 </body>
 <script>
 
-    layui.use(['jquery','form', 'layer'], function() {
+    layui.use(['jquery','form', 'layer','element'], function() {
+        var element = layui.element;
         var admin = layui.admin,
             $ = layui.jquery,
             form = layui.form,
@@ -148,8 +149,10 @@
                 dataType : "json",
                 async : false,
                 success : function(result){
-
+                    console.log(result.pmgressbar);
                     $(".layui-progress-bar").attr("lay-percent",result.pmgressbar);
+                    element.init();
+                    element.progress('demo', result.pmgressbar);
 
                 }
             });

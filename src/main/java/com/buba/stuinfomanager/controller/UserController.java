@@ -61,6 +61,8 @@ public class UserController {
                 session.setAttribute("name",student.getName());
                 session.setAttribute("password",student.getPassword());
                 session.setAttribute("type",0);
+                SummaryController summaryController = new SummaryController();
+                summaryController.selectVerify(student);
             }else{
                 Teacher teacher = loginService.teaLogin(usernum);
                 session.setAttribute("id",teacher.getT_id());

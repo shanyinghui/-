@@ -54,14 +54,6 @@ public class Ws {
         this.classes = classes;
     }
 
-    public Classes getClasses() {
-        return classes;
-    }
-
-    public void setClasses(Classes classes) {
-        this.classes = classes;
-    }
-
     @Override
     public String toString() {
         return "Ws{" +

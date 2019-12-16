@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -65,10 +66,13 @@ public class SummaryController {
      */
     @RequestMapping("/pmgressbar")
     @ResponseBody
-    public Map<String,String> pmgressbar(HttpSession session){
+    public Map<String,String> pmgressbar(HttpServletRequest request){
+        System.out.println(request);
+        HttpSession session = request.getSession();
+        System.out.println(session.getAttribute("type"));
         //session 获取学生登录信息
         Student student = new Student();
-        if(session.getAttribute("type").equals("0")){
+        if((Integer) session.getAttribute("type")==0){
             int id = Integer.parseInt(session.getAttribute("id")+"");
             student.setStu_id(id);
         }
