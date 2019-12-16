@@ -1,5 +1,6 @@
 package com.buba.stuinfomanager.controller;
 
+import com.buba.stuinfomanager.annotation.Log;
 import com.buba.stuinfomanager.pojo.Classes;
 import com.buba.stuinfomanager.pojo.Wj;
 import com.buba.stuinfomanager.service.StudentService;
@@ -60,5 +61,12 @@ public class WjController {
     @RequestMapping("/updWj")
     public void updWj(@RequestBody Wj wj){
         wjService.updWj(wj);
+    }
+
+    @RequestMapping("/exportData")
+    @ResponseBody
+    @Log
+    public ResultUtil exportData(@RequestBody List<Wj> list){
+        return wjService.exportData(list);
     }
 }

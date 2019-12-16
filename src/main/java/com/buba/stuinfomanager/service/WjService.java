@@ -1,6 +1,8 @@
 package com.buba.stuinfomanager.service;
 
+import com.buba.stuinfomanager.pojo.Score;
 import com.buba.stuinfomanager.pojo.Wj;
+import com.buba.stuinfomanager.util.ResultUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
@@ -22,4 +24,6 @@ public interface WjService {
 
     //修改违纪信息
     public void updWj(Wj wj);
+
+    ResultUtil exportData(List<Wj> wj);
 }

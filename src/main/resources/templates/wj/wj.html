@@ -61,8 +61,11 @@
                     <button class="layui-btn" onclick="xadmin.open('添加用户','/addWj',600,600)"><i
                             class="layui-icon"></i>添加
                     </button>
+                    <button class="layui-btn" onclick="exportData()"><i class="layui-icon"></i>导出</button>
                 </div>
+                <div class="layui-card-body ">
                     <table class="layui-hide" id="demo" lay-filter="test"></table>
+                </div>
             </div>
         </div>
     </div>
@@ -88,8 +91,9 @@
             });
 
         });
+    var table;
     layui.use(['table', 'form'], function () {
-        var table = layui.table;
+         table = layui.table;
         var form = layui.form;
         $ = layui.jquery;
         //展示已知数据
@@ -170,6 +174,34 @@
             }
         })
     });
+    function exportData() {
+        var checkStatus = table.checkStatus('wjTable');
+        var ids =new Array();
+        $(checkStatus.data).each(function (i, o) {//o即为表格中一行的数据
+            ids.push(o);
+        });
+        if(ids.length==0){
+            layer.msg('请至少选择一个！');
+        }else{
+            $.ajax({
+                url:"/wj/exportData",
+                type:"post",
+                dataType:"json",
+                contentType:"application/json",
+                data:JSON.stringify(ids),
+                traditional: true,
+                success:function(result){
+                    if(result.code==0){
+                        layer.msg("已导出到桌面，请点击查看！");
+                    }else{
+                        layer.msg("对不起，系统出现故障！");
+                    }
+
+
+                }
+            });
+        }
+    }
 </script>
 
 
