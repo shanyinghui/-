@@ -56,4 +56,14 @@ public class ScoreServiceImpl implements ScoreService {
         }
         return false;
     }
+
+    @Override
+    public void updClasses(Integer classid, String studentid) {
+        scoreMapper.updClasses(classid,studentid);
+    }
+
+    @Override
+    public int selDownClassesId(String class_name) {
+        return scoreMapper.selDownClassesId(class_name);
+    }
 }

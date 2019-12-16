@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="x-admin-sm">
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -37,10 +37,8 @@
                 </label>
                 <div class="layui-input-inline">
                     <div class="layui-form">
-                        <select name="classes" id="classes" lay-filter="myselect">
-                            <option value="1806a">1806A</option>
-                            <option value="1808a">1808B</option>
-                            <option value="1809a">1809A</option>
+                        <select name="classes" id="classes" lay-filter="myselect" lay-verify="required">
+                            <option value="" selected="" id="n"></option>
                         </select>
                     </div>
                 </div>
@@ -66,14 +64,14 @@
                     <span class="x-red">*</span>违纪日期
                 </label>
                 <div class="layui-input-inline layui-show-xs-block">
-                    <input class="layui-input" autocomplete="off" placeholder="违纪日期" name="wjdate" id="start"></div>
+                    <input class="layui-input" autocomplete="off"  lay-verify="required" placeholder="违纪日期" name="wjdate" id="start"></div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">
                     备注
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="notes" name="notes" required="" lay-verify="required"
+                    <input type="text" id="notes" name="notes" required=""
                            autocomplete="off" class="layui-input">
                 </div>
             </div>
@@ -85,13 +83,18 @@
             </form>
     </div>
 </div>
-<script>layui.use(['form', 'layer'],
+<script th:inline="javascript">layui.use(['form', 'layer'],
     function () {
         $ = layui.jquery;
         var form = layui.form,
             layer = layui.layer;
-        //自定义验证规则
-        form.verify({});
+        var data = [[${classes}]];
+        var html1 = "";
+        for(var i=0;i<data.length;i++){
+            html1 += '<option value="'+data[i].class_name+'">'+data[i].class_name+'</option>'
+        }
+        $("#n").after(html1);
+        form.render();
 
         //监听提交
         form.on('submit(add)',

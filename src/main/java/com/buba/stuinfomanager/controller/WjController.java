@@ -1,6 +1,8 @@
 package com.buba.stuinfomanager.controller;
 
+import com.buba.stuinfomanager.pojo.Classes;
 import com.buba.stuinfomanager.pojo.Wj;
+import com.buba.stuinfomanager.service.StudentService;
 import com.buba.stuinfomanager.service.WjService;
 import com.buba.stuinfomanager.util.ResultUtil;
 import com.github.pagehelper.PageInfo;
@@ -21,6 +23,9 @@ public class WjController {
     @Autowired
     WjService wjService;
 
+    @Autowired
+    StudentService studentService;
+
     @ResponseBody
     @RequestMapping("/selAllWj")
     public ResultUtil selAllWj(String starttime, String endtime, String classes, String studentname,Integer page,Integer limit){
@@ -33,6 +38,8 @@ public class WjController {
     @RequestMapping("/selWjById")
     public String selWjById(@RequestParam("id")Integer id, Model model){
         Wj wj = wjService.selWjById(id);
+        List<Classes> classes = studentService.selectClass();
+        model.addAttribute("classes",classes);
         model.addAttribute("wj",wj);
         return "/wj/edit.html";
     }
