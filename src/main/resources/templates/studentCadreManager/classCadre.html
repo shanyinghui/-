@@ -43,9 +43,6 @@
                     </div>
                 </div>
                 <div class="layui-card-header">
-                    <button class="layui-btn layui-btn-danger" onclick="delAll()"><i
-                            class="layui-icon"></i>批量删除
-                    </button>
                     <button class="layui-btn"
                             onclick="xadmin.open('添加用户','./jrInsStuCard?class_id='+$('#class_id').val(),600,400)"><i
                             class="layui-icon"></i>添加
@@ -65,8 +62,9 @@
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script th:inline="none">
+    var table;
     layui.use(['table', 'form'], function () {
-        var table = layui.table;
+        table = layui.table;
         var form = layui.form;
         var $ = layui.jquery;
         //展示已知数据

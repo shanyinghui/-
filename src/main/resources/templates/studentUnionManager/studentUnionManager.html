@@ -17,7 +17,6 @@
     <![endif]-->
     <style>
         #demo {
-
             overflow-x: hidden;
         }
 
@@ -53,13 +52,11 @@
                     </div>
                 </div>
                 <div class="layui-card-header">
-                    <button class="layui-btn layui-btn-danger" onclick="delAll()"><i
-                            class="layui-icon"></i>批量删除
-                    </button>
                     <button class="layui-btn"
                             onclick="xadmin.open('添加用户','./jrInsStu_Union',600,400)"><i
                             class="layui-icon"></i>添加
                     </button>
+                    <button class="layui-btn" onclick="exportData()"><i class="layui-icon"></i>导出</button>
                 </div>
                 <div class="layui-card-body ">
                     <table class="layui-hide" id="demo" lay-filter="test"></table>
@@ -75,10 +72,12 @@
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script th:inline="none">
-    layui.use(['table', 'form'], function () {
-        var table = layui.table;
+    var table;
+    layui.use(['table', 'form',"upload"], function () {
+        table = layui.table;
         var form = layui.form;
         var $ = layui.jquery;
+        var upload = layui.upload;
         //展示已知数据
         table.render({
             url: '/selStu_UnionStu?department_id=' + $('#department_id').val(),
@@ -126,7 +125,6 @@
                 }
             })
         });
-
         //监听行工具事件
         table.on('tool(test)', function (obj) {
             if (obj.event === 'del') {
@@ -161,6 +159,34 @@
             }
         })
     });
+    function exportData() {
+        var checkStatus = table.checkStatus('studentUnionTable');
+        var ids = new Array();
+        $(checkStatus.data).each(function (i, o) {//o即为表格中一行的数据
+            ids.push(o);
+        });
+        if (ids.length == 0) {
+            layer.msg('请至少选择一个！');
+        } else {
+            $.ajax({
+                url: "/exportStu_UnionData",
+                type: "post",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify(ids),
+                traditional: true,
+                success: function (result) {
+                    if (result.code == 0) {
+                        layer.msg("已导出到桌面，请点击查看！");
+                    } else {
+                        layer.msg("对不起，系统出现故障！");
+                    }
+
+
+                }
+            });
+        }
+    }
 </script>
 
 

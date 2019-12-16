@@ -1,5 +1,6 @@
 package com.buba.stuinfomanager.controller;
 
+import com.buba.stuinfomanager.annotation.Log;
 import com.buba.stuinfomanager.pojo.CardStu;
 import com.buba.stuinfomanager.pojo.Classes;
 import com.buba.stuinfomanager.pojo.Student;
@@ -11,10 +12,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.jws.WebParam;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +45,19 @@ public class ClassesController {
                 page, limit);
         ResultUtil resultUtil = new ResultUtil(0, "", info.getTotal(), info.getList());
         return resultUtil;
+    }
+
+    //删除多个班级
+    @RequestMapping("delMoreClasses")
+    @ResponseBody
+    public ResultUtil delMoreClasses(@RequestParam(value = "class_id") String[] ids) {
+        try {
+            classesService.delMoreClasses(ids);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultUtil.error();
+        }
+        return ResultUtil.ok();
     }
 
     //进入添加班级的页面
@@ -166,5 +183,17 @@ public class ClassesController {
             map.put("code", "500");
             return map;
         }
+    }
+    @RequestMapping("/importClassExcel")
+    @ResponseBody
+    public ResultUtil importExcel(@RequestParam("file") MultipartFile file) throws IOException {
+        return classesService.importExcel(file);
+    }
+
+    @RequestMapping("/exportClassData")
+    @ResponseBody
+    @Log
+    public ResultUtil exportData(@RequestBody List<Classes> classes){
+        return classesService.exportData(classes);
     }
 }

@@ -76,8 +76,8 @@
     <!--    删除更多班级-->
     <delete id="delMoreClasses">
         delete from tb_classes where class_id in
-        <foreach collection="classid" item="class_id" open="(" separator="," close=")">
-            #{class_id}
+        <foreach collection="class_id" item="classid" open="(" separator="," close=")">
+            #{classid}
         </foreach>
     </delete>
 </mapper>

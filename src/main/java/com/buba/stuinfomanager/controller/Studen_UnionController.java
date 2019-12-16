@@ -1,5 +1,7 @@
 package com.buba.stuinfomanager.controller;
 
+import com.buba.stuinfomanager.annotation.Log;
+import com.buba.stuinfomanager.pojo.Classes;
 import com.buba.stuinfomanager.pojo.Student;
 import com.buba.stuinfomanager.pojo.Student_Union;
 import com.buba.stuinfomanager.service.Student_UnionService;
@@ -10,9 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,5 +90,12 @@ public class Studen_UnionController {
     @ResponseBody
     public List<Student> selAllNoStu_UnionStu() {
         return student_unionService.selAllNoStu_UnionStu();
+    }
+
+    @RequestMapping("/exportStu_UnionData")
+    @ResponseBody
+    @Log
+    public ResultUtil exportData(@RequestBody List<Student> students){
+        return student_unionService.exportData(students);
     }
 }
