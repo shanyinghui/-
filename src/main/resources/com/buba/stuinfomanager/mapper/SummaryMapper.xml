@@ -65,8 +65,7 @@
     </select>
 
     <insert id="saveSummaryforVerify" parameterType="com.buba.stuinfomanager.pojo.Summary">
-        INSERT INTO tb_su
-        mmary (sum_time,sum_state,stu_id) VALUES (#{sum_time},#{sum_state},#{student.stu_id})
+        INSERT INTO tb_summary (sum_time,sum_state,stu_id) VALUES (#{sum_time},#{sum_state},#{student.stu_id})
     </insert>
 
     <select id="selectSummaryTeacherAll" parameterType="com.buba.stuinfomanager.pojo.Summary" resultMap="summaryResult">

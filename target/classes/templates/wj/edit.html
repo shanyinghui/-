@@ -41,10 +41,8 @@
                     <div class="layui-form">
                         <input id="id" name="id" type="hidden" th:value="${wj.id}"/>
                         <input id="classid" type="hidden" th:value="${wj.classes}"/>
-                        <select name="classes" id="classes" lay-filter="myselect" >
-                            <option value="1806a">1806A</option>
-                            <option value="1808a">1808A</option>
-                            <option value="1809a">1809A</option>
+                        <select name="classes" id="classes" lay-filter="myselect" lay-verify="required">
+                            <option value="" selected="" id="n"></option>
                         </select>
                     </div>
                 </div>
@@ -88,13 +86,24 @@
         </form>
     </div>
 </div>
-<script>layui.use(['form', 'layer'],
+<script th:inline="javascript">layui.use(['form', 'layer'],
     function () {
         $ = layui.jquery;
         var form = layui.form,
             layer = layui.layer;
-        var classes =$("#classid").val();
-        $("#classes option[value='"+classes+"']").attr("selected", true);
+        var wj = [[${wj}]];
+        var data = [[${classes}]];
+        var html1 = "";
+        for(var i=0;i<data.length;i++){
+
+            if(data[i].class_name==wj.classes){
+                html1 += '<option value="'+data[i].class_name+'" selected="" >'+data[i].class_name+'</option>'
+            }else{
+                html1 += '<option value="'+data[i].class_name+'">'+data[i].class_name+'</option>'
+            }
+
+        }
+        $("#n").after(html1);
         form.render();
         var type=$("#type").val();
         $("#typeid option[value='"+type+"']").attr("selected", true)

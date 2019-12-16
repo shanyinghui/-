@@ -12,7 +12,7 @@
 </head>
 <body>
     <br>
-    <div class="layui-progress" lay-showpercent="true">
+    <div class="layui-progress" lay-showpercent="true" id="demo">
         <div class="layui-progress-bar" lay-percent="0/20"></div>
     </div>
     <br>
@@ -114,11 +114,12 @@
         console.log(sum_id);
 
 
-    layui.use(['jquery','form', 'layer'], function() {
+    layui.use(['jquery','form', 'layer','element'], function() {
         var admin = layui.admin,
             $ = layui.jquery,
             form = layui.form,
             layer = layui.layer;
+        element = layui.element;
         //显示当前时间
         setInterval(function() {
             var date = new Date();
@@ -147,7 +148,8 @@
                 success : function(result){
 
                     $(".layui-progress-bar").attr("lay-percent",result.pmgressbar);
-
+                    element.init();
+                    element.progress('demo', result.pmgressbar);
                 }
             });
         }

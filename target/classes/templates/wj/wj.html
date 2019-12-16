@@ -40,7 +40,13 @@
                     <div class="layui-inline layui-show-xs-block">
                         <input class="layui-input" autocomplete="off" placeholder="截止日" name="endtime" id="end"></div>
                     <div class="layui-inline layui-show-xs-block">
-                        <input type="text" id="classes" placeholder="请输入班级名称" class="layui-input">
+                        <form class="layui-form layui-col-space5">
+                            <div class="layui-inline layui-show-xs-block">
+                                <select name="classes" id="classes">
+                                    <option value="" selected="" id="n"></option>
+                                </select>
+                            </div>
+                        </form>
                     </div>
                     <div class="layui-inline layui-show-xs-block">
                         <input type="text" id="studentname" placeholder="请输入学生姓名" class="layui-input">
@@ -55,8 +61,11 @@
                     <button class="layui-btn" onclick="xadmin.open('添加用户','/addWj',600,600)"><i
                             class="layui-icon"></i>添加
                     </button>
+                    <button class="layui-btn" onclick="exportData()"><i class="layui-icon"></i>导出</button>
                 </div>
+                <div class="layui-card-body ">
                     <table class="layui-hide" id="demo" lay-filter="test"></table>
+                </div>
             </div>
         </div>
     </div>
@@ -66,7 +75,7 @@
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
-<script th:inline="none">
+<script th:inline="javascript">
     layui.use('laydate',
         function () {
             var laydate = layui.laydate;
@@ -82,10 +91,11 @@
             });
 
         });
+    var table;
     layui.use(['table', 'form'], function () {
-        var table = layui.table;
+         table = layui.table;
         var form = layui.form;
-        var $ = layui.jquery;
+        $ = layui.jquery;
         //展示已知数据
         table.render({
             url: '/wj/selAllWj',
@@ -108,7 +118,13 @@
             limits: [3, 6, 9],
             limit: 9
         });
-
+        var data = [[${classes}]];
+        var html1 = "";
+        for(var i=0;i<data.length;i++){
+            html1 += '<option value="'+data[i].class_name+'">'+data[i].class_name+'</option>'
+        }
+        $("#n").after(html1);
+        form.render();
         //搜索
         $("#search").click(function () {
             var studentname = $('#studentname').val();
@@ -158,6 +174,34 @@
             }
         })
     });
+    function exportData() {
+        var checkStatus = table.checkStatus('wjTable');
+        var ids =new Array();
+        $(checkStatus.data).each(function (i, o) {//o即为表格中一行的数据
+            ids.push(o);
+        });
+        if(ids.length==0){
+            layer.msg('请至少选择一个！');
+        }else{
+            $.ajax({
+                url:"/wj/exportData",
+                type:"post",
+                dataType:"json",
+                contentType:"application/json",
+                data:JSON.stringify(ids),
+                traditional: true,
+                success:function(result){
+                    if(result.code==0){
+                        layer.msg("已导出到桌面，请点击查看！");
+                    }else{
+                        layer.msg("对不起，系统出现故障！");
+                    }
+
+
+                }
+            });
+        }
+    }
 </script>
 
 

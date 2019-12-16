@@ -24,11 +24,8 @@
     <div class="layui-row">
         <form class="layui-form">
             <div class="layui-form-item">
-                <label for="stu_id" class="layui-form-label">
-                    <span class="x-red">*</span>ID
-                </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="stu_id" name="stu_id" readonly
+                    <input type="hidden" id="stu_id" name="stu_id" readonly
                            autocomplete="off" class="layui-input" th:value="${stu.stu_id}">
                 </div>
             </div>
@@ -50,10 +47,10 @@
                         <input id="type" type="hidden" th:value="${stu.dept_id}"/>
                         <select name="typeid" id="typeid" lay-filter="myselect">
                             <option value="1">生活部</option>
-                            <option value="2">着装</option>
-                            <option value="3">迟到早退</option>
-                            <option value="4">吸烟</option>
-                            <option value="5">其他</option>
+                            <option value="2">纪检部</option>
+                            <option value="3">文体部</option>
+                            <option value="4">学习部</option>
+                            <option value="5">宣传部</option>
                         </select>
                     </div>
                 </div>
@@ -74,7 +71,7 @@
         var id = $("#stu_id").val();
         var type = $("#type").val();
         var typeid =  $("#typeid").val();
-        $("#classes option[value='" + type + "']").attr("selected", true);
+        $("#typeid option[value='" + type + "']").attr("selected", true);
         form.render();
         //监听提交
         form.on('submit(upd)',
@@ -85,8 +82,8 @@
                     url: "/updStu_Union",
                     type: "post",
                     data: {
-                        dept_id: typeid,
-                        stu_id: id
+                        dept_id: data.field.typeid,
+                        stu_id: data.field.stu_id
                     }
                     ,
                     success: function () {

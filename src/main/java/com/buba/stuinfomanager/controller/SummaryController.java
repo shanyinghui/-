@@ -3,6 +3,7 @@ package com.buba.stuinfomanager.controller;
 import com.buba.stuinfomanager.pojo.Student;
 import com.buba.stuinfomanager.pojo.Summary;
 import com.buba.stuinfomanager.pojo.Teacher;
+
 import com.buba.stuinfomanager.service.SummaryServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -98,13 +99,13 @@ public class SummaryController {
         String str = "";
         //先获取session 然后赋值
         Student student = new Student();
-        if(session.getAttribute("type").equals("0")){
+        if((Integer)session.getAttribute("type")==0){
             int id = Integer.parseInt(session.getAttribute("id")+"");
             student.setStu_id(id);
         }
         summary.setStudent(student);
         Summary summ = summaryServer.selectSummaryBySum_time(summary);
-
+        System.out.println(summary);
         if (null == summ){
             try {
                 summaryServer.insertSummary(summary,educations);

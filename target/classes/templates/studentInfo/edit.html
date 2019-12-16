@@ -154,10 +154,10 @@
         var cityPicker = layui.citypicker;
 
         var student = [[${student}]];
+        console.log(student);
         var data = [[${classes}]];
         var html1 = "";
         for(var i=0;i<data.length;i++){
-
             if(data[i].class_id==student.classid){
                 html1 += '<option value="'+data[i].class_id+'" selected="" >'+data[i].class_name+'</option>'
             }else{
