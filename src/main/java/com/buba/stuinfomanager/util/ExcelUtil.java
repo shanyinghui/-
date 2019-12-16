@@ -46,8 +46,8 @@ public class ExcelUtil {
 
 			}
 			//写数据
-			FileOutputStream out=new FileOutputStream("C:\\Users\\10261\\Desktop\\"+sheetName+".xls");
-			os = new FileOutputStream("C:\\Users\\10261\\Desktop\\"+sheetName+".xls");
+			FileOutputStream out=new FileOutputStream(path);
+			os = new FileOutputStream(path);
 
 
 		}else{//如果不存在，就先创建excel文件
@@ -103,7 +103,7 @@ public class ExcelUtil {
 					row.createCell(j).setCellValue(body[i][j]);
 				}
 			}
-			os = new FileOutputStream("C:\\Users\\10261\\Desktop\\"+sheetName+".xls");
+			os = new FileOutputStream(path);
 		}
 		wb.write(os);
 		os.flush();

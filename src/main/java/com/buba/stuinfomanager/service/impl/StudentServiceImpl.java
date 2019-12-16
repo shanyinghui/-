@@ -79,7 +79,6 @@ public class StudentServiceImpl implements StudentService {
             XSSFWorkbook wb = new XSSFWorkbook(in);
             XSSFSheet sheet = wb.getSheetAt(0);
             int lastRowNum = sheet.getLastRowNum();
-
             for (int i = 1; i <= lastRowNum; i++) {
                 XSSFRow row = sheet.getRow(i);
                 Student student = new Student();
@@ -87,10 +86,12 @@ public class StudentServiceImpl implements StudentService {
                 student.setName(row.getCell(1).getStringCellValue());
                 student.setClassid(studentMapper.selectClassId(row.getCell(2).getStringCellValue()));
                 student.setNowClassId(studentMapper.selectClassId(row.getCell(3).getStringCellValue()));
+                System.out.println(student);
                 studentMapper.add(student);
             }
             return ResultUtil.ok();
         }catch (Exception e){
+            e.printStackTrace();
             return ResultUtil.error();
         }
 
