@@ -1,13 +1,14 @@
 package com.buba.stuinfomanager.util;
 
-import org.apache.poi.xssf.usermodel.XSSFCell;
+
+import org.apache.poi.ss.usermodel.Cell;
 
 public class MyUtil {
     /**
      * 处理导入小数点
      * @param cell
      */
-    public  static String  numOfImport(XSSFCell cell) {
+    public  static String  numOfImport(Cell cell) {
         String value = cell.toString();
         int i = cell.getCellType();
         if (i == 1) {//字符串类型

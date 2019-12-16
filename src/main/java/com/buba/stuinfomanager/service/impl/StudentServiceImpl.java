@@ -9,8 +9,9 @@ import com.buba.stuinfomanager.util.MyUtil;
 import com.buba.stuinfomanager.util.ResultUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -76,11 +77,11 @@ public class StudentServiceImpl implements StudentService {
     public ResultUtil importExcel(MultipartFile file) {
         try {
             InputStream in = file.getInputStream();
-            XSSFWorkbook wb = new XSSFWorkbook(in);
-            XSSFSheet sheet = wb.getSheetAt(0);
+            Workbook wb = new XSSFWorkbook(in);
+            Sheet sheet = wb.getSheetAt(0);
             int lastRowNum = sheet.getLastRowNum();
             for (int i = 1; i <= lastRowNum; i++) {
-                XSSFRow row = sheet.getRow(i);
+                Row row = sheet.getRow(i);
                 Student student = new Student();
                 student.setStu_num(MyUtil.numOfImport(row.getCell(0)));
                 student.setName(row.getCell(1).getStringCellValue());
@@ -89,7 +90,7 @@ public class StudentServiceImpl implements StudentService {
                 System.out.println(student);
                 studentMapper.add(student);
             }
-            return ResultUtil.ok();
+            return ResultUtil.ok("导入成功！");
         }catch (Exception e){
             e.printStackTrace();
             return ResultUtil.error();
@@ -129,7 +130,7 @@ public class StudentServiceImpl implements StudentService {
 
         try {
             ExcelUtil.exportExcel(title, sheetName, content);
-            return ResultUtil.ok();
+            return ResultUtil.ok("导出成功！");
         } catch (Exception e) {
             e.printStackTrace();
             return ResultUtil.error("导出失败！");

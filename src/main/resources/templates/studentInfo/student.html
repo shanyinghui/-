@@ -121,11 +121,10 @@
             elem: '#import'
             ,url: '/studentInfo/importExcel'
             ,accept: 'file' //普通文件
-            ,exts: 'xlsx'//上传文件格式说
+            ,exts: 'xlsx|xls'//上传文件格式
             ,done: function(res){
                 layer.msg(res.msg,{
                     btn:['确定'],
-                    content:"导入成功",
                     btnAlign: 'c',
                     time:20000,
                     btn1:function (index,layero) {
