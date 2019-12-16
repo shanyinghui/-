@@ -43,6 +43,7 @@
                     <div class="layui-card-header">
                         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
                         <button class="layui-btn" onclick="xadmin.open('添加老师','/teacherInfo/toAdd',800,500)"><i class="layui-icon"></i>添加</button>
+                        <button class="layui-btn" onclick="exportData()"><i class="layui-icon"></i>导出</button>
                     </div>
                     <div class="layui-card-body ">
                         <table class="layui-hide" id="demo" lay-filter="test"></table>
@@ -176,6 +177,34 @@
                 });
             }
         }
+       function exportData() {
+           var checkStatus = table.checkStatus('teacherTable');
+           var ids =new Array();
+           $(checkStatus.data).each(function (i, o) {//o即为表格中一行的数据
+               ids.push(o);
+           });
+           if(ids.length==0){
+               layer.msg('请至少选择一个！');
+           }else{
+               $.ajax({
+                   url:"/teacherInfo/exportData",
+                   type:"post",
+                   dataType:"json",
+                   contentType:"application/json",
+                   data:JSON.stringify(ids),
+                   traditional: true,
+                   success:function(result){
+                       if(result.code==0){
+                           layer.msg("已导出到桌面，请点击查看！");
+                       }else{
+                           layer.msg("对不起，系统出现故障！");
+                       }
+
+
+                   }
+               });
+           }
+       }
     </script>
 
 

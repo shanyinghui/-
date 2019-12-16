@@ -1,6 +1,7 @@
 package com.buba.stuinfomanager.controller;
 
 import com.buba.stuinfomanager.annotation.Log;
+import com.buba.stuinfomanager.pojo.Student;
 import com.buba.stuinfomanager.pojo.Teacher;
 import com.buba.stuinfomanager.service.TeacherService;
 import com.buba.stuinfomanager.util.ResultUtil;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/teacherInfo")
@@ -108,4 +111,10 @@ public class TeacherController {
         return ResultUtil.ok();
     }
 
+    @RequestMapping("/exportData")
+    @ResponseBody
+    @Log
+    public ResultUtil exportData(@RequestBody List<Teacher> list){
+        return teacherService.exportData(list);
+    }
 }
