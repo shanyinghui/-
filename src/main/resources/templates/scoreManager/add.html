@@ -45,6 +45,7 @@
                     班级
                 </label>
                 <div class="layui-input-inline">
+                    <input type="hidden" id="class_id"/>
                     <input type="text" id="classes" name="classes" required="" lay-verify="required"
                            autocomplete="off" class="layui-input" readonly="readonly">
                 </div>
@@ -103,6 +104,7 @@
                     $("#studentname").val(result.name);
                     $("#classes").val(result.classes.class_name);
                     $("#period").val(result.cycle_progress);
+                    $("#class_id").val(result.classes.class_id);
                     form.render();
                 }
             })
@@ -114,7 +116,7 @@
                 console.log(data);
                 //发异步，把数据提交
                 $.ajax({
-                    url:"score/addScore",
+                    url:"score/addScore/"+$("#studentid").val(),
                     type:"post",
                     contentType: "application/JSON",
                     data:JSON.stringify(data.field),

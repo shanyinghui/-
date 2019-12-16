@@ -40,7 +40,13 @@
                     <div class="layui-inline layui-show-xs-block">
                         <input class="layui-input" autocomplete="off" placeholder="截止日" name="endtime" id="end"></div>
                     <div class="layui-inline layui-show-xs-block">
-                        <input type="text" id="classes" placeholder="请输入班级名称" class="layui-input">
+                        <form class="layui-form layui-col-space5">
+                            <div class="layui-inline layui-show-xs-block">
+                                <select name="classes" id="classes">
+                                    <option value="" selected="" id="n"></option>
+                                </select>
+                            </div>
+                        </form>
                     </div>
                     <div class="layui-inline layui-show-xs-block">
                         <input type="text" id="studentname" placeholder="请输入学生姓名" class="layui-input">
@@ -66,7 +72,7 @@
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
-<script th:inline="none">
+<script th:inline="javascript">
     layui.use('laydate',
         function () {
             var laydate = layui.laydate;
@@ -85,7 +91,7 @@
     layui.use(['table', 'form'], function () {
         var table = layui.table;
         var form = layui.form;
-        var $ = layui.jquery;
+        $ = layui.jquery;
         //展示已知数据
         table.render({
             url: '/wj/selAllWj',
@@ -108,7 +114,13 @@
             limits: [3, 6, 9],
             limit: 9
         });
-
+        var data = [[${classes}]];
+        var html1 = "";
+        for(var i=0;i<data.length;i++){
+            html1 += '<option value="'+data[i].class_name+'">'+data[i].class_name+'</option>'
+        }
+        $("#n").after(html1);
+        form.render();
         //搜索
         $("#search").click(function () {
             var studentname = $('#studentname').val();

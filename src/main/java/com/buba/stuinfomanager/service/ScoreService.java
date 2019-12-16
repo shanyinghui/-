@@ -4,7 +4,6 @@ import com.buba.stuinfomanager.pojo.Score;
 import com.buba.stuinfomanager.pojo.Student;
 import com.github.pagehelper.PageInfo;
 
-import java.util.List;
 
 public interface ScoreService {
     //查询所有成绩信息
@@ -24,4 +23,10 @@ public interface ScoreService {
 
     //根据学号与周期查询成绩是否已经添加
     public Boolean selScoreByStuidPeriod(String studentid,String period);
+
+    //根据学号修改学生所在班级
+    public void updClasses(Integer classid,String studentid);
+
+    //查询降班id
+    public int selDownClassesId(String class_name);
 }

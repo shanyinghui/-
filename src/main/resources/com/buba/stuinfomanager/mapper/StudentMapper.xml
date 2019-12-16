@@ -29,7 +29,7 @@
             <result property="class_name" column="class_name"/>
             <result property="headmaster" column="headmaster"/>
             <result property="teacher" column="teacher"/>
-            <result property="cycle_progress" column="cycle_progress"/>
+            <result property="cycle_progress" column="cycle_pro gress"/>
         </association>
     </resultMap>
     <select id="findAllStudent" resultMap="studentResultMap">

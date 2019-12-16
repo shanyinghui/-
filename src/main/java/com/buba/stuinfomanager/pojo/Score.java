@@ -8,8 +8,8 @@ public class Score implements Serializable {
     private String classes;
     private String studentname;
     private String period;//周期
-    private String interviewresult;//面试成绩
-    private String skillscores;//机试成绩
+    private Double interviewresult;//面试成绩
+    private Double skillscores;//机试成绩
 
     public int getId() {
         return id;
@@ -43,19 +43,19 @@ public class Score implements Serializable {
         this.period = period;
     }
 
-    public String getInterviewresult() {
+    public Double getInterviewresult() {
         return interviewresult;
     }
 
-    public void setInterviewresult(String interviewresult) {
+    public void setInterviewresult(Double interviewresult) {
         this.interviewresult = interviewresult;
     }
 
-    public String getSkillscores() {
+    public Double getSkillscores() {
         return skillscores;
     }
 
-    public void setSkillscores(String skillscores) {
+    public void setSkillscores(Double skillscores) {
         this.skillscores = skillscores;
     }
 
@@ -75,8 +75,8 @@ public class Score implements Serializable {
                 ", classes='" + classes + '\'' +
                 ", studentname='" + studentname + '\'' +
                 ", period='" + period + '\'' +
-                ", interviewresult='" + interviewresult + '\'' +
-                ", skillscores='" + skillscores + '\'' +
+                ", interviewresult=" + interviewresult +
+                ", skillscores=" + skillscores +
                 '}';
     }
 }
