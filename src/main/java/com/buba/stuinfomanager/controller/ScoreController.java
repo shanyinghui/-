@@ -1,5 +1,6 @@
 package com.buba.stuinfomanager.controller;
 
+import com.buba.stuinfomanager.annotation.Log;
 import com.buba.stuinfomanager.pojo.Score;
 import com.buba.stuinfomanager.pojo.Student;
 import com.buba.stuinfomanager.service.ScoreService;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @Controller
@@ -62,5 +65,12 @@ public class ScoreController {
     public Boolean selScoreByStuidPeriod(String studentid,String period){
         Boolean bool = scoreService.selScoreByStuidPeriod(studentid, period);
         return bool;
+    }
+
+    @RequestMapping("/exportData")
+    @ResponseBody
+    @Log
+    public ResultUtil exportData(@RequestBody List<Score> list){
+        return scoreService.exportData(list);
     }
 }
