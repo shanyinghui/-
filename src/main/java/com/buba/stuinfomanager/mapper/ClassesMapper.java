@@ -29,7 +29,7 @@ public interface ClassesMapper {
     void delClasses(Integer class_id);
 
     //删除多个班级
-    void delMoreClasses(@Param("stuid")String[] ids);
+    void delMoreClasses(@Param("class_id")String[] ids);
 
     //修改一个班级
     void updClasses(Classes classes);

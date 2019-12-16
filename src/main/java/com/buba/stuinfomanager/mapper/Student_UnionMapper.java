@@ -2,6 +2,7 @@ package com.buba.stuinfomanager.mapper;
 
 import com.buba.stuinfomanager.pojo.Student;
 import com.buba.stuinfomanager.pojo.Student_Union;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,4 +21,5 @@ public interface Student_UnionMapper {
 
     //查询所有没有在学生部门的学生
     List<Student> selAllNoStu_UnionStu();
+
 }

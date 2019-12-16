@@ -1,9 +1,13 @@
 package com.buba.stuinfomanager.service;
 
+import com.buba.stuinfomanager.pojo.Classes;
 import com.buba.stuinfomanager.pojo.Student;
 import com.buba.stuinfomanager.pojo.Student_Union;
+import com.buba.stuinfomanager.util.ResultUtil;
 import com.github.pagehelper.PageInfo;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface Student_UnionService {
@@ -20,4 +24,8 @@ public interface Student_UnionService {
 
     //查询所有没有在学生部门的学生
     List<Student> selAllNoStu_UnionStu();
+
+
+    //导出数据
+    ResultUtil exportData(List<Student> students);
 }

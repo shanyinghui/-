@@ -59,6 +59,9 @@
                             onclick="xadmin.open('添加用户','./jrInsClasses',600,400)"><i
                             class="layui-icon"></i>添加
                     </button>
+                    <button class="layui-btn" id="import"><i class="layui-icon"></i>批量导入</button>
+                    <button class="layui-btn" onclick="exportData()"><i class="layui-icon"></i>导出
+                    </button>
                 </div>
                 <div class="layui-card-body ">
                     <table class="layui-hide" id="demo" lay-filter="test"></table>
@@ -74,10 +77,12 @@
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script th:inline="none">
-    layui.use(['table', 'form'], function () {
-        var table = layui.table;
+    var table;
+    layui.use(['table', 'form',"upload"], function () {
+        table = layui.table;
         var form = layui.form;
         var $ = layui.jquery;
+        var upload = layui.upload;
         //展示已知数据
         table.render({
             url: '/selAllClassess',
@@ -92,7 +97,7 @@
                 {field: 'headmaster', title: '班主任'},
                 {field: 'teacher', title: '老师'},
                 {field: 'headmaster', title: '班主任'},
-                {field:'cycle_progress',title:'教学周期'},
+                {field: 'cycle_progress', title: '教学周期'},
                 {
                     title: '查看班干部',
                     templet:
@@ -106,6 +111,7 @@
             limits: [1, 7, 10],
             limit: 10
         });
+
         //搜索
         $("#search").click(function () {
             var class_name = $('#class_name').val();
@@ -121,6 +127,22 @@
                     curr: 1
                 }
             })
+        });
+        upload.render({ //允许上传的文件后缀
+            elem: '#import'
+            , url: '/importClassExcel'
+            , accept: 'file' //普通文件
+            , exts: 'xlsx|xls'//上传文件格式
+            , done: function (res) {
+                layer.msg(res.msg, {
+                    btn: ['确定'],
+                    btnAlign: 'c',
+                    time: 20000,
+                    btn1: function (index, layero) {
+                        location.reload();
+                    }
+                });
+            }
         });
 
         //监听行工具事件
@@ -158,6 +180,73 @@
             }
         })
     });
+
+    //批量删除
+    function delAll() {
+        var checkStatus = table.checkStatus('classesTable');
+        var ids = new Array();
+        $(checkStatus.data).each(function (i, o) {//o即为表格中一行的数据
+            ids.push(o.class_id);
+        });
+        if (ids.length == 0) {
+            layer.msg('请至少选择一个！');
+        } else {
+            layer.confirm('确定删除吗？', function (index) {
+                $.ajax({
+                    url: "/delMoreClasses",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        class_id: ids
+                    },
+                    traditional: true,
+                    success: function (result) {
+                        if (result.code == 0) {
+                            layer.msg('删除成功！');
+                            layer.close(index);
+                            table.reload('classesTable', {
+                                url: '/selAllClassess',
+                                page: {
+                                    curr: 1 //重新从第 1 页开始
+                                }
+                            });
+                        } else {
+                            layer.msg("对不起，系统出现故障！");
+                        }
+                    }
+                })
+            });
+        }
+    }
+
+    function exportData() {
+        var checkStatus = table.checkStatus('classesTable');
+        var ids = new Array();
+        $(checkStatus.data).each(function (i, o) {//o即为表格中一行的数据
+            ids.push(o);
+        });
+        if (ids.length == 0) {
+            layer.msg('请至少选择一个！');
+        } else {
+            $.ajax({
+                url: "/exportClassData",
+                type: "post",
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify(ids),
+                traditional: true,
+                success: function (result) {
+                    if (result.code == 0) {
+                        layer.msg("已导出到桌面，请点击查看！");
+                    } else {
+                        layer.msg("对不起，系统出现故障！");
+                    }
+
+
+                }
+            });
+        }
+    }
 </script>
 
 
