@@ -1,7 +1,9 @@
 package com.buba.stuinfomanager.service;
 
 import com.buba.stuinfomanager.pojo.Classes;
+import com.buba.stuinfomanager.pojo.Student;
 import com.buba.stuinfomanager.pojo.Ws;
+import com.buba.stuinfomanager.util.ResultUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
@@ -23,4 +25,6 @@ public interface MrwsService {
     Ws selWsById(String wid);
     //查询所有班级
     List<Classes> selAllClasses();
+    //导出卫生
+    ResultUtil exportData(List<Ws> students);
 }
