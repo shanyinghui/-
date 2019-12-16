@@ -85,4 +85,5 @@
             #{stu_id}
         </foreach>
     </delete>
+
 </mapper>

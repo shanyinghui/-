@@ -12,6 +12,7 @@ import com.github.pagehelper.PageInfo;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -77,10 +78,10 @@ public class StudentServiceImpl implements StudentService {
     public ResultUtil importExcel(MultipartFile file) {
         try {
             InputStream in = file.getInputStream();
-            Workbook wb = new XSSFWorkbook(in);
+            Workbook wb = WorkbookFactory.create(in);
             Sheet sheet = wb.getSheetAt(0);
             int lastRowNum = sheet.getLastRowNum();
-            for (int i = 1; i <= lastRowNum; i++) {
+            for (int i = 2; i <= lastRowNum; i++) {
                 Row row = sheet.getRow(i);
                 Student student = new Student();
                 student.setStu_num(MyUtil.numOfImport(row.getCell(0)));
