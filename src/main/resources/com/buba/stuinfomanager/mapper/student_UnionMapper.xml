@@ -4,8 +4,11 @@
 <mapper namespace="com.buba.stuinfomanager.mapper.Student_UnionMapper">
     <select id="selStu_UnionStu" parameterType="java.lang.Integer"
             resultType="com.buba.stuinfomanager.pojo.Student">
-        select * from tb_student where dept_id = #{department_id}
+        select * from tb_student
         <where>
+            <if test="department_id != null and department_id != ''">
+                dept_id = #{department_id}
+            </if>
             <if test="name != null and name != ''">
                 and name like CONCAT('%',CONCAT(#{name},'%'))
             </if>
@@ -20,5 +23,8 @@
     <select id="selOneStu_UnionStu" parameterType="java.lang.Integer"
             resultType="com.buba.stuinfomanager.pojo.Student">
         select * from tb_student where stu_id = #{stu_id}
+    </select>
+    <select id="selAllNoStu_UnionStu" resultType="com.buba.stuinfomanager.pojo.Student">
+        select * from tb_student where dept_id = 0
     </select>
 </mapper>

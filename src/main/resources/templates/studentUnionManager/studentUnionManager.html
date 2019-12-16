@@ -57,7 +57,7 @@
                             class="layui-icon"></i>批量删除
                     </button>
                     <button class="layui-btn"
-                            onclick="xadmin.open('添加用户','./jrInsClasses',600,400)"><i
+                            onclick="xadmin.open('添加用户','./jrInsStu_Union',600,400)"><i
                             class="layui-icon"></i>添加
                     </button>
                 </div>
@@ -113,12 +113,11 @@
 
         //搜索
         $("#search").click(function () {
-            var department_id = $('#department_id').val();
             var name = $('#name').val();
             var strsex = $('#strsex').val();
             table.reload('studentUnionTable', {
                 where: {
-                    department_id: department_id,
+                    department_id: $('#department_id').val(),
                     name: name,
                     strsex: strsex
                 },
@@ -130,9 +129,35 @@
 
         //监听行工具事件
         table.on('tool(test)', function (obj) {
-            var id = obj.data.stu_id;
+            if (obj.event === 'del') {
+                layer.confirm('确定删除"' + obj.data.name + '"吗？', function (index) {
+                    $.ajax({
+                        url: "/updStu_Union",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            stu_id: obj.data.stu_id,
+                            dept_id : 0
+                        },
+                        success: function (result) {
+                            if (result.code == "200") {
+                                layer.msg('删除成功！');
+                                layer.close(index);
+                                table.reload('studentUnionTable', {
+                                    url: '/selStu_UnionStu?department_id=' + $('#department_id').val(),
+                                    page: {
+                                        curr: 1 //重新从第 1 页开始
+                                    }
+                                });
+                            } else {
+                                layer.msg('删除失败！');
+                            }
+                        }
+                    })
+                });
+            }
             if (obj.event === "edit") {
-                xadmin.open('修改用户', '/selOneStu_UnionStu?stu_id=' + id, 600, 600);
+                xadmin.open('修改用户', '/selOneStu_UnionStu?stu_id=' + obj.data.stu_id, 600, 600);
             }
         })
     });

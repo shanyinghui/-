@@ -55,6 +55,11 @@ public class ClassesServiceImpl implements ClassesService {
     }
 
     @Override
+    public void delMoreClasses(String[] ids) {
+        classesMapper.delMoreClasses(ids);
+    }
+
+    @Override
     public void updClasses(Classes classes) {
         classesMapper.updClasses(classes);
     }
@@ -73,4 +78,10 @@ public class ClassesServiceImpl implements ClassesService {
     public void delStuCard(CardStu delStuCard) {
         classesMapper.delStuCard(delStuCard);
     }
+
+    @Override
+    public CardStu selOneCardStudent(Integer stu_id) {
+        return classesMapper.selOneCardStudent(stu_id);
+    }
+
 }

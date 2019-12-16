@@ -36,4 +36,9 @@ public class Student_UnionServiceImpl implements Student_UnionService {
     public Student selOneStu_UnionStu(Integer stu_id) {
         return student_unionMapper.selOneStu_UnionStu(stu_id);
     }
+
+    @Override
+    public List<Student> selAllNoStu_UnionStu() {
+        return student_unionMapper.selAllNoStu_UnionStu();
+    }
 }
