@@ -1,12 +1,14 @@
 package com.buba.stuinfomanager.controller;
 
 import com.buba.stuinfomanager.pojo.Classes;
+import com.buba.stuinfomanager.pojo.Student;
 import com.buba.stuinfomanager.pojo.Ws;
 import com.buba.stuinfomanager.service.MrwsService;
 import com.buba.stuinfomanager.util.ResultUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -62,6 +64,12 @@ public class MrwsController {
             return true;
         }
         return false;
+    }
+    //导出
+    @RequestMapping(value = "/wsManager/exportData")
+    @ResponseBody
+    public ResultUtil exportData(@RequestBody List<Ws> ws){
+        return mrwsService.exportData(ws);
     }
     //进入到修改页面
     @RequestMapping(value = "/wsManager/toEdit")
