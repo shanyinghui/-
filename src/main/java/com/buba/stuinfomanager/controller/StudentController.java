@@ -111,7 +111,6 @@ public class StudentController {
     @ResponseBody
     @Log
     public ResultUtil deleteMore(@RequestParam(value="stuids")String[] ids) {
-        System.out.println(ids);
         try {
             studentService.deleteMore(ids);
         }catch (Exception e){

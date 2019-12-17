@@ -63,8 +63,8 @@
     </update>
 
     <insert id="add">
-        insert into tb_student (stu_num,name,classid,nowClassId,birthday,sex,home,phone,password,familyStatus,market,familyCommunication)
-            value(#{stu_num},#{name},#{classid},#{nowClassId},#{birthday},#{sex},#{home},#{phone},"123456",#{familyStatus},#{market},#{familyCommunication})
+        insert into tb_student (stu_num,name,classid,nowClassId,birthday,sex,home,phone,password,familyStatus,market,familyCommunication,dept_id)
+            value(#{stu_num},#{name},#{classid},#{nowClassId},#{birthday},#{sex},#{home},#{phone},"123456",#{familyStatus},#{market},#{familyCommunication},0)
     </insert>
 
     <select id="selectMaxStu_num" resultType="String">
