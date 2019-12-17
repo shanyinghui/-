@@ -47,9 +47,14 @@ public class ScoreController {
     public void addScore(@RequestBody Score score,@PathVariable("studentid")String studentid){
          scoreService.addScore(score);
         int length = score.getClasses().length();
-         if((score.getInterviewresult()+score.getSkillscores())/2 < 60 && !(score.getClasses().substring(length-1,length).equals('b'))){
-             int downClassesId = scoreService.selDownClassesId(score.getClasses());
-             scoreService.updClasses(downClassesId,studentid);
+         if(!(score.getClasses().substring(length-1,length).equals('b'))  ){
+             if(score.getInterviewresult() < 60 || score.getSkillscores() < 60){
+                 int downClassesId = scoreService.selDownClassesId(score.getClasses());
+                 scoreService.updClasses(downClassesId,studentid);
+             }
+         }
+         if(Integer.parseInt(score.getPeriod()) < 20){
+             scoreService.updPer_progress(Integer.parseInt(score.getPeriod())+1,studentid);
          }
     }
 
@@ -63,6 +68,8 @@ public class ScoreController {
     @ResponseBody
     @RequestMapping("/selScoreByStuidPeriod")
     public Boolean selScoreByStuidPeriod(String studentid,String period){
+        System.out.println(studentid);
+        System.out.println(period);
         Boolean bool = scoreService.selScoreByStuidPeriod(studentid, period);
         return bool;
     }

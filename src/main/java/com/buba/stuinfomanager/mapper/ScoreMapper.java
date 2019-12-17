@@ -35,4 +35,7 @@ public interface ScoreMapper {
 
     //查询降班id
     public int selDownClassesId(String class_name);
+
+    //修改周期进度
+    public void updPer_progress(Integer period , String studentid);
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.buba.stuinfomanager.mapper.LoginMapper">
+    <!--学生登录-->
+    <select id="stuLogin" resultType="com.buba.stuinfomanager.pojo.Student">
+        select * from tb_student where stu_num = #{usernum}
+    </select>
+    <!--教师登录-->
+    <select id="teaLogin" resultType="com.buba.stuinfomanager.pojo.Teacher">
+        select * from tb_teacher where t_num = #{usernum}
+    </select>
+    <update id="editTeaPwd">
+        update tb_teacher set password = #{pwd} where t_id = #{id}
+    </update>
+    <update id="editStuPwd">
+        update tb_student set password = #{pwd} where stu_id = #{id}
+    </update>
+</mapper>

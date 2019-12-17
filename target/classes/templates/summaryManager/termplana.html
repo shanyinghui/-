@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>总结进度展示</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+</head>
+<body>
+<div class="x-nav">
+          <span class="layui-breadcrumb">
+            <a href="">首页</a>
+            <a href="">学生每日总结管理</a>
+            <a>
+              <cite>学生未完成总结信息</cite></a>
+          </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+</div>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                </div>
+                <div class="layui-card-body layui-table-body layui-table-main">
+                    <table class="layui-table layui-form" id="demo" lay-filter="test"></table>
+
+                    <script id="toolbarDemo" type="text/html">
+                        <div class="layui-btn-container">
+                            <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+                        </div>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+
+    layui.use('table', function(){
+        var table = layui.table;
+        var form = layui.form;
+
+
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            ,url: '/summary/selectSummaryAll' //数据接口
+            ,page: true //开启分页
+            ,event:true
+            ,cols: [
+                      [ //表头
+                {field:'sum_id', title: 'ID'}
+                ,{field:'sum_time',  title: '总结时间'}
+                ,{field:'sum_state', title: '总结状态',templet:'<div><span >未总结</span></div>'}
+                ,{fixed:'right', title:'操作', toolbar: '#toolbarDemo',width:150}
+                ]
+            ]
+        });
+
+        /* 点击添加按钮 */
+        table.on('tool(test)', function(obj){
+            /*console.log(obj.data);*/
+            if(obj.event=="add"){
+                method = "add";
+                layer.open({
+                    type: 2,
+                    title: ['<strong>学生每日总结添加信息</strong>', 'font-size: 18px;'],
+                    shadeClose: false,
+                    shade: [0.3, '#000000'],
+                    maxmin: true,
+                    area: ['900px', '500px'],
+                    content: '/summary/layeropen',
+                    success: function (layero, index) {
+                        // 获取子页面的iframe
+                        var iframe = window['layui-layer-iframe' + index];
+                        // 向子页面的全局函数child传参
+                        iframe.child(obj.data);
+                    }
+                });
+            }
+        });
+
+    });
+
+</script>
+</html>

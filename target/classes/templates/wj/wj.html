@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>违纪情况</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <!--<meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>-->
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        #demo {
+            overflow-x: hidden;
+        }
+
+        /* 禁止刷新后出现横向滚动条 */
+    </style>
+</head>
+<body>
+<div class="x-nav">
+          <span class="layui-breadcrumb">
+            <a href="#">首页</a>
+            <a href="#">违纪信息管理</a>
+          </span>
+</div>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <div class="layui-inline layui-show-xs-block">
+                        <input class="layui-input" autocomplete="off" placeholder="开始日" name="starttime" id="start"></div>
+                    <div class="layui-inline layui-show-xs-block">
+                        <input class="layui-input" autocomplete="off" placeholder="截止日" name="endtime" id="end"></div>
+                    <div class="layui-inline layui-show-xs-block">
+                        <form class="layui-form layui-col-space5">
+                            <div class="layui-inline layui-show-xs-block">
+                                <select name="classes" id="classes">
+                                    <option value="" selected="" id="n"></option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="layui-inline layui-show-xs-block">
+                        <input type="text" id="studentname" placeholder="请输入学生姓名" class="layui-input">
+                    </div>
+                    <div class="layui-inline layui-show-xs-block">
+                        <button class="layui-btn" id="search"><i class="layui-icon">&#xe615;</i></button>
+                    </div>
+                </div>
+                <div class="layui-card-header" shiro:hasRole="teacher">
+                    <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除
+                    </button>
+                    <button class="layui-btn" onclick="xadmin.open('添加用户','/addWj',600,600)"><i
+                            class="layui-icon"></i>添加
+                    </button>
+                    <button class="layui-btn" onclick="exportData()"><i class="layui-icon"></i>导出</button>
+                </div>
+                <div class="layui-card-body ">
+                    <table class="layui-hide" id="demo" lay-filter="test"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script id="barDemo" type="text/html">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script th:inline="javascript">
+    layui.use('laydate',
+        function () {
+            var laydate = layui.laydate;
+
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#start' //指定元素
+            });
+
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#end' //指定元素
+            });
+
+        });
+    var table;
+    layui.use(['table', 'form'], function () {
+         table = layui.table;
+        var form = layui.form;
+        $ = layui.jquery;
+        //展示已知数据
+        table.render({
+            url: '/wj/selAllWj',
+            title: '违纪详情',
+            toolbar: '#toolbarDemo',
+            id: "wjTable",
+            elem: '#demo',
+            cols: [[ //标题栏
+                {type: 'checkbox'},
+                {field: 'id', title: '编号', hide: true},
+                {field: 'studentname', title: '姓名'},
+                {field: 'classes', title: '班级'},
+                {field: 'wjdate', title: '违纪日期'},
+                {field: 'typename', title: '违纪类型', templet: '<div>{{d.wjType.typename}}</div>'},
+                {field: 'notes', title: '备注'},
+                {title: '操作', toolbar: '#barDemo'}
+            ]],
+            skin: 'line', //表格风格
+            page: true,
+            limits: [3, 6, 9],
+            limit: 9
+        });
+        var data = [[${classes}]];
+        var html1 = "";
+        for(var i=0;i<data.length;i++){
+            html1 += '<option value="'+data[i].class_name+'">'+data[i].class_name+'</option>'
+        }
+        $("#n").after(html1);
+        form.render();
+        //搜索
+        $("#search").click(function () {
+            var studentname = $('#studentname').val();
+            var classes = $('#classes').val();
+            var endtime = $('#end').val();
+            var starttime =$('#start').val();
+            table.reload('wjTable', {
+                where: {
+                    studentname : studentname,
+                    classes : classes,
+                    endtime : endtime,
+                    starttime : starttime
+                },
+                page: {
+                    curr: 1
+                }
+            })
+        })
+
+        //监听行工具事件
+        table.on('tool(test)', function (obj) {
+            var id = obj.data.id;
+            if(obj.event === 'del'){
+                layer.confirm('确定删除吗？', function(index){
+                    $.ajax({
+                        url:"wj/delWj",
+                        type:"post",
+                        dataType:"json",
+                        data:{
+                            id:id
+                        },
+                        success:function(){
+                        }
+                    })
+                    layer.msg('删除成功！');
+                    layer.close(index);
+                    table.reload('wjTable', {
+                        url:'/wj/selAllWj',
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                    });
+                });
+            }
+            if (obj.event === "edit") {
+                xadmin.open('添加用户','/wj/selWjById?id='+id,600,600);
+            }
+        })
+    });
+    function exportData() {
+        var checkStatus = table.checkStatus('wjTable');
+        var ids =new Array();
+        $(checkStatus.data).each(function (i, o) {//o即为表格中一行的数据
+            ids.push(o);
+        });
+        if(ids.length==0){
+            layer.msg('请至少选择一个！');
+        }else{
+            $.ajax({
+                url:"/wj/exportData",
+                type:"post",
+                dataType:"json",
+                contentType:"application/json",
+                data:JSON.stringify(ids),
+                traditional: true,
+                success:function(result){
+                    if(result.code==0){
+                        layer.msg("已导出到桌面，请点击查看！");
+                    }else{
+                        layer.msg("对不起，系统出现故障！");
+                    }
+
+
+                }
+            });
+        }
+    }
+</script>
+
+
+</html>
