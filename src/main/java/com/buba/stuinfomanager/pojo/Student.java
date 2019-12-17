@@ -5,8 +5,9 @@ import java.io.Serializable;
 public class Student implements Serializable {
     private Integer stu_id;
     private String stu_num;
-    private Integer classid; //入学班级
-    private String nowClassId; //现在班级
+    private Integer classid;
+    private Integer nowClassId;
+
     private String name;
     private String sex;
     private String birthday;
@@ -16,8 +17,11 @@ public class Student implements Serializable {
     private String market; //市场部
     private String password; //登录密码
     private String familyCommunication; //家长沟通情况
-    private String cycle_progress; //学期进度
+    private Integer cycle_progress; //学期总进度
     private Integer dept_id; //部门
+    private Student_Union student_union;
+    private Classes classes; //入学班级
+    private Classes nowClasses; //现在班级
 
     public Integer getStu_id() {
         return stu_id;
@@ -25,14 +29,6 @@ public class Student implements Serializable {
 
     public void setStu_id(Integer stu_id) {
         this.stu_id = stu_id;
-    }
-
-    public String getStu_num() {
-        return stu_num;
-    }
-
-    public void setStu_num(String stu_num) {
-        this.stu_num = stu_num;
     }
 
     public Integer getClassid() {
@@ -43,12 +39,36 @@ public class Student implements Serializable {
         this.classid = classid;
     }
 
-    public String getNowClassId() {
+    public Integer getNowClassId() {
         return nowClassId;
     }
 
-    public void setNowClassId(String nowClassId) {
+    public void setNowClassId(Integer nowClassId) {
         this.nowClassId = nowClassId;
+    }
+
+    public String getStu_num() {
+        return stu_num;
+    }
+
+    public void setStu_num(String stu_num) {
+        this.stu_num = stu_num;
+    }
+
+    public Classes getClasses() {
+        return classes;
+    }
+
+    public void setClasses(Classes classes) {
+        this.classes = classes;
+    }
+
+    public Classes getNowClasses() {
+        return nowClasses;
+    }
+
+    public void setNowClasses(Classes nowClasses) {
+        this.nowClasses = nowClasses;
     }
 
     public String getName() {
@@ -123,11 +143,11 @@ public class Student implements Serializable {
         this.familyCommunication = familyCommunication;
     }
 
-    public String getCycle_progress() {
+    public Integer getCycle_progress() {
         return cycle_progress;
     }
 
-    public void setCycle_progress(String cycle_progress) {
+    public void setCycle_progress(Integer cycle_progress) {
         this.cycle_progress = cycle_progress;
     }
 
@@ -139,13 +159,24 @@ public class Student implements Serializable {
         this.dept_id = dept_id;
     }
 
+    public Student_Union getStudent_union() {
+        return student_union;
+    }
+
+    public void setStudent_union(Student_Union student_union) {
+        this.student_union = student_union;
+    }
+
+
     @Override
     public String toString() {
         return "Student{" +
                 "stu_id=" + stu_id +
                 ", stu_num='" + stu_num + '\'' +
                 ", classid=" + classid +
-                ", nowClassId='" + nowClassId + '\'' +
+                ", nowClassId=" + nowClassId +
+                ", classes=" + classes +
+                ", nowClasses=" + nowClasses +
                 ", name='" + name + '\'' +
                 ", sex='" + sex + '\'' +
                 ", birthday='" + birthday + '\'' +
@@ -157,6 +188,7 @@ public class Student implements Serializable {
                 ", familyCommunication='" + familyCommunication + '\'' +
                 ", cycle_progress='" + cycle_progress + '\'' +
                 ", dept_id=" + dept_id +
+                ", student_union=" + student_union +
                 '}';
     }
 }

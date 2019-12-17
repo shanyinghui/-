@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.buba.stuinfomanager.mapper.MrwsMapper">
+    <resultMap id="wsglResult" type="com.buba.stuinfomanager.pojo.Ws">
+        <id column="hid" property="wid"></id>
+        <result column="hdate" property="wdate"></result>
+        <result column="hscore" property="wsroce"></result>
+        <association property="classes" javaType="com.buba.stuinfomanager.pojo.Classes">
+            <id property="class_id" column="class_id" />
+            <result property="class_name" column="class_name" />
+            <result property="headmaster" column="headmaster" />
+            <result property="teacher" column="teacher" />
+            <result property="cycle_progress" column="cycle_progress" />
+        </association>
+    </resultMap>
+    <!--查询所有班级的卫生情况-->
+    <select id="selAllWs" resultMap="wsglResult">
+        select * from tb_ws ws left join tb_classes cs on ws.bjid = cs.class_id where 1=1
+        <if test="begintime != null and begintime != ''">
+            and hdate &gt;= #{begintime}
+        </if>
+        <if test="endtime != null and endtime != ''">
+            and hdate &lt;= #{endtime}
+        </if>
+        <if test="id != null and id != ''">
+            and ws.bjid = #{id}
+        </if>
+    </select>
+
+    <!--查询当前卫生情况-->
+    <select id="selWsById" resultMap="wsglResult">
+        select * from tb_ws ws left join tb_classes cs on ws.bjid = cs.class_id where hid = #{wid}
+    </select>
+    <!--添加卫生情况-->
+    <insert id="addWs">
+        insert into tb_ws (hdate,hscore,bjid) VALUES (#{date},#{wscore},#{class_id})
+    </insert>
+    <!--修改卫生情况-->
+    <update id="updWs">
+        update tb_ws set hscore = #{wscore},bjid = #{class_id} where hid = #{wid}
+    </update>
+    <!--删除卫生情况-->
+    <delete id="delWs">
+        delete from tb_ws where hid = #{wid}
+    </delete>
+    <!--查询所有班级-->
+    <select id="selAllClasses" resultType="com.buba.stuinfomanager.pojo.Classes">
+        select * from tb_classes
+    </select>
+</mapper>
