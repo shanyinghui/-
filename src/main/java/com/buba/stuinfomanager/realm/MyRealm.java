@@ -4,16 +4,13 @@ package com.buba.stuinfomanager.realm;
 import com.buba.stuinfomanager.pojo.Student;
 import com.buba.stuinfomanager.pojo.Teacher;
 import com.buba.stuinfomanager.service.LoginService;
-import com.buba.stuinfomanager.util.WebUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 /**
  *  自定义realm数据源
@@ -28,7 +25,13 @@ public class MyRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        return null;
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        if(principalCollection.getPrimaryPrincipal() instanceof Student){
+            info.addRole("student");
+        }else{
+            info.addRole("teacher");
+        }
+        return info;
     }
 
 
@@ -72,7 +75,6 @@ public class MyRealm extends AuthorizingRealm {
              * 第二个参数必须放密码，
              * 第三个参数放 当前realm的名字，因为可能有多个realm*/
             AuthenticationInfo authcInfo=new SimpleAuthenticationInfo(tea, tea.getPassword(), this.getName());
-            //AuthenticationInfo authcInfo=new SimpleAuthenticationInfo(user,user.getPassword(),new MySimpleByteSource(account), this.getName());
 
             //清之前的授权信息
             super.clearCachedAuthorizationInfo(authcInfo.getPrincipals());

@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <meta charset="UTF-8">
     <title>每日卫生管理详情</title>
@@ -49,7 +51,7 @@
                         <button class="layui-btn" id="search"><i class="layui-icon">&#xe615;</i></button>
                     </div>
                 </div>
-                <div class="layui-card-header">
+                <div class="layui-card-header" shiro:hasRole="teacher">
                     <button class="layui-btn" onclick="xadmin.open('添加用户','/wsManager?nowPage=add',600,400)"><i class="layui-icon"></i>添加</button>
                     <button class="layui-btn" onclick="exportData()"><i class="layui-icon"></i>导出</button>
                 </div>

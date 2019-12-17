@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
     <head>
         <meta charset="UTF-8">
         <title>老师详情</title>
@@ -36,7 +38,7 @@
                                 <button class="layui-btn" id="search"><i class="layui-icon">&#xe615;</i></button>
                             </div>
                     </div>
-                    <div class="layui-card-header">
+                    <div class="layui-card-header" shiro:hasRole="teacher">
                         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
                         <button class="layui-btn" onclick="xadmin.open('添加老师','/teacherInfo/toAdd',800,500)"><i class="layui-icon"></i>添加</button>
                         <button class="layui-btn" onclick="exportData()"><i class="layui-icon"></i>导出</button>
