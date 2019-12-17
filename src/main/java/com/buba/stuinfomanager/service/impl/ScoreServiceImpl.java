@@ -101,4 +101,9 @@ public class ScoreServiceImpl implements ScoreService {
             return ResultUtil.error("导出失败！");
         }
     }
+
+    @Override
+    public void updPer_progress(Integer period, String studentid) {
+        scoreMapper.updPer_progress(period,studentid);
+    }
 }

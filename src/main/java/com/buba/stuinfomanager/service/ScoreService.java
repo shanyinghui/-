@@ -36,4 +36,6 @@ public interface ScoreService {
     public int selDownClassesId(String class_name);
 
     ResultUtil exportData(List<Score> score);
+
+    public void updPer_progress(Integer period , String studentid);
 }

@@ -22,7 +22,7 @@ public class Student implements Serializable {
     private Student_Union student_union;
     private Classes classes; //入学班级
     private Classes nowClasses; //现在班级
-
+    private Integer per_progress;
     public Integer getStu_id() {
         return stu_id;
     }
@@ -168,6 +168,14 @@ public class Student implements Serializable {
     }
 
 
+    public Integer getPer_progress() {
+        return per_progress;
+    }
+
+    public void setPer_progress(Integer per_progress) {
+        this.per_progress = per_progress;
+    }
+
     @Override
     public String toString() {
         return "Student{" +
@@ -175,8 +183,6 @@ public class Student implements Serializable {
                 ", stu_num='" + stu_num + '\'' +
                 ", classid=" + classid +
                 ", nowClassId=" + nowClassId +
-                ", classes=" + classes +
-                ", nowClasses=" + nowClasses +
                 ", name='" + name + '\'' +
                 ", sex='" + sex + '\'' +
                 ", birthday='" + birthday + '\'' +
@@ -186,9 +192,12 @@ public class Student implements Serializable {
                 ", market='" + market + '\'' +
                 ", password='" + password + '\'' +
                 ", familyCommunication='" + familyCommunication + '\'' +
-                ", cycle_progress='" + cycle_progress + '\'' +
+                ", cycle_progress=" + cycle_progress +
                 ", dept_id=" + dept_id +
                 ", student_union=" + student_union +
+                ", classes=" + classes +
+                ", nowClasses=" + nowClasses +
+                ", per_progress=" + per_progress +
                 '}';
     }
 }

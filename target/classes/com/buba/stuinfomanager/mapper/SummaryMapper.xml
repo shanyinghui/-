@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.buba.stuinfomanager.mapper.SummaryMapper">
+    <resultMap id="summaryResult" type="com.buba.stuinfomanager.pojo.Summary">
+        <id column="sum_id" property="sum_id"></id>
+        <result column="sum_state" property="sum_state"></result>
+        <result column="sum_time" property="sum_time"></result>
+        <result column="class_name" property="class_name"></result>
+        <result column="teacher" property="tea_name"></result>
+        <result column="name" property="stu_name"></result>
+        <result column="stu_num" property="stu_num"></result>
+    </resultMap>
+    <sql id="summary_line">
+        sum_time,sum_plan,sum_techGrasp,sum_techExpand,sum_growth,
+        sum_break,sum_shortcoming,sum_eduRec_army,sum_eduRec_tradition,
+        sum_eduRec_school,sum_eduRec_workplace,sum_eduRec_politics,sum_eduRec_thoughts,sum_state,stu_id
+    </sql>
+
+    <insert id="insertSummary" parameterType="com.buba.stuinfomanager.pojo.Summary">
+        INSERT INTO tb_summary (<include refid="summary_line"></include>)
+        VALUES (
+            #{sum_time},#{sum_plan},#{sum_techGrasp},#{sum_techExpand},#{sum_growth},#{sum_break},#{sum_shortcoming},#{sum_eduRec_army},
+            #{sum_eduRec_tradition},#{sum_eduRec_school},#{sum_eduRec_workplace},#{sum_eduRec_politics},#{sum_eduRec_thoughts},#{sum_state},
+            #{student.stu_id}
+        )
+    </insert>
+
+    <select id="selectStudentBuId" parameterType="com.buba.stuinfomanager.pojo.Student" resultType="com.buba.stuinfomanager.pojo.Student">
+        select * from tb_student where stu_id = #{stu_id}
+    </select>
+
+    <select id="selectSummaryCount" parameterType="com.buba.stuinfomanager.pojo.Summary" resultType="int">
+        select count(*)  from tb_summary where sum_state = #{sum_state} and stu_id = #{student.stu_id}
+    </select>
+
+    <select id="selectSummaryCountTeacher" parameterType="com.buba.stuinfomanager.pojo.Summary" resultType="int">
+      SELECT COUNT(sum.sum_id)
+      FROM tb_summary sum,tb_student stu,tb_classes cla
+      WHERE sum.stu_id IN (
+        SELECT stu_id FROM tb_student WHERE classid IN (SELECT class_id FROM tb_classes WHERE teacher in (SELECT name FROM tb_teacher WHERE t_id = #{teacher.t_id}))
+      ) AND sum.sum_state = #{sum_state} AND sum.stu_id = stu.stu_id AND stu.classid = cla.class_id
+    </select>
+
+    <select id="selectSummaryAll" parameterType="com.buba.stuinfomanager.pojo.Summary" resultType="com.buba.stuinfomanager.pojo.Summary">
+        select *  from tb_summary where stu_id = #{student.stu_id} and sum_state = #{sum_state}
+    </select>
+
+    <update id="replenishSummary" parameterType="com.buba.stuinfomanager.pojo.Summary">
+        update tb_summary set sum_plan = #{sum_plan},sum_techGrasp = #{sum_techGrasp},sum_techExpand = #{sum_techExpand},
+        sum_growth = #{sum_growth},sum_break = #{sum_break},sum_shortcoming = #{sum_shortcoming},sum_eduRec_army =#{sum_eduRec_army},
+        sum_eduRec_tradition = #{sum_eduRec_tradition},sum_eduRec_school = #{sum_eduRec_school},sum_eduRec_workplace = #{sum_eduRec_workplace},
+        sum_eduRec_politics = #{sum_eduRec_politics},sum_state = #{sum_state} where sum_id = #{sum_id}
+    </update>
+
+    <update id="teacherUpdateSummary" parameterType="com.buba.stuinfomanager.pojo.Summary">
+        update tb_summary set sum_state = #{sum_state},tea_id = #{teacher.t_id} where sum_id = #{sum_id}
+    </update>
+
+    <select id="selectVerify" parameterType="com.buba.stuinfomanager.pojo.Summary" resultType="com.buba.stuinfomanager.pojo.Summary">
+        select * from tb_summary where sum_time = #{sum_time} and stu_id = #{student.stu_id}
+    </select>
+
+    <select id="selectVerifystu" parameterType="com.buba.stuinfomanager.pojo.Summary" resultType="com.buba.stuinfomanager.pojo.Summary">
+        select * from tb_summary where sum_time = #{sum_time} and stu_id != #{student.stu_id}
+    </select>
+
+    <insert id="saveSummaryforVerify" parameterType="com.buba.stuinfomanager.pojo.Summary">
+        INSERT INTO tb_summary (sum_time,sum_state,stu_id) VALUES (#{sum_time},#{sum_state},#{student.stu_id})
+    </insert>
+
+    <select id="selectSummaryTeacherAll" parameterType="com.buba.stuinfomanager.pojo.Summary" resultMap="summaryResult">
+         SELECT sum.sum_id,sum.sum_time,stu.name,stu.stu_num,cla.class_name,cla.teacher,sum.sum_state
+         FROM tb_summary sum,tb_student stu,tb_classes cla
+         WHERE sum.stu_id IN (
+             SELECT stu_id FROM tb_student WHERE classid IN (SELECT class_id FROM tb_classes WHERE teacher in (SELECT name FROM tb_teacher WHERE t_id = #{teacher.t_id}))
+         ) AND sum.sum_state = #{sum_state} AND sum.stu_id = stu.stu_id AND stu.classid = cla.class_id
+    </select>
+
+    <delete id="TeacherDeleteSummary" parameterType="com.buba.stuinfomanager.pojo.Summary">
+        delete from tb_summary where sum_id = #{sum_id}
+    </delete>
+
+    <select id="pmgressbar" parameterType="com.buba.stuinfomanager.pojo.Student" resultType="com.buba.stuinfomanager.pojo.Student">
+        select * from tb_student where stu_id = #{stu_id}
+    </select>
+
+    <update id="updateStudentcycle_progress" parameterType="com.buba.stuinfomanager.pojo.Summary">
+        UPDATE tb_student SET cycle_progress = cycle_progress+1 WHERE stu_id = #{student.stu_id}
+    </update>
+
+    <select id="selectStudentByStu_num" parameterType="com.buba.stuinfomanager.pojo.Summary" resultType="com.buba.stuinfomanager.pojo.Student">
+        SELECT * FROM tb_student WHERE stu_num = #{stu_num}
+    </select>
+
+</mapper>
