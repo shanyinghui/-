@@ -11,10 +11,10 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 15/12/2019 18:41:41
+ Date: 17/12/2019 10:52:06
 */
 
-SET NAMES utf8;
+SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
@@ -29,7 +29,7 @@ CREATE TABLE `stu_card`  (
   INDEX `card_id`(`card_id`) USING BTREE,
   CONSTRAINT `stu_card_ibfk_1` FOREIGN KEY (`stu_id`) REFERENCES `tb_student` (`stu_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `stu_card_ibfk_2` FOREIGN KEY (`card_id`) REFERENCES `tb_class_card` (`card_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for tb_class_card
@@ -37,9 +37,9 @@ CREATE TABLE `stu_card`  (
 DROP TABLE IF EXISTS `tb_class_card`;
 CREATE TABLE `tb_class_card`  (
   `card_id` int(11) NOT NULL,
-  `card_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `card_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   INDEX `card_id`(`card_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tb_class_card
@@ -62,7 +62,7 @@ CREATE TABLE `tb_classes`  (
   `teacher` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '老师',
   `cycle_progress` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '周期进度',
   PRIMARY KEY (`class_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tb_classes
@@ -88,14 +88,14 @@ CREATE TABLE `tb_score`  (
   `skillscores` double DEFAULT NULL COMMENT '技能成绩',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `studentid`(`studentid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tb_score
 -- ----------------------------
-INSERT INTO `tb_score` VALUES (1, 180601, '白伟', '1806a', NULL, 50, 50);
-INSERT INTO `tb_score` VALUES (2, 180602, '齐硕', '1806a', NULL, 60, 60);
-INSERT INTO `tb_score` VALUES (3, 180603, '张三', '1806a', NULL, 40, 40);
+INSERT INTO `tb_score` VALUES (1, 180601, '白伟', '1806a', '2', 50, 50);
+INSERT INTO `tb_score` VALUES (2, 180602, '齐硕', '1806a', '1', 60, 60);
+INSERT INTO `tb_score` VALUES (3, 180603, '张三', '1806a', '2', 40, 40);
 
 -- ----------------------------
 -- Table structure for tb_student
@@ -103,19 +103,19 @@ INSERT INTO `tb_score` VALUES (3, 180603, '张三', '1806a', NULL, 40, 40);
 DROP TABLE IF EXISTS `tb_student`;
 CREATE TABLE `tb_student`  (
   `stu_id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `stu_num` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '学号',
+  `stu_num` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '学号',
   `classid` int(10) NOT NULL COMMENT '入学班级',
   `nowClassId` int(255) NOT NULL COMMENT '现在班级',
-  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '姓名',
-  `sex` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '0:男，1:女',
-  `birthday` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '出生日期',
-  `home` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '籍贯',
-  `phone` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '手机号码',
-  `familyStatus` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '家庭状态',
-  `market` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '市场部',
-  `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '登录密码',
-  `familyCommunication` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '家长沟通情况',
-  `cycle_progress` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '学期进度',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '姓名',
+  `sex` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '0:男，1:女',
+  `birthday` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '出生日期',
+  `home` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '籍贯',
+  `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '手机号码',
+  `familyStatus` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '家庭状态',
+  `market` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '市场部',
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '登录密码',
+  `familyCommunication` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '家长沟通情况',
+  `cycle_progress` int(255) DEFAULT NULL COMMENT '学期进度',
   `dept_id` int(5) DEFAULT NULL COMMENT '学生会部门id',
   PRIMARY KEY (`stu_id`) USING BTREE,
   INDEX `classid`(`classid`) USING BTREE,
@@ -124,14 +124,14 @@ CREATE TABLE `tb_student`  (
   CONSTRAINT `tb_student_ibfk_1` FOREIGN KEY (`classid`) REFERENCES `tb_classes` (`class_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `tb_student_ibfk_2` FOREIGN KEY (`nowClassId`) REFERENCES `tb_classes` (`class_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `tb_student_ibfk_3` FOREIGN KEY (`dept_id`) REFERENCES `tb_student_union` (`department_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tb_student
 -- ----------------------------
-INSERT INTO `tb_student` VALUES (1, '180601', 1, 1, '白伟', '0', '1995-10-04', '安徽省/黄山市/歙县', '13248962571', '良好', '河北市场部', '123456', '', '2', NULL);
-INSERT INTO `tb_student` VALUES (2, '180602', 1, 1, '齐硕', '1', '1990-08-11', '北京市/北京市/门头沟区', '13248962571', '良好', '河北市场部', '123456', NULL, NULL, NULL);
-INSERT INTO `tb_student` VALUES (3, '180603', 1, 1, '张三', '0', '2019-12-03', '安徽省/芜湖市/弋江区', '13248965214', '良好', '豫东市场部', '123456', '', NULL, NULL);
+INSERT INTO `tb_student` VALUES (1, '180601', 1, 3, '白伟', '0', '1995-10-04', '安徽省/黄山市/歙县', '13248962571', '良好', '河北市场部', '123456', '', 3, NULL);
+INSERT INTO `tb_student` VALUES (2, '180602', 1, 1, '齐硕', '1', '1990-08-11', '北京市/北京市/门头沟区', '13248962571', '良好', '河北市场部', '123456', NULL, 1, NULL);
+INSERT INTO `tb_student` VALUES (3, '180603', 1, 1, '张三', '0', '2019-12-03', '安徽省/芜湖市/弋江区', '13248965214', '良好', '豫东市场部', '123456', '', 2, NULL);
 
 -- ----------------------------
 -- Table structure for tb_student_union
@@ -141,7 +141,7 @@ CREATE TABLE `tb_student_union`  (
   `department_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '部门id',
   `department_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '部门名称',
   PRIMARY KEY (`department_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for tb_summary
@@ -161,6 +161,8 @@ CREATE TABLE `tb_summary`  (
   `sum_eduRec_school` int(1) DEFAULT NULL COMMENT '学校文化教育情况： 0 没上； 1上了',
   `sum_eduRec_workplace` int(1) DEFAULT NULL COMMENT '职场文化教育情况： 0 没上； 1上了',
   `sum_eduRec_politics` int(1) DEFAULT NULL COMMENT '政治思想文化教育情况： 0 没上； 1上了',
+  `sum_eduRec_thoughts` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '教育课感悟',
+  `sum_state` int(1) DEFAULT NULL COMMENT '总结状态  0未总结  1已总结  2待审核',
   `stu_id` int(11) DEFAULT NULL COMMENT '外键-学生表主键',
   `tea_id` int(11) DEFAULT NULL COMMENT '外键-教师表主键',
   PRIMARY KEY (`sum_id`) USING BTREE,
@@ -168,7 +170,12 @@ CREATE TABLE `tb_summary`  (
   INDEX `tea_id`(`tea_id`) USING BTREE,
   CONSTRAINT `tb_summary_ibfk_1` FOREIGN KEY (`stu_id`) REFERENCES `tb_student` (`stu_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `tb_summary_ibfk_2` FOREIGN KEY (`tea_id`) REFERENCES `tb_teacher` (`t_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of tb_summary
+-- ----------------------------
+INSERT INTO `tb_summary` VALUES (1, '2019-12-17', '', '', '', '', '', '', 0, 0, 0, 0, 0, '', 1, 1, NULL);
 
 -- ----------------------------
 -- Table structure for tb_teacher
@@ -176,14 +183,14 @@ CREATE TABLE `tb_summary`  (
 DROP TABLE IF EXISTS `tb_teacher`;
 CREATE TABLE `tb_teacher`  (
   `t_id` int(10) NOT NULL AUTO_INCREMENT,
-  `t_num` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '教号',
-  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '教师名字',
-  `birthday` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '出生日期',
-  `home` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '籍贯',
-  `phone` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '联系电话',
-  `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '登录密码',
+  `t_num` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '教号',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '教师名字',
+  `birthday` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '出生日期',
+  `home` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '籍贯',
+  `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '联系电话',
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '登录密码',
   PRIMARY KEY (`t_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tb_teacher
@@ -204,13 +211,13 @@ CREATE TABLE `tb_wj`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `typeid`(`typeid`) USING BTREE,
   CONSTRAINT `tb_wj_ibfk_1` FOREIGN KEY (`typeid`) REFERENCES `tb_wjtype` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tb_wj
 -- ----------------------------
-INSERT INTO `tb_wj` VALUES (1, '2019-12-12', '1806a', '白伟', 1, NULL);
-INSERT INTO `tb_wj` VALUES (2, '2019-12-02', '1806a', '齐硕', 2, NULL);
+INSERT INTO `tb_wj` VALUES (1, '2019-12-12', '1806a', '白伟', 1, '与唐三床上干架');
+INSERT INTO `tb_wj` VALUES (2, '2019-12-02', '1806a', '白伟', 2, '');
 INSERT INTO `tb_wj` VALUES (3, '2019-12-25', '1806a', '张三', 3, NULL);
 
 -- ----------------------------
@@ -221,7 +228,7 @@ CREATE TABLE `tb_wjtype`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `typename` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '违纪类型名称',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tb_wjtype
@@ -244,7 +251,7 @@ CREATE TABLE `tb_ws`  (
   PRIMARY KEY (`hid`) USING BTREE,
   INDEX `bjid`(`bjid`) USING BTREE,
   CONSTRAINT `tb_ws_ibfk_1` FOREIGN KEY (`bjid`) REFERENCES `tb_classes` (`class_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tb_ws
