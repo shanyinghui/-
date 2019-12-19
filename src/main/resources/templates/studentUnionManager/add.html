@@ -24,6 +24,15 @@
         <form class="layui-form">
             <div class="layui-form-item">
                 <div class="layui-form-mid layui-word-aux">
+                    <span class="x-red">*</span>班级
+                </div>
+                <div class="layui-input-inline">
+                    <select name="class_id" id="class_id" lay-filter="provSel">
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-form-mid layui-word-aux">
                     <span class="x-red">*</span>学生
                 </div>
                 <div class="layui-input-inline">
@@ -58,12 +67,29 @@
         $ = layui.jquery;
         var form = layui.form,
             layer = layui.layer;
-        $.post("selAllNoStu_UnionStu", function (data) {
+        $.post("selAllClasses", function (data) {
             for (var i = 0; i < data.length; i++) {
-                $("#stu_id").append("<option value=" + data[i].stu_id + ">" + data[i].name + "</option>")
+                $("#class_id").append("<option value=" + data[i].class_id + ">" +
+                    data[i].class_name + "</option>")
             }
             layui.form.render("select");
         });
+        form.on('select(provSel)', function (data) {
+            $.ajax({
+                url: "selAllClassStuNoStu_Union?class_id=" + data.value,
+                dataType: 'json',
+                type: 'get',
+                success: function (data) {
+                    $("#stu_id").empty();
+                    $.each(data, function (index, item) {
+                        $('#stu_id').append(new Option(item.name,item.stu_id));// 下拉菜单里添加元素
+                    });
+                    layui.form.render("select");
+//重新渲染 固定写法
+                }
+            });
+        });
+
         //监听提交
         form.on('submit(add)',
             function (data) {

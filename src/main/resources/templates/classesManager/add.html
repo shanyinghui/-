@@ -37,9 +37,8 @@
                     <span class="x-red">*</span>班主任
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="headmaster" name="headmaster" required=""
-                           lay-verify="required"
-                           autocomplete="off" class="layui-input">
+                    <select name="headmaster" id="headmaster">
+                    </select>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -47,9 +46,8 @@
                     <span class="x-red">*</span>老师
                 </label>
                 <div class="layui-input-inline">
-                    <input type="text" id="teacher" name="teacher" required=""
-                           lay-verify="required"
-                           autocomplete="off" class="layui-input">
+                    <select name="teacher" id="teacher">
+                    </select>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -58,16 +56,16 @@
                 </label>
                 <div class="layui-input-inline">
                     <input type="text" id="cycle_progress" name="cycle_progress" required=""
-                           lay-verify="required"
+                           lay-verify="required" readonly="readonly" value="1"
                            autocomplete="off" class="layui-input">
                 </div>
             </div>
-                <div class="layui-form-item">
-                    <button class="layui-btn" lay-filter="add" lay-submit="">
-                        增加
-                    </button>
-                </div>
-            </form>
+            <div class="layui-form-item">
+                <button class="layui-btn" lay-filter="add" lay-submit="">
+                    增加
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 <script>layui.use(['form', 'layer'],
@@ -75,18 +73,31 @@
         $ = layui.jquery;
         var form = layui.form,
             layer = layui.layer;
-
+        $.post("selAllClassTeacher", function (data) {
+            for (var i = 0; i < data.length; i++) {
+                $("#teacher").append("<option value=" + data[i].name + ">" + data[i].name +
+                    "</option>")
+            }
+            layui.form.render("select");
+        });
+        $.post("selAllClassHeadmaster", function (data) {
+            for (var i = 0; i < data.length; i++) {
+                $("#headmaster").append("<option value=" + data[i].name + ">" + data[i].name +
+                    "</option>")
+            }
+            layui.form.render("select");
+        });
         //监听提交
         form.on('submit(add)',
             function (data) {
                 console.log(data);
                 //发异步，把数据提交
                 $.ajax({
-                    url:"insClasses",
-                    type:"post",
+                    url: "insClasses",
+                    type: "post",
                     contentType: "application/JSON",
-                    data:JSON.stringify(data.field),
-                    success:function(){
+                    data: JSON.stringify(data.field),
+                    success: function () {
                         layer.alert("增加成功", {
                                 icon: 6
                             },

@@ -4,6 +4,7 @@ import com.buba.stuinfomanager.annotation.Log;
 import com.buba.stuinfomanager.pojo.CardStu;
 import com.buba.stuinfomanager.pojo.Classes;
 import com.buba.stuinfomanager.pojo.Student;
+import com.buba.stuinfomanager.pojo.Teacher;
 import com.buba.stuinfomanager.service.ClassesService;
 import com.buba.stuinfomanager.util.ResultUtil;
 import com.github.pagehelper.PageInfo;
@@ -184,6 +185,7 @@ public class ClassesController {
             return map;
         }
     }
+
     @RequestMapping("/importClassExcel")
     @ResponseBody
     public ResultUtil importExcel(@RequestParam("file") MultipartFile file) throws IOException {
@@ -193,7 +195,19 @@ public class ClassesController {
     @RequestMapping("/exportClassData")
     @ResponseBody
     @Log
-    public ResultUtil exportData(@RequestBody List<Classes> classes){
+    public ResultUtil exportData(@RequestBody List<Classes> classes) {
         return classesService.exportData(classes);
+    }
+
+    @RequestMapping("/selAllClassTeacher")
+    @ResponseBody
+    public List<Teacher> selAllClassTeacher() {
+        return classesService.selAllClassTeacher();
+    }
+
+    @RequestMapping("/selAllClassHeadmaster")
+    @ResponseBody
+    public List<Teacher> selAllClassHeadmaster() {
+        return classesService.selAllClassHeadmaster();
     }
 }

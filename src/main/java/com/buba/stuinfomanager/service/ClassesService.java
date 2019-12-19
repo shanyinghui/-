@@ -3,6 +3,7 @@ package com.buba.stuinfomanager.service;
 import com.buba.stuinfomanager.pojo.CardStu;
 import com.buba.stuinfomanager.pojo.Classes;
 import com.buba.stuinfomanager.pojo.Student;
+import com.buba.stuinfomanager.pojo.Teacher;
 import com.buba.stuinfomanager.util.ResultUtil;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Param;
@@ -48,6 +49,11 @@ public interface ClassesService {
 
     //查询当前学生
     CardStu selOneCardStudent(Integer stu_id);
+
+    //查询所有老师
+    List<Teacher> selAllClassTeacher();
+
+    List<Teacher> selAllClassHeadmaster();
 
     //导入Excel
     ResultUtil importExcel(MultipartFile file) throws IOException;

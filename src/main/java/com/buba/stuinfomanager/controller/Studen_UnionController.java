@@ -86,10 +86,10 @@ public class Studen_UnionController {
         }
     }
 
-    @RequestMapping("/selAllNoStu_UnionStu")
+    @RequestMapping("/selAllClassStuNoStu_Union")
     @ResponseBody
-    public List<Student> selAllNoStu_UnionStu() {
-        return student_unionService.selAllNoStu_UnionStu();
+    public List<Student> selAllNoStu_UnionStu(Integer class_id) {
+        return student_unionService.selAllClassStuNoStu_Union(class_id);
     }
 
     @RequestMapping("/exportStu_UnionData")
