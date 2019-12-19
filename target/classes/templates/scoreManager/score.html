@@ -52,6 +52,7 @@
                     <button class="layui-btn" onclick="xadmin.open('添加用户','/addScore',600,600)"><i
                             class="layui-icon"></i>添加
                     </button>
+                    <button class="layui-btn" id="import"><i class="layui-icon"></i>批量导入</button>
                     <button class="layui-btn" onclick="exportData()"><i class="layui-icon"></i>导出</button>
                 </div>
                 <div class="layui-card-body ">
@@ -67,10 +68,11 @@
 </script>
 <script th:inline="none">
     var table;
-    layui.use(['table', 'form'], function () {
+    layui.use(['table', 'form','upload'], function () {
          table = layui.table;
         var form = layui.form;
         var $ = layui.jquery;
+        var upload = layui.upload;
         //展示已知数据
         table.render({
             url: '/score/selAllScore',
@@ -112,6 +114,22 @@
             })
         })
 
+        upload.render({ //允许上传的文件后缀
+            elem: '#import'
+            ,url: '/score/importExcel'
+            ,accept: 'file' //普通文件
+            ,exts: 'xlsx|xls'//上传文件格式
+            ,done: function(res){
+                layer.msg(res.msg,{
+                    btn:['确定'],
+                    btnAlign: 'c',
+                    time:20000,
+                    btn1:function (index,layero) {
+                        location.reload();
+                    }
+                });
+            }
+        });
         //监听行工具事件
         table.on('tool(test)', function (obj) {
             var id = obj.data.id;

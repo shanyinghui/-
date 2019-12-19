@@ -70,4 +70,10 @@
     <select id="selDownClassesId" resultType="java.lang.Integer">
         select min(class_id) from tb_classes where left(class_name,4)>left(#{class_name},4) and right(class_name,1) != 'b'
     </select>
+    <update id="updCycle_progress">
+        update tb_classes set cycle_progress = cycle_progress+1 where class_name = #{class_name}
+    </update>
+    <select id="selCycle_progress">
+        select cycle_progress from
+    </select>
 </mapper>

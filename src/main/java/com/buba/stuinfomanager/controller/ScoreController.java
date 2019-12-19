@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -72,6 +74,13 @@ public class ScoreController {
         System.out.println(period);
         Boolean bool = scoreService.selScoreByStuidPeriod(studentid, period);
         return bool;
+    }
+
+    @RequestMapping("/importExcel")
+    @ResponseBody
+    @Log
+    public ResultUtil importExcel(@RequestParam("file") MultipartFile file) throws IOException {
+        return scoreService.importExcel(file);
     }
 
     @RequestMapping("/exportData")

@@ -4,6 +4,7 @@ import com.buba.stuinfomanager.pojo.Score;
 import com.buba.stuinfomanager.pojo.Student;
 import com.buba.stuinfomanager.util.ResultUtil;
 import com.github.pagehelper.PageInfo;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -35,7 +36,11 @@ public interface ScoreService {
     //查询降班id
     public int selDownClassesId(String class_name);
 
+    //导出
     ResultUtil exportData(List<Score> score);
 
     public void updPer_progress(Integer period , String studentid);
+
+    //批量导入
+    public ResultUtil importExcel(@RequestParam("file")MultipartFile file) throws IOException;
 }

@@ -5,12 +5,17 @@ import com.buba.stuinfomanager.pojo.Score;
 import com.buba.stuinfomanager.pojo.Student;
 import com.buba.stuinfomanager.service.ScoreService;
 import com.buba.stuinfomanager.util.ExcelUtil;
+import com.buba.stuinfomanager.util.MyUtil;
 import com.buba.stuinfomanager.util.ResultUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @Service
@@ -105,5 +110,36 @@ public class ScoreServiceImpl implements ScoreService {
     @Override
     public void updPer_progress(Integer period, String studentid) {
         scoreMapper.updPer_progress(period,studentid);
+    }
+
+    @Override
+    public ResultUtil importExcel(MultipartFile file) throws IOException {
+        try {
+            InputStream in = file.getInputStream();
+            Workbook wb = WorkbookFactory.create(in);
+            Sheet sheet = wb.getSheetAt(0);
+            int lastRowNum = sheet.getLastRowNum();
+            for (int i = 2; i <= lastRowNum; i++) {
+                Row row = sheet.getRow(i);
+                Score score = new Score();
+                score.setStudentid(MyUtil.numOfImport(row.getCell(0)));
+                score.setStudentname(row.getCell(1).getStringCellValue());
+                score.setClasses(row.getCell(2).getStringCellValue());
+                if(row.getCell(3)!=null){
+                    row.getCell(3).setCellType(Cell.CELL_TYPE_STRING);
+                    score.setPeriod(row.getCell(3).getStringCellValue());
+                }
+                score.setPeriod(row.getCell(3).getStringCellValue());
+                score.setSkillscores(row.getCell(4).getNumericCellValue());
+                score.setInterviewresult(row.getCell(5).getNumericCellValue());
+                scoreMapper.addScore(score);
+                    String s = row.getCell(2).getStringCellValue();
+                    scoreMapper.updCycle_progress(s);
+            }
+            return ResultUtil.ok("导入成功！");
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultUtil.error();
+        }
     }
 }

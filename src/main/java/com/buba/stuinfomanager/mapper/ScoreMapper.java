@@ -38,4 +38,6 @@ public interface ScoreMapper {
 
     //修改周期进度
     public void updPer_progress(Integer period , String studentid);
+
+    public void updCycle_progress(String class_name);
 }

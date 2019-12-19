@@ -2,21 +2,42 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a5650b79-ac3f-4c0a-8cdb-a6e78fc93256" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/buba/stuinfomanager/controller/ScoreController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buba/stuinfomanager/controller/ScoreController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/buba/stuinfomanager/mapper/ScoreMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buba/stuinfomanager/mapper/ScoreMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/buba/stuinfomanager/pojo/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buba/stuinfomanager/pojo/Student.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/buba/stuinfomanager/service/ScoreService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buba/stuinfomanager/service/ScoreService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/buba/stuinfomanager/service/impl/ScoreServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/buba/stuinfomanager/service/impl/ScoreServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/buba/stuinfomanager/mapper/ScoreMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/buba/stuinfomanager/mapper/ScoreMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/scoreManager/add.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/scoreManager/add.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/scoreManager/score.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/scoreManager/score.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/buba/stuinfomanager/controller/ScoreController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/buba/stuinfomanager/controller/ScoreController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/buba/stuinfomanager/controller/StudentController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/buba/stuinfomanager/controller/StudentController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/buba/stuinfomanager/mapper/ScoreMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/buba/stuinfomanager/mapper/ScoreMapper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/buba/stuinfomanager/mapper/ScoreMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/buba/stuinfomanager/mapper/ScoreMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/buba/stuinfomanager/mapper/StudentMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/buba/stuinfomanager/mapper/StudentMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/buba/stuinfomanager/service/ScoreService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/buba/stuinfomanager/service/ScoreService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/buba/stuinfomanager/service/impl/ScoreServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/buba/stuinfomanager/service/impl/ScoreServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/scoreManager/score.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/scoreManager/score.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -56,7 +77,7 @@
     <property name="add_unversioned_files" value="true" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="ignore_missing_gitignore" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/com/buba/stuinfomanager" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Problems" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -105,7 +126,10 @@
       <workItem from="1576196679249" duration="22814000" />
       <workItem from="1576406407731" duration="2093000" />
       <workItem from="1576456606268" duration="24335000" />
-      <workItem from="1576570954564" duration="8238000" />
+      <workItem from="1576570954564" duration="9524000" />
+      <workItem from="1576629081678" duration="3339000" />
+      <workItem from="1576639843580" duration="1413000" />
+      <workItem from="1576716764319" duration="5880000" />
     </task>
     <task id="LOCAL-00001" summary="模块开发完成">
       <created>1576220099035</created>
