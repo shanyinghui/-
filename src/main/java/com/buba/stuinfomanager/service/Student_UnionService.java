@@ -23,7 +23,7 @@ public interface Student_UnionService {
     Student selOneStu_UnionStu(Integer stu_id);
 
     //查询所有没有在学生部门的学生
-    List<Student> selAllNoStu_UnionStu();
+    List<Student> selAllClassStuNoStu_Union(Integer class_id);
 
 
     //导出数据

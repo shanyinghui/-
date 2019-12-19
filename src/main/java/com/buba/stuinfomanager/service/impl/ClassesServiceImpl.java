@@ -4,6 +4,7 @@ import com.buba.stuinfomanager.mapper.ClassesMapper;
 import com.buba.stuinfomanager.pojo.CardStu;
 import com.buba.stuinfomanager.pojo.Classes;
 import com.buba.stuinfomanager.pojo.Student;
+import com.buba.stuinfomanager.pojo.Teacher;
 import com.buba.stuinfomanager.service.ClassesService;
 import com.buba.stuinfomanager.util.ExcelUtil;
 import com.buba.stuinfomanager.util.MyUtil;
@@ -91,6 +92,16 @@ public class ClassesServiceImpl implements ClassesService {
     @Override
     public CardStu selOneCardStudent(Integer stu_id) {
         return classesMapper.selOneCardStudent(stu_id);
+    }
+
+    @Override
+    public List<Teacher> selAllClassTeacher() {
+        return classesMapper.selAllClassTeacher();
+    }
+
+    @Override
+    public List<Teacher> selAllClassHeadmaster() {
+        return classesMapper.selAllClassHeadmaster();
     }
 
     @Override

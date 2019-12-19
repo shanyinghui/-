@@ -24,7 +24,7 @@
             resultType="com.buba.stuinfomanager.pojo.Student">
         select * from tb_student where stu_id = #{stu_id}
     </select>
-    <select id="selAllNoStu_UnionStu" resultType="com.buba.stuinfomanager.pojo.Student">
-        select * from tb_student where dept_id = 0
+    <select id="selAllClassStuNoStu_Union" resultType="com.buba.stuinfomanager.pojo.Student">
+        select * from tb_student where dept_id = 0 and nowClassId = #{class_id}
     </select>
 </mapper>

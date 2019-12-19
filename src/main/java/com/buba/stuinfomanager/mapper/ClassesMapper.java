@@ -3,6 +3,7 @@ package com.buba.stuinfomanager.mapper;
 import com.buba.stuinfomanager.pojo.CardStu;
 import com.buba.stuinfomanager.pojo.Classes;
 import com.buba.stuinfomanager.pojo.Student;
+import com.buba.stuinfomanager.pojo.Teacher;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -45,4 +46,10 @@ public interface ClassesMapper {
 
     //查询当前学生
     CardStu selOneCardStudent(Integer stu_id);
+
+    //查询所有教师
+    List<Teacher> selAllClassTeacher();
+
+    //查询所有班主任
+    List<Teacher> selAllClassHeadmaster();
 }

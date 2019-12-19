@@ -80,4 +80,11 @@
             #{classid}
         </foreach>
     </delete>
+<!--    查询所有老师-->
+    <select id="selAllClassTeacher" resultType="com.buba.stuinfomanager.pojo.Teacher">
+        select * from tb_teacher where t_position = 0
+    </select>
+    <select id="selAllClassHeadmaster" resultType="com.buba.stuinfomanager.pojo.Teacher">
+        select * from tb_teacher where t_position = 1
+    </select>
 </mapper>

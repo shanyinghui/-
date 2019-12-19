@@ -48,8 +48,8 @@ public class Student_UnionServiceImpl implements Student_UnionService {
     }
 
     @Override
-    public List<Student> selAllNoStu_UnionStu() {
-        return student_unionMapper.selAllNoStu_UnionStu();
+    public List<Student> selAllClassStuNoStu_Union(Integer class_id) {
+        return student_unionMapper.selAllClassStuNoStu_Union(class_id);
     }
 
 
