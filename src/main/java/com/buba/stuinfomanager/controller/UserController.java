@@ -3,6 +3,7 @@ package com.buba.stuinfomanager.controller;
 import com.buba.stuinfomanager.pojo.Student;
 import com.buba.stuinfomanager.pojo.Teacher;
 import com.buba.stuinfomanager.service.LoginService;
+import com.buba.stuinfomanager.service.SummaryServer;
 import com.buba.stuinfomanager.util.RandomValidateCodeUtil;
 import com.buba.stuinfomanager.util.ResultUtil;
 import org.apache.shiro.SecurityUtils;
@@ -32,6 +33,8 @@ public class UserController {
     //注入service层对象
     @Autowired
     LoginService loginService;
+    @Autowired
+    private SummaryServer summaryServer;
 
     /**
      * 进入登录页面
@@ -56,8 +59,7 @@ public class UserController {
                 session.setAttribute("name",student.getName());
                 session.setAttribute("password",student.getPassword());
                 session.setAttribute("type",0);
-                SummaryController summaryController = new SummaryController();
-                summaryController.selectVerify(student);
+                summaryServer.selectVerify(student);
             }else{
                 Teacher teacher = loginService.teaLogin(usernum);
                 session.setAttribute("id",teacher.getT_id());

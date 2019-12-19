@@ -75,8 +75,8 @@
 </body>
 
 <script id="barDemo" type="text/html">
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit" shiro:hasRole="teacher">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" shiro:hasRole="teacher">删除</a>
 </script>
 <script th:inline="none">
     var table;

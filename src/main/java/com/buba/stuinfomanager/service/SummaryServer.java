@@ -27,7 +27,7 @@ public interface SummaryServer {
 
     void teacherUpdateSummary(Summary summary);
 
-    void selectVerify(Student student,String time);
+    void selectVerify(Student student);
 
     void selectVerifystu(Student student,String time);
 
