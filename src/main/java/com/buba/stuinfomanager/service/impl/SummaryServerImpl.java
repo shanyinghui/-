@@ -129,6 +129,7 @@ public class SummaryServerImpl implements SummaryServer {
         if (Summary.sum_state_undone.equals(summary.getSum_state())){
             return summaryMapper.selectSummaryCount(summary);
         }else {
+            System.out.println("是老师");
             return summaryMapper.selectSummaryCountTeacher(summary);
         }
     }
@@ -231,10 +232,17 @@ public class SummaryServerImpl implements SummaryServer {
      * @return
      */
     @Override
-    public void selectVerify(Student student,String time) {
+    public void selectVerify(Student student) {
 
         Summary sum = new Summary();
+        Date date4 = new Date(new Date().getTime()-24*60*60*1000);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        String time = sdf.format(date4);
         sum.setSum_time(time);
+
+        sum.setStudent(student);
         sum.getStudent().setStu_id(student.getStu_id());
         Summary summary = summaryMapper.selectVerify(sum);
         if (null != summary){ //总结了

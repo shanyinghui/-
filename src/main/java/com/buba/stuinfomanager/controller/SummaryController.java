@@ -3,20 +3,20 @@ package com.buba.stuinfomanager.controller;
 import com.buba.stuinfomanager.pojo.Student;
 import com.buba.stuinfomanager.pojo.Summary;
 import com.buba.stuinfomanager.pojo.Teacher;
-
 import com.buba.stuinfomanager.service.SummaryServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @description:
@@ -68,7 +68,6 @@ public class SummaryController {
     @RequestMapping("/pmgressbar")
     @ResponseBody
     public Map<String,String> pmgressbar(HttpServletRequest request){
-        System.out.println(request);
         HttpSession session = request.getSession();
         System.out.println(session.getAttribute("type"));
         //session 获取学生登录信息
@@ -195,7 +194,7 @@ public class SummaryController {
 
     /**
      * 学生审核页面显示
-     */
+    */
     @RequestMapping("/selectSummaryTeacherAll")
     @ResponseBody
     public Map<String,Object> selectSummaryTeacherAll(HttpSession session){
@@ -204,14 +203,18 @@ public class SummaryController {
         Teacher teacher = new Teacher();
 
         Summary summary = new Summary();
-        if(session.getAttribute("type").equals("1")){
+        if((Integer)session.getAttribute("type")==1){
             int id = Integer.parseInt(session.getAttribute("id")+"");
             teacher.setT_id(id);
         }
         summary.setTeacher(teacher);
         summary.setSum_state(Summary.sum_state_authstr);
 
+        System.out.println(summary.getTeacher().getT_id());
+        System.out.println(summary.getSum_state());
+
         Integer pageCount = summaryServer.selectSummaryCount(summary);
+        System.out.println(pageCount);
 
         Map<String, Object> map = new HashMap<String, Object>();
 
@@ -242,15 +245,16 @@ public class SummaryController {
     @ResponseBody
     public Map<String,String> TeacherUpdateSummary(@RequestBody Summary summary,HttpSession session){
         //获取登录老师的id
+        Map<String,String> map = new HashMap<>();
         Teacher teacher = new Teacher();
-        if(session.getAttribute("type").equals("1")){
+        if((Integer)session.getAttribute("type")==1){
             int id = Integer.parseInt(session.getAttribute("id")+"");
             teacher.setT_id(id);
         }
         summary.setTeacher(teacher);
         summary.setSum_state(Summary.sum_state_done);
 
-        Map<String,String> map = new HashMap<>();
+
 
         try {
             summaryServer.teacherUpdateSummary(summary);
@@ -271,7 +275,7 @@ public class SummaryController {
     public Map<String,String> TeacherDeleteSummary(@RequestBody Summary summary,HttpSession session){
         //获取登录老师的id
         Teacher teacher = new Teacher();
-        if(session.getAttribute("type").equals("1")){
+        if((Integer)session.getAttribute("type")==1){
             int id = Integer.parseInt(session.getAttribute("id")+"");
             teacher.setT_id(id);
         }
@@ -288,21 +292,6 @@ public class SummaryController {
             map.put("msg","Error");
             return map;
         }
-
-    }
-
-    /**
-     * 每次进来之后都要验证
-     */
-    public void selectVerify(Student student){
-
-        Date date4 = new Date(new Date().getTime()-24*60*60*1000);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-        String time = sdf.format(date4);
-
-        summaryServer.selectVerify(student,time);
 
     }
 
