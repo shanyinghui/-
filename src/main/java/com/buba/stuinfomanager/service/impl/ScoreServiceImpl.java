@@ -121,6 +121,9 @@ public class ScoreServiceImpl implements ScoreService {
             int lastRowNum = sheet.getLastRowNum();
             for (int i = 2; i <= lastRowNum; i++) {
                 Row row = sheet.getRow(i);
+                Cell cell = row.getCell(4);
+                System.out.println(cell.getNumericCellValue());
+
                 Score score = new Score();
                 score.setStudentid(MyUtil.numOfImport(row.getCell(0)));
                 score.setStudentname(row.getCell(1).getStringCellValue());
@@ -133,8 +136,8 @@ public class ScoreServiceImpl implements ScoreService {
                 score.setSkillscores(row.getCell(4).getNumericCellValue());
                 score.setInterviewresult(row.getCell(5).getNumericCellValue());
                 scoreMapper.addScore(score);
-                    String s = row.getCell(2).getStringCellValue();
-                    scoreMapper.updCycle_progress(s);
+                String s = row.getCell(2).getStringCellValue();
+                scoreMapper.updCycle_progress(s);
             }
             return ResultUtil.ok("导入成功！");
         }catch (Exception e){

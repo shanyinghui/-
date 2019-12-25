@@ -10,6 +10,7 @@ public class Teacher implements Serializable {
     private String home;
     private String phone;
     private String password;
+    private Integer t_position;
 
     public Integer getT_id() {
         return t_id;
@@ -67,6 +68,14 @@ public class Teacher implements Serializable {
         this.password = password;
     }
 
+    public Integer getT_position() {
+        return t_position;
+    }
+
+    public void setT_position(Integer t_position) {
+        this.t_position = t_position;
+    }
+
     @Override
     public String toString() {
         return "Teacher{" +
@@ -77,6 +86,7 @@ public class Teacher implements Serializable {
                 ", home='" + home + '\'' +
                 ", phone='" + phone + '\'' +
                 ", password='" + password + '\'' +
+                ", t_position=" + t_position +
                 '}';
     }
 }

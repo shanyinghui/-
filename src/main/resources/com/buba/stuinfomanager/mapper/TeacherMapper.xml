@@ -27,8 +27,8 @@
     </update>
 
     <insert id="add">
-        insert into tb_teacher (t_num,name,birthday,home,phone,password)
-            value(#{t_num},#{name},#{birthday},#{home},#{phone},"123456")
+        insert into tb_teacher (t_num,name,birthday,home,phone,password,t_position)
+            value(#{t_num},#{name},#{birthday},#{home},#{phone},"123456",#{t_position})
     </insert>
 
     <select id="selectMaxT_num" resultType="String">
